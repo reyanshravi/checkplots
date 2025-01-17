@@ -6,23 +6,32 @@ import Dashboard from "./pages/Dashboard";
 import Properties from "./pages/Properties";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
+import AdminLogin from "./pages/AdminLogin";
 
 const App = () => {
   return (
-    <Router>
-      <div className="flex">
-        <Sidebar />
-        <div className="flex-1">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/properties" element={<Properties />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<AdminLogin />} />
+        </Routes>
+      </Router>
+
+      <Router>
+        <div className="flex">
+          <Sidebar />
+          <div className="flex-1">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/properties" element={<Properties />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </>
   );
 };
 
