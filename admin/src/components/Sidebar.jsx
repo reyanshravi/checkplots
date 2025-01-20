@@ -5,12 +5,14 @@ const Sidebar = () => {
   const links = [
     { name: "Dashboard", path: "/" },
     { name: "Properties", path: "/properties" },
+    { name: "Interior", path: "/interior" },
+    { name: "Hotels", path: "/hotels" },
     { name: "Users", path: "/users" },
     { name: "Settings", path: "/settings" },
   ];
 
   return (
-    <div className="w-64 h-screen bg-gray-800 text-white">
+    <div className="w-64 min-h-screen bg-gray-800 text-white">
       <div className="px-6 py-4">
         <h2 className="text-2xl font-bold">Admin Panel</h2>
       </div>

@@ -7,6 +7,9 @@ import Properties from "./pages/Properties";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import AdminLogin from "./pages/AdminLogin";
+import CreateProperty from "./pages/CreateProperty";
+import CreateHotel from "./pages/CreateHotel";
+import Hotels from "./pages/Hotels";
 
 const App = () => {
   return (
@@ -18,15 +21,21 @@ const App = () => {
       </Router>
 
       <Router>
-        <div className="flex">
+        <div className="flex ">
           <Sidebar />
           <div className="flex-1">
             <Navbar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/properties" element={<Properties />} />
+              <Route path="/hotels" element={<Hotels />} />
               <Route path="/users" element={<Users />} />
               <Route path="/settings" element={<Settings />} />
+              <Route
+                path="properties/CreateProperty"
+                element={<CreateProperty />}
+              />
+              <Route path="hotels/CreateHotel" element={<CreateHotel />} />
             </Routes>
           </div>
         </div>
