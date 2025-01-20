@@ -10,6 +10,8 @@ import AdminLogin from "./pages/AdminLogin";
 import CreateProperty from "./pages/CreateProperty";
 import CreateHotel from "./pages/CreateHotel";
 import Hotels from "./pages/Hotels";
+import Interior from "./pages/Interior";
+import CreateInterior from "./pages/CreateInterior";
 
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
               <Route path="/" element={<Dashboard />} />
               <Route path="/properties" element={<Properties />} />
               <Route path="/hotels" element={<Hotels />} />
+              <Route path="/interior" element={<Interior />} />
               <Route path="/users" element={<Users />} />
               <Route path="/settings" element={<Settings />} />
               <Route
@@ -36,6 +39,10 @@ const App = () => {
                 element={<CreateProperty />}
               />
               <Route path="hotels/CreateHotel" element={<CreateHotel />} />
+              <Route
+                path="interior/CreateInterior"
+                element={<CreateInterior />}
+              />
             </Routes>
           </div>
         </div>
