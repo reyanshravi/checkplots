@@ -4,6 +4,14 @@ import { FaHome, FaUsers, FaChartLine } from "react-icons/fa";
 import { LiaHotelSolid } from "react-icons/lia";
 import { SiAffinitydesigner } from "react-icons/si";
 
+import {
+  IoPeopleOutline,
+  IoBusinessOutline,
+  IoHomeOutline,
+  IoLibraryOutline,
+  IoAnalyticsOutline,
+} from "react-icons/io5";
+
 const Dashboard = () => {
   return (
     <div className="p-6">
@@ -12,28 +20,28 @@ const Dashboard = () => {
         <DashboardCard
           title="Properties"
           value="150"
-          icon={<FaHome size={24} />}
+          icon={<IoHomeOutline size={24} />}
         />
         <DashboardCard
           title="Hotels Count"
           value="2,500"
-          icon={<LiaHotelSolid size={24} />}
+          icon={<IoBusinessOutline size={24} />}
         />
         <DashboardCard
           title="Interior Designs"
           value="101"
-          icon={<SiAffinitydesigner size={24} />}
+          icon={<IoLibraryOutline size={24} />}
         />
 
         <DashboardCard
           title="Users"
           value="1200"
-          icon={<FaUsers size={24} />}
+          icon={<IoPeopleOutline size={24} />}
         />
         <DashboardCard
           title="Revenue"
           value="$25,000"
-          icon={<FaChartLine size={24} />}
+          icon={<IoAnalyticsOutline size={24} />}
         />
       </div>
     </div>

@@ -1,9 +1,9 @@
 import React from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import PaginationBar from "../components/PaginationBar";
+import { LiaRupeeSignSolid } from "react-icons/lia";
 
 const Hotels = () => {
   const navigate = useNavigate();
@@ -186,7 +186,10 @@ const Hotels = () => {
                   {row.status}
                 </span>
               </td>
-              <td className="py-2 px-4">{row.price}</td>
+              <td className="py-2 px-4 flex items-center justify-start">
+                <LiaRupeeSignSolid />
+                {row.price}
+              </td>
               <td className="py-2 px-4">
                 <button className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2">
                   <FaEdit />
