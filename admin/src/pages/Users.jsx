@@ -91,6 +91,34 @@ const Users = () => {
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          {/* <button className="px-4 py-2 bg-gray-200 rounded-md mr-2">
+            Bulk Actions
+          </button> */}
+          <button className="px-4 py-2 bg-gray-200 rounded-md">Filters</button>
+        </div>
+        <input
+          type="text"
+          placeholder="Search..."
+          className="px-4 py-2 border rounded-md"
+        />
+        <div>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2  text-center"
+            // onClick={handleCreateClick}
+          >
+            Add User
+          </button>
+          {/* <button className="px-4 py-2 bg-gray-200 rounded-md mr-2">
+            Import Properties
+          </button>
+          <button className="px-4 py-2 bg-gray-200 rounded-md mr-2">
+            Export Properties
+          </button> */}
+          <button className="px-4 py-2 bg-gray-200 rounded-md">Reload</button>
+        </div>
+      </div>
       <table className="w-full bg-white rounded-lg shadow-md">
         <thead>
           <tr className="bg-gray-100">
