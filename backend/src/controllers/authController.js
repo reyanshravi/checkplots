@@ -1,5 +1,7 @@
 import User from "../models/User.js";
+import jwt from "jsonwebtoken";
 
+// SignUp Controller
 export const signupUser = async (req, res) => {
   const { fullName, email, phone, dob, country, state, city, password } =
     req.body;
@@ -37,5 +39,40 @@ export const signupUser = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error. Please try again later." });
+  }
+};
+
+// SignIn Controller
+export const signinUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Check if the entered password matches the stored password
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Generate a JWT token (expires in 1 hour)
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    // Send response with token
+    res.status(200).json({
+      message: "SignIn successful",
+      token,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
