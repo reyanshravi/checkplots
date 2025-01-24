@@ -4,15 +4,18 @@ import Hotels from "./pages.jsx/Hotels";
 import HotelCard from "./components/HotelCard";
 import Footer from "./pages.jsx/footer";
 import NewsLetter from "./components/NewsLetter";
+import SignupForm from "./components/SignUpForm";
+import SigninForm from "./components/SigninForm";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>
-      <Hotels />
+      {/* <Hotels /> */}
       {/* <NewsLetter /> */}
-      <Footer />
+      {/* <Footer /> */}
+      <SignupForm />
+      <SigninForm />
     </>
   );
 }
