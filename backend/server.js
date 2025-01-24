@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./src/config/db.js";
 import router from "./src/routes/Routes.js";
+// import headRoute from "./src/routes/headRoute.js";
+import headRoute from "./src/routes/headRoutes.js";
 
 // Load environment variables
 dotenv.config();
@@ -23,6 +25,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", router);
+
+app.use("/api/head", headRoute);
 
 // Port and server start
 const PORT = process.env.PORT || 5000;
