@@ -14,7 +14,7 @@ function App() {
       {/* <Hotels /> */}
       {/* <NewsLetter /> */}
       {/* <Footer /> */}
-      {/* <SignupForm /> */}
+      <SignupForm />
       <SigninForm />
     </>
   );
