@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -9,10 +9,20 @@ const AdminLogin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Check if token exists in localStorage and redirect to dashboard
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
+      setLoading(true); // Set loading state to true
+
       const response = await axios.post(
         "http://localhost:7002/api/head/signin",
         {
@@ -21,11 +31,20 @@ const AdminLogin = () => {
         }
       );
 
-      // Handle successful login
-      console.log("Login successful:", response.data);
-      alert("Login successful!");
-      navigate("/dashboard");
-      // You can redirect the user to the dashboard here
+      // Destructure the token from response data
+      const { token } = response.data;
+
+      if (token) {
+        // Store the token in local storage
+        localStorage.setItem("token", token);
+
+        // Display a success message and navigate to the dashboard
+        console.log("Login successful:", response.data);
+        alert("Login successful!");
+        navigate("/dashboard"); // Redirect user to the dashboard
+      } else {
+        alert("Token not received. Please contact support.");
+      }
     } catch (err) {
       // Handle errors
       console.error("Login failed:", err.response?.data || err.message);
@@ -82,7 +101,7 @@ const AdminLogin = () => {
             type="submit"
             className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
@@ -95,6 +114,11 @@ const AdminLogin = () => {
             Forgot Password?
           </a>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="text-red-500 text-sm mt-4 text-center">{error}</div>
+        )}
       </div>
     </div>
   );

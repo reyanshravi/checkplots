@@ -21,6 +21,7 @@ const Sidebar = () => {
     },
     { name: "Hotels", path: "/hotels", icon: <IoBusinessOutline /> },
     { name: "Users", path: "/users", icon: <IoPeopleOutline /> },
+    { name: "Vendors", path: "/vendors", icon: <IoPeopleOutline /> },
     { name: "Settings", path: "/settings", icon: <IoSettingsOutline /> },
   ];
 
