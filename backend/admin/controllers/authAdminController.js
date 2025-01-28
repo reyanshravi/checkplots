@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
-import Head from "../models/headModel.js"; // Adjust the import path based on your project structure
+import adminModel from "../models/adminModel.js"; // Adjust the import path based on your project structure
 
 // SignIn Controller
-export const signInHead = async (req, res) => {
+export const signInAdmin = async (req, res) => {
   const { email, password } = req.body;
 
   // Validate input fields
@@ -14,7 +14,7 @@ export const signInHead = async (req, res) => {
 
   try {
     // Check if the user exists
-    const user = await Head.findOne({ email });
+    const user = await adminModel.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -49,7 +49,7 @@ export const signInHead = async (req, res) => {
   }
 };
 
-export const signUpHead = async (req, res) => {
+export const signUpAdmin = async (req, res) => {
   const { fullName, email, phone, role, address, companyName, password } =
     req.body;
 
@@ -62,13 +62,13 @@ export const signUpHead = async (req, res) => {
 
   try {
     // Check if the email already exists
-    const existingUser = await Head.findOne({ email });
+    const existingUser = await adminModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email is already registered" });
     }
 
     // Check if the phone number already exists
-    const existingPhone = await Head.findOne({ phone });
+    const existingPhone = await adminModel.findOne({ phone });
     if (existingPhone) {
       return res
         .status(400)
@@ -76,7 +76,7 @@ export const signUpHead = async (req, res) => {
     }
 
     // Create a new user
-    const newUser = new Head({
+    const newUser = new adminModel({
       fullName,
       email,
       phone,

@@ -18,6 +18,7 @@ import CreateHotel from "./pages/CreateHotel";
 import Hotels from "./pages/Hotels";
 import Interior from "./pages/Interior";
 import CreateInterior from "./pages/CreateInterior";
+import ForgotPassword from "./pages/ForgotPassword";
 
 // Check if the user is authenticated
 const isAuthenticated = () => {
@@ -48,6 +49,7 @@ const App = () => {
       <Routes>
         {/* Public Route */}
         <Route path="/" element={<AdminLogin />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
 
         {/* Protected Routes */}
         <Route
