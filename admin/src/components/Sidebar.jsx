@@ -12,7 +12,7 @@ import { SiAffinitydesigner } from "react-icons/si";
 
 const Sidebar = () => {
   const links = [
-    { name: "Dashboard", path: "/", icon: <IoDesktopOutline /> },
+    { name: "Dashboard", path: "/dashboard", icon: <IoDesktopOutline /> },
     { name: "Properties", path: "/properties", icon: <IoHomeOutline /> },
     {
       name: "Interior",

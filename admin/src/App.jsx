@@ -18,7 +18,7 @@ const App = () => {
     <>
       <Router>
         <Routes>
-          <Route path="/login" element={<AdminLogin />} />
+          <Route path="/" element={<AdminLogin />} />
         </Routes>
       </Router>
 
@@ -28,7 +28,7 @@ const App = () => {
           <div className="flex-1">
             <Navbar />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/properties" element={<Properties />} />
               <Route path="/hotels" element={<Hotels />} />
               <Route path="/interior" element={<Interior />} />
