@@ -157,6 +157,7 @@ export const updateAdminProfile = async (req, res) => {
   }
 };
 
+// Change Admin Password
 export const changeAdminPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const adminId = req.admin._id; // Now correctly extracted from the token

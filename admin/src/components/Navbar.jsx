@@ -1,23 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEllipsisV } from "react-icons/fa";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef(null); // Reference for dropdown menu
 
-  // Fetch user details from localStorage (Replace with API call if needed)
+  // Fetch user details from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
-  // const user = {
-  //   name: "Admin User", // Example name
-  //   profileImage: "https://img.icons8.com/pulsar-color/48/user-male-circle.png", // Replace with actual user image URL
-  // };
 
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear the token
     alert("Logged out successfully");
     navigate("/"); // Redirect to the login page
   };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="flex items-center justify-between px-6 py-4 bg-gray-800 text-white">
@@ -29,13 +42,14 @@ const Navbar = () => {
         {/* User Profile Image */}
         <span>{user.fullName}</span>
         <img
+          onClick={() => setShowMenu(!showMenu)}
           src={user.profileImageUrl}
           alt="User"
           className="w-10 h-10 rounded-full border-2 border-gray-300 cursor-pointer"
         />
 
         {/* Three-dot Menu */}
-        <div className="relative">
+        <div className="relative" ref={menuRef}>
           <button
             onClick={() => setShowMenu(!showMenu)}
             className="focus:outline-none"
@@ -48,19 +62,28 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white text-gray-800 shadow-md rounded-md py-2">
               <button
                 className="block px-4 py-2 w-full text-left hover:bg-gray-200"
-                onClick={() => navigate("/profile")}
+                onClick={() => {
+                  setShowMenu(false);
+                  navigate("/profile");
+                }}
               >
                 View Profile
               </button>
               <button
                 className="block px-4 py-2 w-full text-left hover:bg-gray-200"
-                onClick={() => navigate("/change-password")}
+                onClick={() => {
+                  setShowMenu(false);
+                  navigate("/change-password");
+                }}
               >
                 Change Password
               </button>
               <button
                 className="block px-4 py-2 w-full text-left text-red-600 hover:bg-gray-200"
-                onClick={handleLogout}
+                onClick={() => {
+                  setShowMenu(false);
+                  handleLogout();
+                }}
               >
                 Logout
               </button>
