@@ -20,6 +20,7 @@ import Interior from "./pages/Interior";
 import CreateInterior from "./pages/CreateInterior";
 import ForgotPassword from "./pages/ForgotPassword";
 import EditProfile from "./pages/EditProfile";
+import ChangePassword from "./pages/ChnagePassword";
 
 // Check if the user is authenticated
 const isAuthenticated = () => {

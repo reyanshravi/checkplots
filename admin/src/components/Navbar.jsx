@@ -54,7 +54,7 @@ const Navbar = () => {
               </button>
               <button
                 className="block px-4 py-2 w-full text-left hover:bg-gray-200"
-                onClick={() => navigate("/edit-profile")}
+                onClick={() => navigate("/changepassword")}
               >
                 Change Password
               </button>
