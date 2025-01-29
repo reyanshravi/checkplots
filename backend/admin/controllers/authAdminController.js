@@ -159,7 +159,7 @@ export const updateAdminProfile = async (req, res) => {
 
 export const changeAdminPassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
-  const adminId = req.user.id; // Extracted from JWT token
+  const adminId = req.admin._id; // Now correctly extracted from the token
 
   try {
     const admin = await adminModel.findById(adminId);
@@ -169,7 +169,7 @@ export const changeAdminPassword = async (req, res) => {
     if (!isMatch)
       return res.status(401).json({ message: "Old password is incorrect" });
 
-    admin.password = newPassword; // Hashing will be handled in the model's pre-save hook
+    admin.password = newPassword;
     await admin.save();
 
     res.status(200).json({ message: "Password updated successfully" });

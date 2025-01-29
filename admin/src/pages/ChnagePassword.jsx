@@ -28,7 +28,7 @@ const ChangePassword = () => {
     try {
       const token = localStorage.getItem("token"); // Get token from local storage
       const response = await axios.put(
-        `${process.env.REACT_APP_API_URL}/admin/change-password`,
+        `http://localhost:7002/api/head/change-password`,
         {
           oldPassword: passwords.oldPassword,
           newPassword: passwords.newPassword,
@@ -46,76 +46,77 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-4">Change Password</h2>
+    <>
+      <div className="p-6 ">
+        <h2 className="text-2xl font-bold mb-4">Change Password</h2>
 
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
         {success && (
           <p className="text-green-500 text-sm text-center">{success}</p>
         )}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Old Password
+              </label>
+              <input
+                type="password"
+                name="oldPassword"
+                value={passwords.oldPassword}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Old Password
-            </label>
-            <input
-              type="password"
-              name="oldPassword"
-              value={passwords.oldPassword}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                New Password
+              </label>
+              <input
+                type="password"
+                name="newPassword"
+                value={passwords.newPassword}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              New Password
-            </label>
-            <input
-              type="password"
-              name="newPassword"
-              value={passwords.newPassword}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={passwords.confirmPassword}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={passwords.confirmPassword}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-
-          <div className="flex justify-between">
-            <button
-              type="button"
-              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
-              onClick={() => navigate("/dashboard")}
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              Update Password
-            </button>
-          </div>
-        </form>
+            <div className="flex justify-between">
+              <button
+                type="button"
+                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                onClick={() => navigate("/dashboard")}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              >
+                Update Password
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -165,7 +165,7 @@ const App = () => {
           }
         />
         <Route
-          path="/changepassword"
+          path="/change-password"
           element={
             <ProtectedRoute>
               <AppLayout>

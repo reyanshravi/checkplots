@@ -6,6 +6,8 @@ import {
   changeAdminPassword,
 } from "../controllers/authAdminController.js";
 
+import { verifyToken } from "../middlewares/verifyToken.js";
+
 import { forgotPassword } from "../controllers/forgotPasswordController.js";
 
 const adminRouter = express.Router();
@@ -20,9 +22,9 @@ adminRouter.post("/signup", signUpAdmin);
 adminRouter.post("/forgot-password", forgotPassword);
 
 // Endpoint for admin update profile
-adminRouter.put("/update-profile/:id", updateAdminProfile);
+adminRouter.put("/update-profile/:id", verifyToken, updateAdminProfile);
 
-adminRouter.put("/change-password", changeAdminPassword);
+adminRouter.put("/change-password", verifyToken, changeAdminPassword);
 
 // Test route for admin route
 adminRouter.get("/test", (req, res) => {
