@@ -33,10 +33,12 @@ const AdminLogin = () => {
 
       // Destructure the token from response data
       const { token } = response.data;
+      const { user } = response.data; // Destructure the user from response data
 
       if (token) {
         // Store the token in local storage
         localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
 
         // Display a success message and navigate to the dashboard
         console.log("Login successful:", response.data);

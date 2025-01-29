@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   IoSettingsOutline,
   IoPeopleOutline,
@@ -7,10 +8,18 @@ import {
   IoHomeOutline,
   IoLibraryOutline,
   IoDesktopOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 import { SiAffinitydesigner } from "react-icons/si";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Clear the token
+    alert("Logged out successfully");
+    navigate("/"); // Redirect to the login page
+  };
+
   const links = [
     { name: "Dashboard", path: "/dashboard", icon: <IoDesktopOutline /> },
     { name: "Properties", path: "/properties", icon: <IoHomeOutline /> },
@@ -41,6 +50,15 @@ const Sidebar = () => {
             </Link>
           </li>
         ))}
+        <li className="px-6 py-2 hover:bg-gray-700 flex items-center justify-start gap-2">
+          <IoLogOutOutline />
+          <button
+            className=" py-2 text-red-300 font-bold"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </li>
       </ul>
     </div>
   );

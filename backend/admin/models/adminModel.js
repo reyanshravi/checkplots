@@ -46,6 +46,10 @@ const adminSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters long"],
     },
+    profileImageUrl: {
+      type: String,
+      default: "https://img.icons8.com/pulsar-color/48/user-male-circle.png",
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
