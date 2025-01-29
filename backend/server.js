@@ -1,10 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import connectDB from "./src/config/db.js";
-import router from "./src/routes/Routes.js";
-// import headRoute from "./src/routes/headRoute.js";
-import headRoute from "./src/routes/headRoutes.js";
+import connectDB from "./config/db.js";
+import userRouter from "./users/routes/userRouter.js";
+import adminRouter from "./admin/routes/adminRouter.js";
 
 // Load environment variables
 dotenv.config();
@@ -24,9 +23,9 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-app.use("/api/auth", router);
+app.use("/api/auth", userRouter);
 
-app.use("/api/head", headRoute);
+app.use("/api/head", adminRouter);
 
 // Port and server start
 const PORT = process.env.PORT || 5000;

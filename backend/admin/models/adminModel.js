@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const headSchema = new mongoose.Schema(
+const adminSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
@@ -46,6 +46,10 @@ const headSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters long"],
     },
+    profileImageUrl: {
+      type: String,
+      default: "https://img.icons8.com/pulsar-color/48/user-male-circle.png",
+    },
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
@@ -53,7 +57,7 @@ const headSchema = new mongoose.Schema(
 );
 
 // Pre-save hook to hash the password before saving
-headSchema.pre("save", async function (next) {
+adminSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
@@ -61,10 +65,10 @@ headSchema.pre("save", async function (next) {
 });
 
 // Method to compare entered password with hashed password
-headSchema.methods.matchPassword = async function (enteredPassword) {
+adminSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const Head = mongoose.model("Head", headSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
-export default Head;
+export default Admin;
