@@ -25,7 +25,7 @@ const VendorSignIn = () => {
       return;
     }
 
-    setError(""); // Clear previous errors
+    setError("");
     setLoading(true);
 
     const formData = { email, password };
