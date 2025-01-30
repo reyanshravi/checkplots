@@ -1,24 +1,82 @@
 import { useState } from "react";
 
+const InputField = ({
+  label,
+  type,
+  placeholder,
+  value,
+  onChange,
+  required,
+}) => (
+  <input
+    className="w-full px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+    type={type}
+    placeholder={placeholder}
+    value={value}
+    onChange={onChange}
+    required={required}
+  />
+);
+
 const SignupForm = () => {
-    const [fullName, setFullName] = useState("");
-    const [phone, setPhone] = useState("");
-    const [email, setEmail] = useState("");
-    const [dob, setDob] = useState("");
-    const [country, setCountry] = useState("");
-    const [state, setState] = useState("");
-    const [city, setCity] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-  
+  const [isVendor, setIsVendor] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+    dob: "",
+    country: "",
+    state: "",
+    city: "",
+    password: "",
+    confirmPassword: "",
+    businessName: "",
+    businessType: "",
+    address: {
+      street: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
+    },
+  });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name.includes("address")) {
+      const [key] = name.split(".");
+      setFormData((prev) => ({
+        ...prev,
+        [key]: { ...prev[key], [name.split(".")[1]]: value },
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic Validation
-    if (!fullName || !phone || !email || !dob || !country || !state || !city || !password || !confirmPassword) {
+    // Validation
+    const {
+      fullName,
+      phone,
+      email,
+      password,
+      confirmPassword,
+      dob,
+      country,
+      state,
+      city,
+      businessName,
+      businessType,
+      address,
+    } = formData;
+
+    if (!fullName || !phone || !email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
     }
@@ -36,182 +94,249 @@ const SignupForm = () => {
     }
 
     setError(""); // Clear previous errors
-    setLoading(true); // Show loading state
+    setLoading(true);
 
-    // Prepare data to send to the backend
-    const formData = {
-      fullName,
-      phone,
-      email,
-      dob,
-      country,
-      state,
-      city,
-      password,
-    };
+    const apiData = isVendor
+      ? {
+          fullName,
+          businessName,
+          email,
+          phone,
+          password,
+          businessType,
+          address,
+        }
+      : {
+          fullName,
+          phone,
+          email,
+          dob,
+          country,
+          state,
+          city,
+          password,
+        };
+
+    const apiUrl = isVendor
+      ? "http://localhost:7002/api/vendor/signup"
+      : "http://localhost:7002/api/auth/signup";
 
     try {
-      // Replace with your actual API endpoint
-      const response = await fetch("http://localhost:7002/api/auth/signup", {
+      const response = await fetch(apiUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(apiData),
       });
 
       const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.message || "Something went wrong. Please try again.");
+        throw new Error(
+          result.message || "Something went wrong. Please try again."
+        );
       }
 
-      // Handle successful signup
       alert("Signup successful! Please check your email for verification.");
-      // Optionally redirect to login or home page
-      // window.location.href = "/login";
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false); // Hide loading state
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center">
-      <div className="max-w-screen-xl bg-white shadow sm:rounded-lg flex justify-center flex-1 p-6 sm:p-12">
+    <div className="my-20 text-gray-900 flex justify-center items-center">
+      <div className="max-w-screen-xl bg-white shadow-xl sm:rounded-lg flex justify-center flex-1 p-6 sm:p-12">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div className="mt-12 flex flex-col items-center">
-            <h1 className="text-2xl xl:text-3xl font-extrabold text-indigo-600">
+            <h1 className="text-3xl font-extrabold text-indigo-600 mb-6">
               Sign up for CheckPlots
             </h1>
 
-            {/* Google Sign-In Button */}
-            <div className="w-full flex flex-col items-center mt-8">
-              <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
-                <div className="bg-white p-2 rounded-full">
-                  {/* Google Icon */}
-                  <svg className="w-4" viewBox="0 0 533.5 544.3">
-                    <path
-                      d="M533.5 278.4c0-18.5-1.5-37.1-4.7-55.3H272.1v104.8h147c-6.1 33.8-25.7 63.7-54.4 82.7v68h87.7c51.5-47.4 81.1-117.4 81.1-200.2z"
-                      fill="#4285f4"
-                    />
-                    <path
-                      d="M272.1 544.3c73.4 0 135.3-24.1 180.4-65.7l-87.7-68c-24.4 16.6-55.9 26-92.6 26-71 0-131.2-47.9-152.8-112.3H28.9v70.1c46.2 91.9 140.3 149.9 243.2 149.9z"
-                      fill="#34a853"
-                    />
-                    <path
-                      d="M119.3 324.3c-11.4-33.8-11.4-70.4 0-104.2V150H28.9c-38.6 76.9-38.6 167.5 0 244.4l90.4-70.1z"
-                      fill="#fbbc04"
-                    />
-                    <path
-                      d="M272.1 107.7c38.8-.6 76.3 14 104.4 40.8l77.7-77.7C405 24.6 339.7-.8 272.1 0 169.2 0 75.1 58 28.9 150l90.4 70.1c21.5-64.5 81.8-112.4 152.8-112.4z"
-                      fill="#ea4335"
-                    />
-                  </svg>
-                </div>
-                <span className="ml-4">Sign Up with Google</span>
+            {/* Toggle Button */}
+            <div className="flex space-x-4 mt-4 mb-8">
+              <button
+                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ease-in-out ${
+                  !isVendor
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-600"
+                }`}
+                onClick={() => setIsVendor(false)}
+              >
+                User Sign Up
+              </button>
+              <button
+                className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 ease-in-out ${
+                  isVendor
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-600"
+                }`}
+                onClick={() => setIsVendor(true)}
+              >
+                Vendor Sign Up
               </button>
             </div>
 
-            {/* Or sign up with Email */}
-            <div className="my-8 border-b text-center">
-              <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                Or sign up with e-mail
-              </div>
-            </div>
-
-            {/* Form Start */}
+            {/* Error Message */}
             {error && (
-              <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4">
+              <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-sm">
                 {error}
               </div>
             )}
+
             <form
               onSubmit={handleSubmit}
               className="mx-auto max-w-xs space-y-4"
             >
-              <input
-                className="w-full px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+              <InputField
                 type="text"
                 placeholder="Full Name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                value={formData.fullName}
+                onChange={handleChange}
+                name="fullName"
               />
-              <div className="flex space-x-4">
-                <input
-                  className="w-1/2 px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
-                  type="date"
-                  placeholder="Date of Birth"
-                  value={dob}
-                  onChange={(e) => setDob(e.target.value)}
-                />
-                <input
-                  className="w-1/2 px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
-                  type="number"
-                  placeholder="Phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-              <input
-                className="w-full px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+
+              {isVendor ? (
+                <>
+                  <InputField
+                    type="text"
+                    placeholder="Business Name"
+                    value={formData.businessName}
+                    onChange={handleChange}
+                    name="businessName"
+                  />
+                  <InputField
+                    type="text"
+                    placeholder="Business Type"
+                    value={formData.businessType}
+                    onChange={handleChange}
+                    name="businessType"
+                  />
+                  <div className="space-y-4">
+                    <InputField
+                      type="text"
+                      placeholder="Street Address"
+                      value={formData.address.street}
+                      onChange={handleChange}
+                      name="address.street"
+                    />
+                    <div className="flex space-x-4">
+                      <InputField
+                        type="text"
+                        placeholder="City"
+                        value={formData.address.city}
+                        onChange={handleChange}
+                        name="address.city"
+                      />
+                      <InputField
+                        type="text"
+                        placeholder="State"
+                        value={formData.address.state}
+                        onChange={handleChange}
+                        name="address.state"
+                      />
+                    </div>
+                    <div className="flex space-x-4">
+                      <InputField
+                        type="text"
+                        placeholder="Zip Code"
+                        value={formData.address.zipCode}
+                        onChange={handleChange}
+                        name="address.zipCode"
+                      />
+                      <InputField
+                        type="text"
+                        placeholder="Country"
+                        value={formData.address.country}
+                        onChange={handleChange}
+                        name="address.country"
+                      />
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex space-x-4">
+                    <InputField
+                      type="date"
+                      placeholder="Date of Birth"
+                      value={formData.dob}
+                      onChange={handleChange}
+                      name="dob"
+                    />
+                    <InputField
+                      type="text"
+                      placeholder="Phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      name="phone"
+                    />
+                  </div>
+                  <div className="flex space-x-4">
+                    <InputField
+                      type="text"
+                      placeholder="Country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      name="country"
+                    />
+                    <InputField
+                      type="text"
+                      placeholder="State"
+                      value={formData.state}
+                      onChange={handleChange}
+                      name="state"
+                    />
+                  </div>
+                  <InputField
+                    type="text"
+                    placeholder="City"
+                    value={formData.city}
+                    onChange={handleChange}
+                    name="city"
+                  />
+                </>
+              )}
+              <InputField
                 type="email"
                 placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChange}
+                name="email"
               />
-              <input
-                className="w-full px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
-                type="text"
-                placeholder="Country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
-              <div className="flex space-x-4">
-                <input
-                  className="w-1/2 px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
-                  type="text"
-                  placeholder="State"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                />
-                <input
-                  className="w-1/2 px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
-                  type="text"
-                  placeholder="City"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-              </div>
-              <input
-                className="w-full px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+              <InputField
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
+                name="password"
               />
-              <input
-                className="w-full px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
+              <InputField
                 type="password"
                 placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                name="confirmPassword"
               />
               <button
                 type="submit"
-                className="mt-5 tracking-wide font-semibold bg-indigo-500 text-white w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:outline-none"
+                className="mt-6 tracking-wide font-semibold bg-indigo-600 text-white w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:outline-none"
               >
-                <span className="ml-3">Sign Up</span>
+                {loading ? (
+                  <span className="ml-3">Signing Up...</span>
+                ) : (
+                  <span className="ml-3">Sign Up</span>
+                )}
               </button>
               <p className="mt-6 text-xs text-gray-600 text-center">
+                By signing up, you agree to our{" "}
                 <a href="#" className="border-b border-gray-500 border-dotted">
                   Terms of Service
                 </a>{" "}
-                and its{" "}
+                and{" "}
                 <a href="#" className="border-b border-gray-500 border-dotted">
                   Privacy Policy
                 </a>
+                .
               </p>
             </form>
           </div>

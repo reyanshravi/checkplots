@@ -8,6 +8,9 @@ import AboutUs from "./pages/AboutUs";
 import Hotels from "./pages/category/Hotels";
 import Property from "./pages/category/Property";
 import InteriorPage from "./pages/category/InteriorPage";
+import SignUpForm from "./Authentication/SignUpForm";
+import UserSignIn from "./Authentication/UserSignin";
+import VendorSignIn from "./Authentication/VendorSignIn";
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
           <Route path="/property" element={<Property />} />
           <Route path="/interior" element={<InteriorPage />} />
           <Route path="/hotel" element={<Hotels />} />
+          <Route path="/signup" element={<SignUpForm />} />
+          <Route path="/vendorsignin" element={<VendorSignIn />} />
+          <Route path="/usersignin" element={<UserSignIn />} />
         </Routes>
         <Footer />
       </Router>

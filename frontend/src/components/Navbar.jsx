@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "../assets/checkPlots.png";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   HomeOutlined,
   PhoneOutlined,
@@ -18,6 +18,8 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const sidebarRef = useRef(null);
   const sidebarButtonRef = useRef(null);
+  const dropdownRef = useRef(null);
+  const dropdownButtonRef = useRef(null);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -33,9 +35,17 @@ const Navbar = () => {
       ) {
         setSidebarOpen(false);
       }
+      // Check if the click was outside the dropdown
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !dropdownButtonRef.current.contains(event.target)
+      ) {
+        setIsDropdownOpen(false);
+      }
     };
 
-    if (isSidebarOpen) {
+    if (isSidebarOpen || isDropdownOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -44,7 +54,7 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isSidebarOpen]);
+  }, [isSidebarOpen, isDropdownOpen]);
 
   const handleNavigation = (path) => {
     setSidebarOpen(false);
@@ -84,33 +94,41 @@ const Navbar = () => {
             </button>
             <div className="relative">
               <button
+                ref={dropdownButtonRef}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="md:flex hidden items-center text-sm font-semibold text-gray-600 hover:text-gray-900 transition-all duration-300"
+                className="md:flex hidden items-center text-sm font-semibold text-black transition-all duration-300 bg-black bg-opacity-20 px-4 py-2 rounded-full"
               >
                 <span className="mr-2">🔑</span>
                 <span>Sign In</span>
                 <span className="ml-2 text-xl">▼</span>
               </button>
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-64 rounded-3xl shadow-2xl bg-white border border-transparent p-2 transform transition-all duration-500 ease-in-out opacity-0 translate-y-4 scale-95 opacity-100 translate-y-0 scale-100 backdrop-blur-sm">
-                  <a
-                    href="#"
+                <div
+                  ref={dropdownRef}
+                  className="absolute right-0 mt-2 w-64 rounded-3xl shadow-2xl bg-white border border-transparent p-2 transform transition-all duration-500 ease-in-out opacity-0 translate-y-4 scale-95 opacity-100 translate-y-0 scale-100 backdrop-blur-sm"
+                >
+                  <Link
+                    to="/usersignin"
                     className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
                   >
                     Login as User
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    to="/vendorsignin"
                     className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
                   >
                     Login as Vendor
-                  </a>
+                  </Link>
                   <div className="px-6 py-4 text-sm text-gray-800">
                     <p>
                       New to CheckPlots?{" "}
-                      <a className="text-indigo-600 hover:underline" href="">
+                      <Link
+                        to="/signup"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="text-indigo-600 hover:underline"
+                      >
                         Sign up
-                      </a>
+                      </Link>
                     </p>
                   </div>
                 </div>
@@ -210,7 +228,7 @@ const Navbar = () => {
                 </button>
                 <button
                   onClick={() => handleNavigation("/contact")}
-                  className="py-2 hover:bg-gray-700 hover:text-white "
+                  className="py-2 hover:bg-gray-700 hover:text-white  "
                 >
                   <PhoneOutlined />
                 </button>
