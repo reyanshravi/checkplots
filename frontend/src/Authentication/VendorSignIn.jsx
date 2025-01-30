@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 const VendorSignIn = () => {
   const [email, setEmail] = useState("");
@@ -30,31 +31,14 @@ const VendorSignIn = () => {
     const formData = { email, password };
 
     try {
-      const response = await fetch(
-        "http://localhost:7002/api/auth/vendor/signin",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+      const { data } = await axios.post(
+        "http://localhost:7002/api/vendor/signin",
+        formData
       );
 
-      const contentType = response.headers.get("Content-Type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || "Sign-in failed.");
-        }
-        alert("Sign-in successful!");
-      } else {
-        throw new Error(
-          "Unexpected response format. The server did not return JSON."
-        );
-      }
+      alert("Sign-in successful!");
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || error + "Sign-in failed.");
     } finally {
       setLoading(false);
     }

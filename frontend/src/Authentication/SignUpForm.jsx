@@ -99,7 +99,7 @@ const SignupForm = () => {
       return;
     }
 
-    setError(""); 
+    setError("");
     setLoading(true);
 
     // Build the API data correctly
@@ -150,7 +150,6 @@ const SignupForm = () => {
 
       alert("Signup successful! Please check your email for verification.");
       console.log(response.data);
-      
     } catch (error) {
       console.error("API Error:", error);
       setError(error.message);
