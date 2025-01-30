@@ -152,6 +152,8 @@ const SignupForm = () => {
         console.log(response.data.message);
       }
       alert("Signup successful! Please check your email for verification.");
+      console.log(response.data);
+      
     } catch (error) {
       if (error.response) {
         // Server responded with a status code other than 2xx
