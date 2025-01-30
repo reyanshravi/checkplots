@@ -105,7 +105,9 @@ const Navbar = () => {
               {isDropdownOpen && (
                 <div
                   ref={dropdownRef}
-                  className="absolute right-0 mt-2 w-64 rounded-3xl shadow-2xl bg-white border border-transparent p-2 transform transition-all duration-500 ease-in-out opacity-0 translate-y-4 scale-95 opacity-100 translate-y-0 scale-100 backdrop-blur-sm"
+                  className={`absolute right-0 mt-2 w-64 rounded-3xl shadow-lg bg-white border p-2 transform transition-all duration-500 ease-in-out ${
+                    isDropdownOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
+                  } backdrop-blur-sm`}
                 >
                   <Link
                     to="/usersignin"

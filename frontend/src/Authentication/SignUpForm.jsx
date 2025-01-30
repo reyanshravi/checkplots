@@ -7,6 +7,7 @@ const InputField = ({
   value,
   onChange,
   required,
+  name,
 }) => (
   <input
     className="w-full px-6 py-4 rounded-lg font-medium bg-gray-100 border border-gray-300 placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white"
@@ -15,6 +16,7 @@ const InputField = ({
     value={value}
     onChange={onChange}
     required={required}
+    name={name} // Add the name prop here
   />
 );
 
@@ -46,11 +48,13 @@ const SignupForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes("address")) {
-      const [key] = name.split(".");
+
+    // If the name contains "address", update the address object
+    if (name.startsWith("address.")) {
+      const key = name.split(".")[1]; // Extract address key (e.g., "street", "city", etc.)
       setFormData((prev) => ({
         ...prev,
-        [key]: { ...prev[key], [name.split(".")[1]]: value },
+        address: { ...prev.address, [key]: value },
       }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -60,7 +64,6 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     const {
       fullName,
       phone,
@@ -76,6 +79,9 @@ const SignupForm = () => {
       address,
     } = formData;
 
+    // console.log(formData);
+
+    // Validation
     if (!fullName || !phone || !email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
@@ -93,9 +99,10 @@ const SignupForm = () => {
       return;
     }
 
-    setError(""); // Clear previous errors
+    setError(""); 
     setLoading(true);
 
+    // Build the API data correctly
     const apiData = isVendor
       ? {
           fullName,
@@ -104,7 +111,13 @@ const SignupForm = () => {
           phone,
           password,
           businessType,
-          address,
+          address: {
+            street: address.street,
+            city: address.city,
+            state: address.state,
+            zipCode: address.zipCode,
+            country: address.country,
+          },
         }
       : {
           fullName,
@@ -136,7 +149,10 @@ const SignupForm = () => {
       }
 
       alert("Signup successful! Please check your email for verification.");
+      console.log(response.data);
+      
     } catch (error) {
+      console.error("API Error:", error);
       setError(error.message);
     } finally {
       setLoading(false);
