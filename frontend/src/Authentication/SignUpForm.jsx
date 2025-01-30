@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 const InputField = ({
   label,
@@ -135,24 +136,16 @@ const SignupForm = () => {
       : "http://localhost:7002/api/auth/signup";
 
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(apiData),
-      });
-
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(
-          result.message || "Something went wrong. Please try again."
-        );
-      }
+      const { data } = await axios.post(apiUrl, apiData);
 
       alert("Signup successful! Please check your email for verification.");
-      console.log(response.data);
+      console.log(data);
     } catch (error) {
       console.error("API Error:", error);
-      setError(error.message);
+      setError(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
