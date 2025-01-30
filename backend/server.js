@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import userRouter from "./users/routes/userRouter.js";
 import adminRouter from "./admin/routes/adminRouter.js";
+import vendorRouter from "./vendors/routes/vendorRouter.js";
 
 // Load environment variables
 dotenv.config();
@@ -26,6 +27,9 @@ app.get("/", (req, res) => {
 app.use("/api/auth", userRouter);
 
 app.use("/api/head", adminRouter);
+
+// Routes
+app.use("/api/vendor", vendorRouter);
 
 // Port and server start
 const PORT = process.env.PORT || 5000;

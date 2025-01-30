@@ -16,7 +16,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear the token
-    alert("Logged out successfully");
+    // alert("Logged out successfully");
     navigate("/"); // Redirect to the login page
   };
 

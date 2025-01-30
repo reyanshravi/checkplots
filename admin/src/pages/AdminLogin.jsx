@@ -42,7 +42,7 @@ const AdminLogin = () => {
 
         // Display a success message and navigate to the dashboard
         console.log("Login successful:", response.data);
-        alert("Login successful!");
+        // alert("Login successful!");
         navigate("/dashboard"); // Redirect user to the dashboard
       } else {
         alert("Token not received. Please contact support.");
