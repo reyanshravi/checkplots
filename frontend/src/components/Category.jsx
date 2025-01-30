@@ -2,8 +2,12 @@ import React from "react";
 import interior from "../assets/interior.png";
 import property from "../assets/property.png";
 import hotel from "../assets/hotel.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Category() {
+
+  const navigate = useNavigate();
+
   return (
     <div className="my-20 px-4 md:px-12">
       {/* Section Heading */}
@@ -14,7 +18,10 @@ export default function Category() {
       {/* Cards Container */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Card 1: Interior */}
-        <div className="relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
+        <div
+          onClick={() => navigate("/interior")}
+          className="relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105"
+        >
           <div className="relative h-56 w-full overflow-hidden">
             <img
               src={interior}
@@ -36,7 +43,8 @@ export default function Category() {
         </div>
 
         {/* Card 2: Property */}
-        <div className="relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
+        <div
+        onClick={() => navigate("/property")} className="relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
           <div className="relative h-56 w-full overflow-hidden">
             <img
               src={property}
@@ -59,7 +67,9 @@ export default function Category() {
         </div>
 
         {/* Card 3: Hotel */}
-        <div className="relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
+        <div
+        onClick={() => navigate("/hotel")} 
+        className="relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105">
           <div className="relative h-56 w-full overflow-hidden">
             <img
               src={hotel}
@@ -80,6 +90,5 @@ export default function Category() {
         </div>
       </div>
     </div>
-    
   );
 }

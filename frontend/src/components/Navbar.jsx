@@ -17,18 +17,15 @@ const Navbar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const sidebarRef = useRef(null);
+  const sidebarButtonRef = useRef(null);
   const navigate = useNavigate();
 
-  // Toggle sidebar open/close
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
 
-  const sidebarButtonRef = useRef(null);
-
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close the sidebar if the click is outside both the sidebar and the button
       if (
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target) &&
@@ -38,7 +35,6 @@ const Navbar = () => {
       }
     };
 
-    // Add event listener when the sidebar is open
     if (isSidebarOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -46,7 +42,6 @@ const Navbar = () => {
     }
 
     return () => {
-      // Cleanup listener
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSidebarOpen]);
@@ -55,6 +50,16 @@ const Navbar = () => {
     setSidebarOpen(false);
     navigate(path);
   };
+
+  const SidebarButton = ({ Icon, label, onClick, className = "" }) => (
+    <button
+      onClick={onClick}
+      className={`flex items-center px-4 py-2 text-sm font-medium text-gray-600 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 w-full ${className}`}
+    >
+      <Icon className="mr-2 text-xl" />
+      <span className="text-sm">{label}</span>
+    </button>
+  );
 
   return (
     <>
@@ -68,16 +73,6 @@ const Navbar = () => {
             />
           </div>
           <div className="flex space-x-6 md:space-x-8 items-center">
-            {/* Search button */}
-            <button
-              onClick={() => navigate("/search")}
-              className="flex items-center text-sm font-semibold text-gray-600 hover:text-gray-900 transition-all duration-300"
-            >
-              <span className="mr-2">🔍</span>
-              <span>Search</span>
-            </button>
-
-            {/* List property button with badge */}
             <button className="md:flex hidden items-center px-4 py-2 border border-transparent rounded-full hover:bg-gray-50 transition-all duration-300">
               <span className="mr-2 text-lg">📜</span>
               <span className="whitespace-nowrap text-sm font-semibold">
@@ -87,8 +82,6 @@ const Navbar = () => {
                 Free
               </span>
             </button>
-
-            {/* Sign In dropdown */}
             <div className="relative">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -98,171 +91,134 @@ const Navbar = () => {
                 <span>Sign In</span>
                 <span className="ml-2 text-xl">▼</span>
               </button>
-
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 border bg-white rounded-lg shadow-lg w-36">
+                <div className="absolute right-0 mt-2 w-64 rounded-3xl shadow-2xl bg-white border border-transparent p-2 transform transition-all duration-500 ease-in-out opacity-0 translate-y-4 scale-95 opacity-100 translate-y-0 scale-100 backdrop-blur-sm">
                   <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition duration-200"
+                    className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
                   >
                     Login as User
                   </a>
                   <a
                     href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition duration-200"
+                    className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
                   >
                     Login as Vendor
                   </a>
+                  <div className="px-6 py-4 text-sm text-gray-800">
+                    <p>
+                      New to CheckPlots?{" "}
+                      <a className="text-indigo-600 hover:underline" href="">
+                        Sign up
+                      </a>
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
-
-            {/* Hamburger Menu (toggle for mobile) */}
-            <div>
-              <label
-                ref={sidebarButtonRef}
-                onClick={toggleSidebar}
-                className="flex flex-col gap-2 w-8 cursor-pointer"
-              >
-                <div
-                  className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
-                    isSidebarOpen ? "rotate-45 translate-y-[6px]" : ""
-                  }`}
-                />
-                <div
-                  className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
-                    isSidebarOpen ? "opacity-0" : ""
-                  }`}
-                />
-                <div
-                  className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
-                    isSidebarOpen ? "-rotate-45 -translate-y-[16px]" : ""
-                  }`}
-                />
-              </label>
-            </div>
+            <label
+              ref={sidebarButtonRef}
+              onClick={toggleSidebar}
+              className="flex flex-col gap-2 w-8 cursor-pointer"
+            >
+              <div
+                className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
+                  isSidebarOpen ? "rotate-45 translate-y-[6px]" : ""
+                }`}
+              />
+              <div
+                className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
+                  isSidebarOpen ? "opacity-0" : ""
+                }`}
+              />
+              <div
+                className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
+                  isSidebarOpen ? "-rotate-45 -translate-y-[16px]" : ""
+                }`}
+              />
+            </label>
           </div>
         </nav>
       </div>
 
-      {/* Sidebar */}
-      <div className="relative z-50">
-        {/* Sidebar overlay */}
-        {isSidebarOpen && (
+      {isSidebarOpen && (
+        <>
           <div className="fixed inset-0 bg-black bg-opacity-40 z-30" />
-        )}
+          <div
+            ref={sidebarRef}
+            className={`fixed z-50 top-0 left-0 h-full w-72 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white shadow-xl transition-transform duration-300 ease-in-out transform ${
+              isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            {/* Main content */}
+            <div className="flex flex-col h-full flex-grow justify-between">
+              <div>
+                {/* Header */}
+                <div className="flex py-8 px-4">
+                  <h2 className="text-3xl font-extrabold text-transparent bg-clip-text text-white">
+                    CheckPLots
+                  </h2>
+                </div>
+                {/* Navigation Links */}
+                <div className="space-y-6 px-4">
+                  <SidebarButton
+                    Icon={GlobalOutlined}
+                    label="Language"
+                    onClick={() => {}}
+                  />
+                  <SidebarButton
+                    Icon={FileSearchOutlined}
+                    label="List Property"
+                    onClick={() => {}}
+                  />
+                  <SidebarButton
+                    Icon={AppstoreAddOutlined}
+                    label="Vendor Package"
+                    onClick={() => {}}
+                  />
+                  <SidebarButton
+                    Icon={DatabaseOutlined}
+                    label="All Cities"
+                    onClick={() => {}}
+                  />
+                  <SidebarButton
+                    Icon={UsergroupAddOutlined}
+                    label="Buying Guide"
+                    onClick={() => {}}
+                  />
+                  <SidebarButton
+                    Icon={InfoCircleOutlined}
+                    label="About Us"
+                    onClick={() => handleNavigation("/aboutus")}
+                  />
+                </div>
+              </div>
 
-        <div
-          ref={sidebarRef}
-          className={`fixed z-40 top-0 left-0 h-full w-72 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white shadow-xl transition-transform duration-300 ease-in-out transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          {/* Logo */}
-          <div className="flex justify-center py-8 ">
-            <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600">
-              CheckPLots
-            </h2>
+              {/* Bottom buttons (horizontal layout) */}
+              <div class="grid grid-cols-3 divide-x text-center text-black bg-white">
+                <button
+                  onClick={() => handleNavigation("/")}
+                  className="py-2 hover:bg-gray-700 hover:text-white "
+                >
+                  <HomeOutlined />
+                </button>
+                <button
+                  onClick={() => handleNavigation("/help")}
+                  className="py-2 hover:bg-gray-700 hover:text-white "
+                >
+                  <CustomerServiceOutlined />
+                </button>
+                <button
+                  onClick={() => handleNavigation("/contact")}
+                  className="py-2 hover:bg-gray-700 hover:text-white "
+                >
+                  <PhoneOutlined />
+                </button>
+              </div>
+            </div>
           </div>
-
-          {/* Menu Items */}
-          <div className="space-y-6">
-            <ul>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center space-x-4 p-3 text-white hover:bg-indigo-700 rounded-md transition duration-200 group"
-                >
-                  <GlobalOutlined className="text-2xl group-hover:text-white" />
-                  <span className="text-lg font-medium group-hover:text-white group-hover:scale-105 transition-all transform">
-                    Language
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center space-x-4 p-3 text-white hover:bg-indigo-700 rounded-md transition duration-200 group"
-                >
-                  <FileSearchOutlined className="text-2xl group-hover:text-white" />
-                  <span className="text-lg font-medium group-hover:text-white group-hover:scale-105 transition-all transform">
-                    List Property
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center space-x-4 p-3 text-white hover:bg-indigo-700 rounded-md transition duration-200 group"
-                >
-                  <AppstoreAddOutlined className="text-2xl group-hover:text-white" />
-                  <span className="text-lg font-medium group-hover:text-white group-hover:scale-105 transition-all transform">
-                    Vendor Package
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center space-x-4 p-3 text-white hover:bg-indigo-700 rounded-md transition duration-200 group"
-                >
-                  <DatabaseOutlined className="text-2xl group-hover:text-white" />
-                  <span className="text-lg font-medium group-hover:text-white group-hover:scale-105 transition-all transform">
-                    All Cities
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center space-x-4 p-3 text-white hover:bg-indigo-700 rounded-md transition duration-200 group"
-                >
-                  <UsergroupAddOutlined className="text-2xl group-hover:text-white" />
-                  <span className="text-lg font-medium group-hover:text-white group-hover:scale-105 transition-all transform">
-                    Buying Guide
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={() => handleNavigation("/aboutus")}
-                  className="flex items-center space-x-4 p-3 text-white hover:bg-indigo-700 rounded-md transition duration-200 group"
-                >
-                  <InfoCircleOutlined className="text-2xl group-hover:text-white" />
-                  <span className="text-lg font-medium group-hover:text-white group-hover:scale-105 transition-all transform">
-                    About Us
-                  </span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Bottom Navigation */}
-          <div className="absolute bottom-12 w-full px-6">
-            <button
-              onClick={() => handleNavigation("/")}
-              className="w-full py-3 text-white flex items-center justify-start hover:bg-indigo-600 rounded-md transition-all duration-200 transform hover:scale-105 mb-4"
-            >
-              <HomeOutlined className="mr-3 text-2xl" />
-              <span className="text-lg">Home</span>
-            </button>
-            <button
-              onClick={() => handleNavigation("/contact")}
-              className="w-full py-3 text-white flex items-center justify-start hover:bg-indigo-600 rounded-md transition-all duration-200 transform hover:scale-105 mb-4"
-            >
-              <PhoneOutlined className="mr-3 text-2xl" />
-              <span className="text-lg">Contact</span>
-            </button>
-            <button
-              onClick={() => handleNavigation("/contact")}
-              className="w-full py-3 text-white flex items-center justify-start hover:bg-indigo-600 rounded-md transition-all duration-200 transform hover:scale-105 mb-4"
-            >
-              <CustomerServiceOutlined className="mr-3 text-2xl" />
-              <span className="text-lg">Help</span>
-            </button>
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

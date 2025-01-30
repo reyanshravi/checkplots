@@ -1,5 +1,5 @@
 import React from "react";
-import HeroSection from "../components/HeroSection";
+import HeroSection from "../components/HeroSection/HeroSection";
 import Category from "../components/Category";
 import Properties from "../components/Properties";
 import MostPopularProperties from "../components/MostPopularProperties";
