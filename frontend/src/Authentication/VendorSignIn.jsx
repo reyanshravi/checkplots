@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios"
 
 const VendorSignIn = () => {
   const [email, setEmail] = useState("");
@@ -24,21 +25,15 @@ const VendorSignIn = () => {
       return;
     }
 
-    setError(""); // Clear previous errors
+    setError("");
     setLoading(true);
 
     const formData = { email, password };
 
     try {
-      const response = await fetch(
-        "http://localhost:7002/api/auth/vendor/signin",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
+      const response = await axios.post(
+        "http://localhost:7002/api/vendor/signin",
+        { formData }
       );
 
       const contentType = response.headers.get("Content-Type");
@@ -49,6 +44,8 @@ const VendorSignIn = () => {
         }
         alert("Sign-in successful!");
       } else {
+        const responseText = await response.text(); // Log raw response text
+        console.error("Unexpected response format:", responseText);
         throw new Error(
           "Unexpected response format. The server did not return JSON."
         );

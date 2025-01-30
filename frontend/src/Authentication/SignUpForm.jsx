@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 const InputField = ({
@@ -49,12 +50,11 @@ const SignupForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // If the name contains "address", update the address object
-    if (name.startsWith("address.")) {
-      const key = name.split(".")[1]; // Extract address key (e.g., "street", "city", etc.)
+    if (name.includes("address")) {
+      const [_, field] = name.split(".");
       setFormData((prev) => ({
         ...prev,
-        address: { ...prev.address, [key]: value },
+        address: { ...prev.address, [field]: value },
       }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -79,8 +79,6 @@ const SignupForm = () => {
       address,
     } = formData;
 
-    // console.log(formData);
-
     // Validation
     if (!fullName || !phone || !email || !password || !confirmPassword) {
       setError("All fields are required.");
@@ -99,10 +97,16 @@ const SignupForm = () => {
       return;
     }
 
-    setError(""); 
+    // Additional Vendor-specific Validation
+    if (isVendor && (!businessName || !businessType)) {
+      setError("Business Name and Business Type are required for vendors.");
+      return;
+    }
+
+    setError("");
     setLoading(true);
 
-    // Build the API data correctly
+    // Prepare API request data - ensure it matches the expected format
     const apiData = isVendor
       ? {
           fullName,
@@ -130,30 +134,37 @@ const SignupForm = () => {
           password,
         };
 
+    console.log("Sending data:", apiData);
+
     const apiUrl = isVendor
       ? "http://localhost:7002/api/vendor/signup"
       : "http://localhost:7002/api/auth/signup";
 
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(apiData),
+      const response = await axios.post(apiUrl, apiData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(
-          result.message || "Something went wrong. Please try again."
-        );
+      if (response.status !== 200) {
+        throw new Error("Something went wrong.");
+      } else {
+        console.log(response.data.message);
       }
-
       alert("Signup successful! Please check your email for verification.");
-      console.log(response.data);
-      
     } catch (error) {
-      console.error("API Error:", error);
-      setError(error.message);
+      if (error.response) {
+        // Server responded with a status code other than 2xx
+        console.error("API Error Response:", error.response.data); // Detailed error message from backend
+        setError(error.response.data.message || "Something went wrong");
+      } else if (error.request) {
+        // No response was received
+        console.error("API Error Request:", error.request);
+        setError("No response received from the server. Please try again.");
+      } else {
+        console.error("API Error Message:", error.message);
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -227,6 +238,16 @@ const SignupForm = () => {
                     onChange={handleChange}
                     name="businessType"
                   />
+
+                  {/* Add Phone Number for Vendor */}
+                  <InputField
+                    type="text"
+                    placeholder="Phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    name="phone"
+                  />
+
                   <div className="space-y-4">
                     <InputField
                       type="text"
