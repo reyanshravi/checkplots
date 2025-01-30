@@ -1,9 +1,5 @@
 import { useState } from "react";
-<<<<<<< HEAD
-import axios from "axios"
-=======
 import axios from "axios";
->>>>>>> 160bb8411a4692fa4feb5d04b7443e436fe6d97b
 
 const VendorSignIn = () => {
   const [email, setEmail] = useState("");
@@ -35,34 +31,12 @@ const VendorSignIn = () => {
     const formData = { email, password };
 
     try {
-<<<<<<< HEAD
-      const response = await axios.post(
-        "http://localhost:7002/api/vendor/signin",
-        { formData }
-      );
-
-      const contentType = response.headers.get("Content-Type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || "Sign-in failed.");
-        }
-        alert("Sign-in successful!");
-      } else {
-        const responseText = await response.text(); // Log raw response text
-        console.error("Unexpected response format:", responseText);
-        throw new Error(
-          "Unexpected response format. The server did not return JSON."
-        );
-      }
-=======
       const { data } = await axios.post(
         "http://localhost:7002/api/vendor/signin",
         formData
       );
 
       alert("Sign-in successful!");
->>>>>>> 160bb8411a4692fa4feb5d04b7443e436fe6d97b
     } catch (error) {
       setError(error.response?.data?.message || error + "Sign-in failed.");
     } finally {
