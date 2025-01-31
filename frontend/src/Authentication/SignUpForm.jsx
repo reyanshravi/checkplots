@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import axios from "axios";
 
 const InputField = ({
   label,
@@ -142,31 +141,16 @@ const SignupForm = () => {
       : "http://localhost:7002/api/auth/signup";
 
     try {
-      const response = await axios.post(apiUrl, apiData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status !== 200) {
-        throw new Error("Something went wrong.");
-      } else {
-        console.log(response.data.message);
-      }
+      const { data } = await axios.post(apiUrl, apiData);
+
       alert("Signup successful! Please check your email for verification.");
-      console.log(response.data);
+      console.log(data);
     } catch (error) {
-      if (error.response) {
-        // Server responded with a status code other than 2xx
-        console.error("API Error Response:", error.response.data); // Detailed error message from backend
-        setError(error.response.data.message || "Something went wrong");
-      } else if (error.request) {
-        // No response was received
-        console.error("API Error Request:", error.request);
-        setError("No response received from the server. Please try again.");
-      } else {
-        console.error("API Error Message:", error.message);
-        setError("An unexpected error occurred.");
-      }
+      console.error("API Error:", error);
+      setError(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
