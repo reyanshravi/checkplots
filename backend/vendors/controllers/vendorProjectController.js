@@ -53,6 +53,11 @@ export const getVendorProjects = async (req, res) => {
     const { vendorId } = req.params;
 
     const projects = await VendorProject.find({ vendor: vendorId });
+    if (!projects) {
+      return res
+        .status(404)
+        .json({ message: "No projects found for this vendor" });
+    }
 
     res.status(200).json({ projects });
   } catch (error) {
