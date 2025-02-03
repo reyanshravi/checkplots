@@ -56,9 +56,16 @@ vendorRouter.put(
   updateVendorProfile
 );
 
-vendorRouter.post("/projects", addProject); // Add a project
-vendorRouter.get("/projects/:vendorId", getVendorProjects); // Get all projects for a vendor
-vendorRouter.put("/projects/:projectId", updateProject); // Update a project
-vendorRouter.delete("/projects/:projectId/:vendorId", deleteProject); // Delete a project
+//Add a project
+vendorRouter.post("/projects", addProject);
+
+// Get all projects for a vendor
+vendorRouter.get("/projects/:vendorId", getVendorProjects);
+
+// Update a project
+vendorRouter.put("/projects/:projectId", updateProject);
+
+// Delete a project
+vendorRouter.delete("/projects/:projectId/:vendorId", deleteProject);
 
 export default vendorRouter;
