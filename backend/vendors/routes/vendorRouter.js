@@ -5,6 +5,11 @@ import {
   loginVendor,
   updateVendorProfile,
 } from "../controllers/authVendorController.js";
+
+import {
+  forgotPassword,
+  resetPassword,
+} from "../controllers/ForgotPasswordController.js";
 import {
   validateVendorSignup,
   validateVendorProfileUpdate,
@@ -24,6 +29,12 @@ vendorRouter.post("/signin", validateVendorLogin, loginVendor);
 
 // Vendor Sign-Up Route
 vendorRouter.post("/signup", validateVendorSignup, registerVendor);
+
+// Vendor forgot password route
+vendorRouter.post("/forgot-password", forgotPassword);
+
+// Reset Password Route
+vendorRouter.post("/reset-password/:token", resetPassword);
 
 // Protected Route: Vendor Profile
 vendorRouter.get("/profile", authenticateVendor, (req, res) => {
