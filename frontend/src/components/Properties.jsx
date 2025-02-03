@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Slider from "./Slider";
 
 const properties = [
   {
@@ -115,95 +116,7 @@ const Properties = () => {
       <h3 className=" font-bold text-right text-blue-400 mr-10  ">
         View all {'>>'}
       </h3>
-      <div className="relative flex gap-6 overflow-hidden">
-        <button
-          onClick={handlePrev}
-          className="z-10 absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-4 rounded-full shadow-xl hover:bg-gray-700 transition-all duration-300"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M15 19l-7-7 7-7v14z" />
-          </svg>
-        </button>
-
-        <div className="flex py-4 gap-6 overflow-x-hidden z-0 px-2 sm:px-4 md:px-8 lg:px-12 xl:px-20">
-          {properties.map((property, index) => (
-            <div
-              key={property.id}
-              className={`relative flex flex-col bg-white shadow-lg rounded-2xl w-full sm:w-72 md:w-80 lg:w-96 xl:w-1/4 transition-all duration-500 ease-in-out transform ${
-                index === currentSlide
-                  ? "scale-105 z-20"
-                  : "scale-95 opacity-70"
-              }`}
-            >
-              <div className="relative h-56 overflow-hidden rounded-t-2xl">
-                <img
-                  src={property.image}
-                  alt={property.name}
-                  className="w-full h-full object-cover rounded-t-2xl"
-                />
-              </div>
-
-              <div className="p-2 flex flex-col justify-between h-full">
-                <div className="flex justify-between items-start">
-                  <h6 className="text-2xl font-semibold text-gray-900">
-                    {property.name}
-                  </h6>
-                  <div className="flex items-center text-yellow-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span className="ml-2 text-xl">{property.rating}.0</span>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600">{property.details}</p>
-
-                <div className="flex justify-between items-center">
-                  <div className="text-xl font-semibold text-gray-900">
-                    {property.price}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    EMI: {property.emi}
-                  </div>
-                </div>
-              </div>
-
-              <div className="px-6 py-2">
-                <button className="w-full bg-blue-600 text-white py-3 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none transition-all duration-300">
-                  Reserve Now
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <button
-          onClick={handleNext}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-4 rounded-full shadow-xl hover:bg-gray-700 transition-all duration-300"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M9 5l7 7-7 7V5z" />
-          </svg>
-        </button>
-      </div>
+      <Slider />
     </div>
 
    </>
