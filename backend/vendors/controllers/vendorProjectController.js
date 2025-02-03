@@ -47,3 +47,64 @@ export const addProject = async (req, res) => {
     res.status(500).json({ message: "Server error, please try again later." });
   }
 };
+
+export const getVendorProjects = async (req, res) => {
+  try {
+    const { vendorId } = req.params;
+
+    const projects = await VendorProject.find({ vendor: vendorId });
+
+    res.status(200).json({ projects });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later." });
+  }
+};
+
+export const updateProject = async (req, res) => {
+  try {
+    const { projectId } = req.params;
+    const updates = req.body;
+
+    const updatedProject = await VendorProject.findByIdAndUpdate(
+      projectId,
+      updates,
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.status(200).json({
+      message: "Project updated successfully",
+      project: updatedProject,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later." });
+  }
+};
+
+export const deleteProject = async (req, res) => {
+  try {
+    const { projectId, vendorId } = req.params;
+
+    // Delete the project
+    const deletedProject = await VendorProject.findByIdAndDelete(projectId);
+
+    if (!deletedProject) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Remove the project reference from the vendor
+    await Vendor.findByIdAndUpdate(vendorId, {
+      $pull: { projects: projectId },
+    });
+
+    res.status(200).json({ message: "Project deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later." });
+  }
+};

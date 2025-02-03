@@ -17,6 +17,13 @@ import {
 import { validateVendorLogin } from "../middlewares/validateVendorLogin.js";
 import { authenticateVendor } from "../middlewares/authMiddleware.js";
 
+import {
+  addProject,
+  getVendorProjects,
+  updateProject,
+  deleteProject,
+} from "../controllers/vendorProjectController.js";
+
 const vendorRouter = express.Router();
 
 // Vendor test routes
@@ -48,5 +55,10 @@ vendorRouter.put(
   authenticateVendor,
   updateVendorProfile
 );
+
+vendorRouter.post("/projects", addProject); // Add a project
+vendorRouter.get("/projects/:vendorId", getVendorProjects); // Get all projects for a vendor
+vendorRouter.put("/projects/:projectId", updateProject); // Update a project
+vendorRouter.delete("/projects/:projectId/:vendorId", deleteProject); // Delete a project
 
 export default vendorRouter;
