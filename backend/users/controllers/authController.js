@@ -70,6 +70,11 @@ export const signinUser = async (req, res) => {
     res.status(200).json({
       message: "SignIn successful",
       token,
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+      },
     });
   } catch (error) {
     console.error(error);
