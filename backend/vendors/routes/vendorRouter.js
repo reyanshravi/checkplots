@@ -4,6 +4,8 @@ import {
   registerVendor,
   loginVendor,
   updateVendorProfile,
+  getAllVendors,
+  updateVendorStatus,
 } from "../controllers/authVendorController.js";
 
 import {
@@ -55,6 +57,12 @@ vendorRouter.put(
   authenticateVendor,
   updateVendorProfile
 );
+
+// Protected Route: Get all vendors
+vendorRouter.get("/allVendors", getAllVendors);
+
+// Update vendor status
+vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
 //Add a project
 vendorRouter.post("/projects", addProject);

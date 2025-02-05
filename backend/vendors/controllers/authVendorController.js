@@ -152,3 +152,48 @@ export const updateVendorProfile = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+// Get all vendors
+export const getAllVendors = async (req, res) => {
+  try {
+    const vendors = await Vendor.find();
+    res.status(200).json(vendors);
+  } catch (error) {
+    console.error("Error fetching vendors:", error);
+    res.status(500).json({ message: "Error fetching vendors", error });
+  }
+};
+
+// Update vendor status
+export const updateVendorStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  // Check if the provided status is valid
+  const validStatuses = ["Pending", "Active", "Inactive"];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ message: "Invalid status value" });
+  }
+
+  try {
+    const updatedVendor = await Vendor.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedVendor) {
+      return res.status(404).json({ message: "Vendor not found" });
+    }
+
+    res.status(200).json({
+      message: "Vendor status updated successfully",
+      vendor: updatedVendor,
+    });
+  } catch (error) {
+    console.error("Error updating vendor status:", error);
+    res
+      .status(500)
+      .json({ message: "Server error while updating vendor status" });
+  }
+};
