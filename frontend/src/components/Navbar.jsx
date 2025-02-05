@@ -96,7 +96,7 @@ const Navbar = () => {
               <button
                 ref={dropdownButtonRef}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="md:flex hidden items-center text-sm font-semibold text-black transition-all duration-300 bg-black bg-opacity-20 px-4 py-2 rounded-full"
+                className="md:flex hidden items-center text-sm font-semibold text-black transition-all duration-300 border px-4 py-2 rounded-full"
               >
                 <span className="mr-2">🔑</span>
                 <span>Sign In</span>

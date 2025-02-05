@@ -12,6 +12,7 @@ import UserSignin from "./Authentication/User/UserSignIn";
 import VendorSignup from "./Authentication/Vendor/VendorSignup";
 import UserSignup from "./Authentication/User/UserSignup";
 import VendorSignin from "./Authentication/Vendor/VendorSignIn";
+import ProductPage from "./pages/ProductPage";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/vendor/signup" element={<VendorSignup />} />
           <Route path="/user/signin" element={<UserSignin />} />
           <Route path="/user/signup" element={<UserSignup />} />
+          <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
         <Footer />
       </Router>
