@@ -3,6 +3,7 @@ import {
   signupUser,
   signinUser,
   getAllUsers,
+  updateStatus,
 } from "../controllers/authController.js";
 
 const userRouter = express.Router();
@@ -18,8 +19,11 @@ userRouter.get("/logout", (req, res) => {
   res.json({ message: "Logout route works" });
 });
 
+// Update user status
+userRouter.put("/:id/updateStatus", updateStatus);
+
 // Get all users
-userRouter.get("/users", getAllUsers);
+userRouter.get("/allUsers", getAllUsers);
 
 //test route
 userRouter.get("/test", (req, res) => {

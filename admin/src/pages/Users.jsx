@@ -10,6 +10,8 @@ const Users = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [newStatus, setNewStatus] = useState("");
+  const [showStatusPopup, setShowStatusPopup] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -17,7 +19,9 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:7002/api/auth/users");
+      const response = await axios.get(
+        "http://localhost:7002/api/auth/allUsers"
+      );
       setUsers(response.data.users);
       setLoading(false);
       console.log(users);
@@ -29,6 +33,35 @@ const Users = () => {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const openStatusPopup = (user) => {
+    setSelectedUser(user);
+    setNewStatus(user.status);
+    setShowStatusPopup(true);
+  };
+
+  const closeStatusPopup = () => {
+    setSelectedUser(null);
+    setShowStatusPopup(false);
+  };
+
+  const handleStatusUpdate = async () => {
+    if (!selectedUser) return;
+    try {
+      const response = await axios.put(
+        `http://localhost:7002/api/auth/${selectedUser._id}/updateStatus`,
+        { status: newStatus }
+      );
+      if (response.status === 200) {
+        alert("User status updated successfully!");
+        fetchUsers();
+        closeStatusPopup();
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to update user status.");
+    }
   };
 
   const filteredUsers = users.filter(
@@ -71,6 +104,7 @@ const Users = () => {
               <th className="py-2 px-4 text-left">Name</th>
               <th className="py-2 px-4 text-left">Email</th>
               <th className="py-2 px-4 text-left">Mobile</th>
+              <th className="py-2 px-4 text-left">Address</th>
               <th className="py-2 px-4 text-left">Status</th>
               <th className="py-2 px-4 text-left">More</th>
             </tr>
@@ -83,17 +117,26 @@ const Users = () => {
                 <td className="py-2 px-4">{user.email}</td>
                 <td className="py-2 px-4">{user.phone}</td>
                 <td className="py-2 px-4">
-                  <span
+                  {user.state.charAt(0).toUpperCase() +
+                    user.state.slice(1).toLowerCase()}
+                  ,
+                  {user.country.charAt(0).toUpperCase() +
+                    user.country.slice(1).toLowerCase()}
+                </td>
+
+                <td className="py-2 px-4">
+                  <button
+                    onClick={() => openStatusPopup(user)}
                     className={`px-3 py-1 rounded-md text-white text-sm ${
-                      selectedUser.status.toLowerCase() === "active"
+                      user.status.toLowerCase() === "active"
                         ? "bg-green-500"
-                        : selectedUser.status.toLowerCase() === "inactive"
+                        : user.status.toLowerCase() === "pending"
                         ? "bg-yellow-500"
                         : "bg-red-500"
                     }`}
                   >
-                    {selectedUser.status.toUpperCase()}
-                  </span>
+                    {user.status.toUpperCase()}
+                  </button>
                 </td>
                 <td className="py-2 px-4">
                   <button
@@ -194,6 +237,37 @@ const Users = () => {
                 onClick={() => setShowModal(false)}
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showStatusPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h3 className="text-lg font-semibold mb-4">Update Status</h3>
+            <select
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md"
+            >
+              <option value="Active">Active</option>
+              <option value="Pending">Pending</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={closeStatusPopup}
+                className="px-4 py-2 bg-gray-300 rounded-md mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleStatusUpdate}
+                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+              >
+                Update
               </button>
             </div>
           </div>
