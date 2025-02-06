@@ -61,7 +61,7 @@ export const signinUser = async (req, res) => {
 
     // Generate a JWT token (expires in 1 hour)
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      { id: user._id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
@@ -129,5 +129,45 @@ export const updateStatus = async (req, res) => {
   } catch (error) {
     console.error("Error updating user status:", error);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// Update User Controller
+export const updateUser = async (req, res) => {
+  const { fullName, phone, dob, country, state, city } = req.body;
+  const userId = req.user._id; // Extracted from the token
+
+  try {
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user details
+    user.fullName = fullName || user.fullName;
+    user.phone = phone || user.phone;
+    user.dob = dob || user.dob;
+    user.country = country || user.country;
+    user.state = state || user.state;
+    user.city = city || user.city;
+
+    await user.save();
+    res.status(200).json({
+      message: "User updated successfully",
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email, // Email remains unchanged
+        phone: user.phone,
+        dob: user.dob,
+        country: user.country,
+        state: user.state,
+        city: user.city,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 };

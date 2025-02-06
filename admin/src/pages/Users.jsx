@@ -252,9 +252,9 @@ const Users = () => {
               onChange={(e) => setNewStatus(e.target.value)}
               className="w-full px-3 py-2 border rounded-md"
             >
-              <option value="Active">Active</option>
-              <option value="Pending">Pending</option>
-              <option value="Inactive">Inactive</option>
+              <option value="active">Active</option>
+              <option value="pending">Pending</option>
+              <option value="inactive">Inactive</option>
             </select>
             <div className="flex justify-end mt-4">
               <button
