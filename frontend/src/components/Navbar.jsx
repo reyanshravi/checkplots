@@ -22,6 +22,10 @@ const Navbar = () => {
   const dropdownButtonRef = useRef(null);
   const navigate = useNavigate();
 
+  // Check if the user is logged in and fetch user data
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userName = user ? user.fullName : null;
+
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
   };
@@ -61,6 +65,12 @@ const Navbar = () => {
     navigate(path);
   };
 
+  const handleLogout = () => {
+    // Clear the user data from localStorage and navigate to the home page
+    localStorage.removeItem("user");
+    navigate("/user/signin");
+  };
+
   const SidebarButton = ({ Icon, label, onClick, className = "" }) => (
     <button
       onClick={onClick}
@@ -98,41 +108,63 @@ const Navbar = () => {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="md:flex hidden items-center text-sm font-semibold text-black transition-all duration-300 border px-4 py-2 rounded-full"
               >
-                <span className="mr-2">🔑</span>
-                <span>Sign In</span>
+                {userName ? (
+                  // Show "Hi, [User Name]" if the user is logged in
+                  <span className="mr-2">👋</span>
+                ) : (
+                  <span className="mr-2">🔑</span>
+                )}
+                <span>{userName ? `Hi, ${userName}` : "Sign In"}</span>
                 <span className="ml-2 text-xl">▼</span>
               </button>
               {isDropdownOpen && (
                 <div
                   ref={dropdownRef}
                   className={`absolute right-0 mt-2 w-64 rounded-3xl shadow-lg bg-white border p-2 transform transition-all duration-500 ease-in-out ${
-                    isDropdownOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
+                    isDropdownOpen
+                      ? "opacity-100 translate-y-0 scale-100"
+                      : "opacity-0 translate-y-4 scale-95"
                   } backdrop-blur-sm`}
                 >
-                  <Link
-                    to="/usersignin"
-                    className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
-                  >
-                    Login as User
-                  </Link>
-                  <Link
-                    to="/vendorsignin"
-                    className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
-                  >
-                    Login as Vendor
-                  </Link>
-                  <div className="px-6 py-4 text-sm text-gray-800">
-                    <p>
-                      New to CheckPlots?{" "}
+                  {userName ? (
+                    // If the user is logged in, show additional options
+                    <>
                       <Link
-                        to="/signup"
-                        onClick={() => setIsDropdownOpen(false)}
-                        className="text-indigo-600 hover:underline"
+                        to="/profile"
+                        className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
                       >
-                        Sign up
+                        Profile
                       </Link>
-                    </p>
-                  </div>
+                      <button
+                        onClick={handleLogout}
+                        className="block px-6 py-4 text-sm text-red-600 hover:text-red-800 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-red-50 w-full text-left"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    // If not logged in, show login/signup options
+                    <>
+                      <Link
+                        to="/user/signin"
+                        className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
+                      >
+                        Login as User
+                      </Link>
+                      <div className="px-6 py-4 text-sm text-gray-800">
+                        <p>
+                          New to CheckPlots?{" "}
+                          <Link
+                            to="/signup"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="text-indigo-600 hover:underline"
+                          >
+                            Sign up
+                          </Link>
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -215,7 +247,7 @@ const Navbar = () => {
               </div>
 
               {/* Bottom buttons (horizontal layout) */}
-              <div class="grid grid-cols-3 divide-x text-center text-black bg-white">
+              <div className="grid grid-cols-3 divide-x text-center text-black bg-white">
                 <button
                   onClick={() => handleNavigation("/")}
                   className="py-2 hover:bg-gray-700 hover:text-white "

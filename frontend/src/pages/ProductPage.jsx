@@ -1,138 +1,202 @@
-import React from "react";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useState } from "react";
 
 const ProductPage = () => {
-  // Extract the property id from the URL using useParams
-  const { id } = useParams();
-  
-  // You can either fetch this data from an API or use static data
-  const properties = [
-    // Same data as before, truncated for brevity
-    {
-      id: 1,
-      name: "A M Pinnacle",
-      type: "Flat/Apartment",
-      details: "3 BHK • 3 Baths • 3 Balconies",
-      price: "₹60L",
-      emi: "₹69.67K",
-      pricePerSqft: "₹4K",
-      image: "https://checkplots.com/vendor/img/property_img_3366003774439.png",
-      address: "Parsa Bazar, Punpun, Nathupur, Bihar, India • Patna, Bihar - 804453",
-      verified: true,
-      underConstruction: true,
-      rating: 5,
-      reviews: 0,
-    },
-    {
-        id: 2,
-        name: "Skyline Heights",
-        type: "Flat/Apartment",
-        details: "2 BHK • 2 Baths • 1 Balcony",
-        price: "₹45L",
-        emi: "₹50K",
-        pricePerSqft: "₹3.5K",
-        image: "https://checkplots.com/vendor/img/property_img_3366003774439.png",
-        address: "Main Street, Delhi, India • New Delhi, Delhi - 110001",
-        verified: false,
-        underConstruction: false,
-        rating: 4,
-        reviews: 120,
-      },
-      {
-        id: 3,
-        name: "River View Residences",
-        type: "Villa",
-        details: "4 BHK • 4 Baths • 2 Balconies",
-        price: "₹1.2Cr",
-        emi: "₹1.5L",
-        pricePerSqft: "₹8K",
-        image: "https://checkplots.com/vendor/img/property_img_3366003774439.png",
-        address: "River Street, Mumbai, India • Mumbai, Maharashtra - 400001",
-        verified: true,
-        underConstruction: false,
-        rating: 5,
-        reviews: 50,
-      },
-      {
-        id: 4,
-        name: "Green Meadows",
-        type: "Villa",
-        details: "5 BHK • 5 Baths • 4 Balconies",
-        price: "₹3.5Cr",
-        emi: "₹3L",
-        pricePerSqft: "₹10K",
-        image: "https://checkplots.com/vendor/img/property_img_3366003774439.png",
-        address: "Forest Road, Bangalore, India • Bangalore, Karnataka - 560001",
-        verified: false,
-        underConstruction: true,
-        rating: 4,
-        reviews: 30,
-      },
-      {
-        id: 5,
-        name: "Sunset Villas",
-        type: "Villa",
-        details: "6 BHK • 5 Baths • 3 Balconies",
-        price: "₹4.5Cr",
-        emi: "₹4L",
-        pricePerSqft: "₹12K",
-        image: "https://checkplots.com/vendor/img/property_img_3366003774439.png",
-        address: "Sunset Road, Goa, India • Panaji, Goa - 403001",
-        verified: true,
-        underConstruction: false,
-        rating: 4.5,
-        reviews: 75,
-      },
-      {
-        id: 6,
-        name: "Park View Apartments",
-        type: "Flat/Apartment",
-        details: "3 BHK • 2 Baths • 2 Balconies",
-        price: "₹80L",
-        emi: "₹90K",
-        pricePerSqft: "₹5K",
-        image: "https://checkplots.com/vendor/img/property_img_3366003774439.png",
-        address: "Park Avenue, Pune, India • Pune, Maharashtra - 411001",
-        verified: false,
-        underConstruction: true,
-        rating: 3.5,
-        reviews: 150,
-      },
-  ];
 
-  // Find the property with the matching id
-  const property = properties.find((property) => property.id === parseInt(id));
+  const hotelData = {
+    "id": 1,
+    "name": "Royal Palace Hotel",
+    "type": "Luxury Hotel",
+    "details": "Deluxe Suite • 1 King Bed • City View",
+    "price": "₹12,000 per night",
+    "emi": "₹1,500 per month (for long-term stay)",
+    "pricePerNight": "₹12K",
+    "image": "https://checkplots.com/vendor/img/hotel_img_3366003774439.png",
+    "address": "MG Road, Connaught Place, New Delhi, India - 110001",
+    "verified": true,
+    "underRenovation": false,
+    "rating": 4.7,
+    "reviews": 1280,
+    "facilities": [
+      "Free Wi-Fi", 
+      "Swimming Pool", 
+      "Spa and Wellness Center", 
+      "Fitness Center", 
+      "24/7 Room Service", 
+      "Conference Rooms", 
+      "On-Site Parking"
+    ],
+    "checkInTime": "2:00 PM",
+    "checkOutTime": "12:00 PM",
+    "availableRooms": 15,
+    "nearbyAttractions": [
+      "India Gate - 5 km",
+      "Red Fort - 7 km",
+      "Qutub Minar - 10 km"
+    ],
+    "cancellationPolicy": "Free cancellation up to 24 hours before check-in",
+    "specialOffers": "20% discount on bookings for 3+ nights",
+    "contactNumber": "+91 11 1234 5678",
+    "website": "https://royalpalacehotel.in",
+    "amenities": [
+      "Air Conditioning",
+      "Mini Bar",
+      "Tea/Coffee Maker",
+      "Hair Dryer",
+      "Safety Deposit Box",
+      "Television"
+    ]
+  };
 
-  if (!property) {
-    return <div>Property not found</div>; // Fallback for invalid property id
-  }
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const handleDateChange = (e, type) => {
+    if (type === "start") {
+      setStartDate(e.target.value);
+    } else {
+      setEndDate(e.target.value);
+    }
+  };
 
   return (
-   <div className="h-screen w-full flex justify-center items-center">
-     <div className="p-6 bg-white shadow-xl rounded-lg">
-      <h2 className="text-3xl font-semibold text-gray-900">{property.name}</h2>
-      <div className="mt-4 flex">
-        <div className="w-1/2 pr-6">
-          <img
-            src={property.image}
-            alt={property.name}
-            className="w-full h-56 object-cover rounded-lg"
-          />
-        </div>
-        <div className="w-1/2">
-          <p className="text-lg text-gray-700">{property.details}</p>
-          <p className="mt-4 text-xl font-semibold text-gray-900">{property.price}</p>
-          <p className="mt-2 text-md text-gray-600">EMI: {property.emi}</p>
-          <p className="mt-4 text-sm text-gray-500">{property.address}</p>
-          <div className="mt-6">
-            <button className="bg-blue-600 text-white py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none transition-all duration-300">
-              Reserve Now
-            </button>
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gradient-to-br from-[#D9E3F0] to-[#F1F6F9] pt-20">
+      {/* Left Section: Main Content */}
+      <div className="flex-1 overflow-y-auto p-8 space-y-16 lg:space-y-8 max-w-7xl mx-auto">
+
+        {/* Product Gallery */}
+        <section>
+          <div className="w-full h-96 bg-gradient-to-b from-[#6C7B8B] to-[#A9B9D3] rounded-xl overflow-hidden mb-8 shadow-xl hover:scale-105 transition-all duration-300">
+            <img
+              src={hotelData.image}
+              alt={hotelData.name}
+              className="w-full h-full object-cover transition-transform duration-500 transform"
+            />
           </div>
-        </div>
+        </section>
+
+        {/* Overview Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">{hotelData.name}</h2>
+          <p className="text-[#4A5568] text-lg leading-relaxed">{hotelData.details}</p>
+        </section>
+
+        {/* About Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">About This Property</h2>
+          <p className="text-[#4A5568] text-lg leading-relaxed">
+            {hotelData.details} Enjoy world-class amenities and personalized services.
+          </p>
+        </section>
+
+        {/* Key Features Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">Key Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {hotelData.facilities.map((feature, index) => (
+              <div key={index} className="bg-[#EDF2F7] p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all">
+                <h3 className="text-xl font-semibold text-[#2D3748]">{feature}</h3>
+                <p className="text-[#4A5568] mt-4">Experience top-notch amenities for your comfort during your stay.</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">Customer Testimonials</h2>
+          {/* Assuming testimonials are not provided yet. */}
+          <p className="text-[#4A5568] text-lg leading-relaxed">Check out reviews from our happy guests!</p>
+        </section>
+
+        {/* Location and Nearby Attractions Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">Nearby Attractions</h2>
+          <div className="space-y-4">
+            {hotelData.nearbyAttractions.map((attraction, index) => (
+              <p key={index} className="text-[#4A5568] text-lg">{attraction}</p>
+            ))}
+          </div>
+        </section>
+
+        {/* Cancellation Policy Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">Cancellation Policy</h2>
+          <p className="text-[#4A5568] text-lg">{hotelData.cancellationPolicy}</p>
+        </section>
+
+        {/* Price Breakdown Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">Price Breakdown</h2>
+          <div className="text-[#4A5568] text-lg">
+            <p>Nightly Rate: <span className="font-semibold text-[#2D3748]">{hotelData.price}</span></p>
+            <p>Service Fee: <span className="font-semibold text-[#2D3748]">₹500</span></p>
+            <p className="font-semibold text-[#2D3748] mt-4 text-xl">Total: <span className="text-[#4A5568]">₹12,500</span></p>
+          </div>
+        </section>
+
+        {/* Map Section */}
+        <section className="bg-white p-10 rounded-2xl shadow-lg hover:shadow-2xl transition-all">
+          <h2 className="text-4xl font-semibold text-[#2D3748] mb-6">Location on Map</h2>
+          <div className="w-full h-64 bg-[#A9B9D3] rounded-lg overflow-hidden shadow-xl mb-8">
+            <iframe
+              className="w-full h-full"
+              src="https://www.google.com/maps/embed?pb=..."
+              allowFullScreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+        </section>
+      </div>
+
+      {/* Right Section: Fixed Sidebar */}
+      <div className="w-full lg:w-96 p-8 sticky top-0 h-full shadow-2xl rounded-l-lg rounded-t-none space-y-12 ">
+
+        {/* Enquiry Form Section */}
+        <section className="bg-gradient-to-br from-[#6C7B8B] to-[#A9B9D3] p-8 rounded-2xl shadow-xl">
+          <h2 className="text-2xl font-semibold text-white mb-6">Make an Enquiry</h2>
+          <form>
+            <input
+              type="text"
+              placeholder="Your Name"
+              className="w-full p-4 bg-[#EDF2F7] text-[#2D3748] rounded-2xl mb-4 focus:outline-none focus:ring-2 focus:ring-[#2D3748] transition-all"
+            />
+            <input
+              type="email"
+              placeholder="Your Email"
+              className="w-full p-4 bg-[#EDF2F7] text-[#2D3748] rounded-2xl mb-4 focus:outline-none focus:ring-2 focus:ring-[#2D3748] transition-all"
+            />
+            <textarea
+              placeholder="Your Message"
+              className="w-full p-4 bg-[#EDF2F7] text-[#2D3748] rounded-2xl mb-6 focus:outline-none focus:ring-2 focus:ring-[#2D3748] transition-all"
+              rows="4"
+            />
+            <button
+              type="submit"
+              className="w-full py-3 px-4 bg-[#2D3748] text-white font-semibold rounded-2xl hover:bg-[#4A5568] transition-all duration-200"
+            >
+              Submit Enquiry
+            </button>
+          </form>
+        </section>
+
+        {/* Special Offers Section */}
+        <section className="bg-[#F7FAFC] p-8 rounded-2xl shadow-xl">
+          <h2 className="text-2xl font-semibold text-[#2D3748] mb-4">Special Offers</h2>
+          <ul className="space-y-4">
+            <li className="bg-[#EDF2F7] p-4 rounded-xl shadow-md hover:shadow-lg transition-all">
+              <p className="text-[#2D3748] font-medium">{hotelData.specialOffers}</p>
+            </li>
+          </ul>
+        </section>
+
+        {/* Book Now Button */}
+        <button
+          className="w-full py-3 px-4 bg-[#2D3748] text-white font-semibold rounded-2xl hover:bg-[#4A5568] mt-6"
+        >
+          Book Now
+        </button>
       </div>
     </div>
-   </div>
   );
 };
 

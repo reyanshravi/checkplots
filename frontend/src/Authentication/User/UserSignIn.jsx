@@ -1,12 +1,15 @@
 import { useState } from "react";
 import InputField from "../../components/InputField";
-import signin_bg from "../../assets/Signin/bg_user.jpg"
+import signin_bg from "../../assets/Signin/bg_user.jpg";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,26 +35,26 @@ const UserSignin = () => {
     const formData = { email, password };
 
     try {
-      const response = await fetch("http://localhost:7002/api/auth/signin", {
-        method: "POST",
+      const response = await axios.post("http://localhost:7002/api/auth/signin", formData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
       });
 
-      const contentType = response.headers.get("Content-Type");
-      if (contentType && contentType.includes("application/json")) {
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || "Sign-in failed.");
-        }
+      if (response.data.token && response.data.user) {
+        // Save user data to localStorage
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        console.log(response.data.user.fullName);
+        
+
         alert("Sign-in successful!");
+        navigate("/"); // Redirect to home
       } else {
-        throw new Error("Unexpected response format. The server did not return JSON.");
+        setError("Sign-in failed. Please try again.");
       }
     } catch (error) {
-      setError(error.message);
+      setError(error.response?.data?.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -61,12 +64,12 @@ const UserSignin = () => {
     <div
       className="min-h-screen bg-cover bg-center flex justify-center items-center"
       style={{
-        backgroundImage:`url(${signin_bg})`
+        backgroundImage: `url(${signin_bg})`,
       }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
 
-      <div className="bg-gray-transparent backdrop-blur-sm border sm:p-8 rounded-lg shadow-xl w-full sm:max-w-lg overflow-hidden max-h-[90vh] ml-20">
+      <div className="bg-gray-800 backdrop-blur-sm border sm:p-8 rounded-lg shadow-xl w-full sm:max-w-lg overflow-hidden max-h-[90vh] ml-20">
         <div className="text-center text-white">
           <h1 className="text-3xl font-bold mb-4">Sign in to CheckPlots</h1>
 
@@ -78,18 +81,12 @@ const UserSignin = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto">
-            {/* Google Sign-In Button */}
-            <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center mb-6">
-              <svg className="w-4" viewBox="0 0 533.5 544.3">
-                {/* Google Icon SVG path here */}
-              </svg>
-              <span className="ml-4">Sign In with Google</span>
-            </button>
+           
 
             <hr className="w-full" />
 
-            <div className="my-8 border-b text-center">
-              <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+            <div className="my-8 text-center">
+              <div className="leading-none px-2 inline-block text-sm text-gray-400 tracking-wide font-medium transform translate-y-1/2">
                 Or sign in with e-mail
               </div>
             </div>
