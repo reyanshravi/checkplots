@@ -127,12 +127,12 @@ const Users = () => {
                 <td className="py-2 px-4">
                   <button
                     onClick={() => openStatusPopup(user)}
-                    className={`px-3 py-1 rounded-md text-white text-sm ${
+                    className={`px-3 py-1 rounded-md  text-sm ${
                       user.status.toLowerCase() === "active"
-                        ? "bg-green-500"
+                        ? "bg-green-200 text-green-800"
                         : user.status.toLowerCase() === "pending"
-                        ? "bg-yellow-500"
-                        : "bg-red-500"
+                        ? "bg-yellow-200 text-yellow-800"
+                        : "bg-red-200 text-red-800"
                     }`}
                   >
                     {user.status.toUpperCase()}
