@@ -65,6 +65,7 @@ export const registerVendor = async (req, res) => {
   }
 };
 
+// Vendor Login Controller
 export const loginVendor = async (req, res) => {
   const { email, password } = req.body;
 
