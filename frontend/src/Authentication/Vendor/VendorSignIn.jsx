@@ -1,13 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
 import InputField from "../../components/InputField";
-import signin_bg from "../../assets/Signin/bg_vendor.jpg"
+import signin_bg from "../../assets/Signin/bg_vendor.jpg";
+import { useNavigate } from "react-router-dom";
+
 
 const VendorSignin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,12 +36,14 @@ const VendorSignin = () => {
     const formData = { email, password };
 
     try {
-      const { data } = await axios.post(
+      const response = await axios.post(
         "http://localhost:7002/api/vendor/signin",
         formData
       );
-
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("vendor", JSON.stringify(response.data.vendor));
       alert("Sign-in successful!");
+      navigate("/")
     } catch (error) {
       setError(error.response?.data?.message || error + "Sign-in failed.");
     } finally {
@@ -50,15 +55,16 @@ const VendorSignin = () => {
     <div
       className="min-h-screen bg-cover bg-center flex justify-center items-center"
       style={{
-        backgroundImage:
-          `url(${signin_bg})`, 
+        backgroundImage: `url(${signin_bg})`,
       }}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
 
       <div className="bg-gray-transparent backdrop-blur-sm border sm:p-8 rounded-lg shadow-xl w-full sm:max-w-lg overflow-hidden max-h-[90vh] ml-20">
         <div className="text-center text-white">
-          <h1 className="text-3xl font-bold mb-4">Vendor Sign in to CheckPlots</h1>
+          <h1 className="text-3xl font-bold mb-4">
+            Vendor Sign in to CheckPlots
+          </h1>
 
           {/* Error Message */}
           {error && (
@@ -67,7 +73,10 @@ const VendorSignin = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 max-h-[70vh] overflow-y-auto"
+          >
             {/* Google Sign-In Button */}
             <button className="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center mb-6">
               <svg className="w-4" viewBox="0 0 533.5 544.3">

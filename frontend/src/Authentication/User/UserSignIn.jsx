@@ -29,7 +29,7 @@ const UserSignin = () => {
       return;
     }
 
-    setError(""); // Clear previous errors
+    setError(""); 
     setLoading(true);
 
     const formData = { email, password };
@@ -45,8 +45,6 @@ const UserSignin = () => {
         // Save user data to localStorage
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        console.log(response.data.user.fullName);
-        
 
         alert("Sign-in successful!");
         navigate("/"); // Redirect to home

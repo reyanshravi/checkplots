@@ -79,7 +79,6 @@ const VendorSignUp = () => {
         formData
       );
       alert("Vendor signed up successfully");
-      console.log(response.data);
       setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
@@ -212,7 +211,10 @@ const VendorSignUp = () => {
 
             {/* Password */}
             <div className="form-group mb-4">
-              <label htmlFor="password" className="block text-xl mb-1 text-left">
+              <label
+                htmlFor="password"
+                className="block text-xl mb-1 text-left"
+              >
                 Password
               </label>
               <input

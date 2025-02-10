@@ -13,11 +13,14 @@ import VendorSignup from "./Authentication/Vendor/VendorSignup";
 import UserSignup from "./Authentication/User/UserSignup";
 import VendorSignin from "./Authentication/Vendor/VendorSignIn";
 import ProductPage from "./pages/ProductPage";
+import VendorDashboard from "./pages/vendor/VendorDashboard";
+import UserDashboard from "./pages/user/UserDashboard";
+
 
 function App() {
   return (
     <>
-      <Router>
+      {/* <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -34,7 +37,9 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
         <Footer />
-      </Router>
+      </Router> */}
+      {/* <VendorDashboard />   */}
+      <UserDashboard />
     </>
   );
 }
