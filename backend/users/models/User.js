@@ -48,6 +48,11 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters long"],
     },
+    status: {
+      type: String,
+      default: "active",
+      enum: ["active", "inactive", "pending", "Active", "Pending", "Inactive"],
+    },
   },
   {
     timestamps: true, 

@@ -1,168 +1,278 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import PaginationBar from "../components/PaginationBar";
 
 const Users = () => {
-  // Dummy data
-  const userData = [
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      mobile: "1234567890",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      mobile: "2345678901",
-      role: "User",
-      status: "Inactive",
-    },
-    {
-      id: 3,
-      name: "Mike Ross",
-      email: "mike@example.com",
-      mobile: "3456789012",
-      role: "Moderator",
-      status: "Active",
-    },
-    {
-      id: 4,
-      name: "Rachel Green",
-      email: "rachel@example.com",
-      mobile: "4567890123",
-      role: "User",
-      status: "Active",
-    },
-    {
-      id: 5,
-      name: "Joey Tribbiani",
-      email: "joey@example.com",
-      mobile: "5678901234",
-      role: "User",
-      status: "Inactive",
-    },
-    {
-      id: 6,
-      name: "Ross Geller",
-      email: "ross@example.com",
-      mobile: "6789012345",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      id: 7,
-      name: "Monica Geller",
-      email: "monica@example.com",
-      mobile: "7890123456",
-      role: "Moderator",
-      status: "Inactive",
-    },
-    {
-      id: 8,
-      name: "Chandler Bing",
-      email: "chandler@example.com",
-      mobile: "8901234567",
-      role: "User",
-      status: "Active",
-    },
-    {
-      id: 9,
-      name: "Phoebe Buffay",
-      email: "phoebe@example.com",
-      mobile: "9012345678",
-      role: "User",
-      status: "Active",
-    },
-    {
-      id: 10,
-      name: "Gunther",
-      email: "gunther@example.com",
-      mobile: "0123456789",
-      role: "Support",
-      status: "Inactive",
-    },
-  ];
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [newStatus, setNewStatus] = useState("");
+  const [showStatusPopup, setShowStatusPopup] = useState(false);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:7002/api/auth/allUsers"
+      );
+      setUsers(response.data.users);
+      setLoading(false);
+      console.log(users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const openStatusPopup = (user) => {
+    setSelectedUser(user);
+    setNewStatus(user.status);
+    setShowStatusPopup(true);
+  };
+
+  const closeStatusPopup = () => {
+    setSelectedUser(null);
+    setShowStatusPopup(false);
+  };
+
+  const handleStatusUpdate = async () => {
+    if (!selectedUser) return;
+    try {
+      const response = await axios.put(
+        `http://localhost:7002/api/auth/${selectedUser._id}/updateStatus`,
+        { status: newStatus }
+      );
+      if (response.status === 200) {
+        alert("User status updated successfully!");
+        fetchUsers();
+        closeStatusPopup();
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to update user status.");
+    }
+  };
+
+  const filteredUsers = users.filter(
+    (user) =>
+      user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const viewDetails = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
 
   return (
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Manage Users</h2>
       <div className="flex justify-between items-center mb-4">
-        <div>
-          {/* <button className="px-4 py-2 bg-gray-200 rounded-md mr-2">
-            Bulk Actions
-          </button> */}
-          <button className="px-4 py-2 bg-gray-200 rounded-md">Filters</button>
-        </div>
         <input
           type="text"
           placeholder="Search..."
           className="px-4 py-2 border rounded-md"
+          value={searchTerm}
+          onChange={handleSearch}
         />
-        <div>
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2  text-center"
-            // onClick={handleCreateClick}
-          >
-            Add User
-          </button>
-          {/* <button className="px-4 py-2 bg-gray-200 rounded-md mr-2">
-            Import Properties
-          </button>
-          <button className="px-4 py-2 bg-gray-200 rounded-md mr-2">
-            Export Properties
-          </button> */}
-          <button className="px-4 py-2 bg-gray-200 rounded-md">Reload</button>
-        </div>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
+          onClick={fetchUsers}
+        >
+          Reload
+        </button>
       </div>
-      <table className="w-full bg-white rounded-lg shadow-md">
-        <thead>
-          <tr className="bg-gray-100">
-            <th className="py-2 px-4 text-left">ID</th>
-            <th className="py-2 px-4 text-left">Name</th>
-            <th className="py-2 px-4 text-left">Email</th>
-            <th className="py-2 px-4 text-left">Mobile</th>
-            <th className="py-2 px-4 text-left">Role</th>
-            <th className="py-2 px-4 text-left">Status</th>
-            <th className="py-2 px-4 text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userData.map((user) => (
-            <tr key={user.id}>
-              <td className="py-2 px-4">{user.id}</td>
-              <td className="py-2 px-4">{user.name}</td>
-              <td className="py-2 px-4">{user.email}</td>
-              <td className="py-2 px-4">{user.mobile}</td>
-              <td className="py-2 px-4">{user.role}</td>
-              <td className="py-2 px-4">
+
+      {loading ? (
+        <p>Loading users...</p>
+      ) : (
+        <table className="w-full bg-white rounded-lg shadow-md">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="py-2 px-4 text-left">ID</th>
+              <th className="py-2 px-4 text-left">Name</th>
+              <th className="py-2 px-4 text-left">Email</th>
+              <th className="py-2 px-4 text-left">Mobile</th>
+              <th className="py-2 px-4 text-left">Address</th>
+              <th className="py-2 px-4 text-left">Status</th>
+              <th className="py-2 px-4 text-left">More</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.map((user, index) => (
+              <tr key={user._id}>
+                <td className="py-2 px-4">{index + 1}</td>
+                <td className="py-2 px-4">{user.fullName}</td>
+                <td className="py-2 px-4">{user.email}</td>
+                <td className="py-2 px-4">{user.phone}</td>
+                <td className="py-2 px-4">
+                  {user.state.charAt(0).toUpperCase() +
+                    user.state.slice(1).toLowerCase()}
+                  ,
+                  {user.country.charAt(0).toUpperCase() +
+                    user.country.slice(1).toLowerCase()}
+                </td>
+
+                <td className="py-2 px-4">
+                  <button
+                    onClick={() => openStatusPopup(user)}
+                    className={`px-3 py-1 rounded-md  text-sm ${
+                      user.status.toLowerCase() === "active"
+                        ? "bg-green-200 text-green-800"
+                        : user.status.toLowerCase() === "pending"
+                        ? "bg-yellow-200 text-yellow-800"
+                        : "bg-red-200 text-red-800"
+                    }`}
+                  >
+                    {user.status.toUpperCase()}
+                  </button>
+                </td>
+                <td className="py-2 px-4">
+                  <button
+                    className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2"
+                    onClick={() => viewDetails(user)}
+                  >
+                    <FaEdit />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      <PaginationBar totalRecords={users.length} />
+
+      {/* User Details Modal */}
+      {showModal && selectedUser && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+          <div className="bg-white p-8 rounded-2xl shadow-lg w-1/2 max-w-2xl">
+            <div className="flex justify-between items-center border-b pb-4">
+              <h3 className="text-2xl font-bold text-gray-800">User Details</h3>
+              <button
+                className="text-gray-500 hover:text-gray-800 text-xl"
+                onClick={() => setShowModal(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-4 space-y-4 text-gray-700">
+              <p className="flex items-center">
+                <span className="font-semibold w-40">Name:</span>{" "}
+                {selectedUser.fullName}
+              </p>
+              <p className="flex items-center">
+                <span className="font-semibold w-40">Email:</span>{" "}
+                {selectedUser.email}
+              </p>
+              <p className="flex items-center">
+                <span className="font-semibold w-40">Mobile:</span>{" "}
+                {selectedUser.phone}
+              </p>
+              {/* dob */}
+              <p className="flex items-center">
+                <span className="font-semibold w-40">Date of Birth:</span>{" "}
+                {new Date(selectedUser.dob).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}
+              </p>
+
+              {/* address */}
+              <p className="flex items-center">
+                <span className="font-semibold w-40">Address:</span>{" "}
+                {[selectedUser.city, selectedUser.state, selectedUser.country]
+                  .filter(Boolean)
+                  .join(", ")}
+              </p>
+
+              <p className="flex items-center">
+                <span className="font-semibold w-40">Created At:</span>{" "}
+                {new Date(selectedUser.createdAt).toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}{" "}
+                (
+                {new Date(selectedUser.createdAt).toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+                )
+              </p>
+
+              <p className="flex items-center">
+                <span className="font-semibold w-40">Status:</span>
                 <span
-                  className={`px-2 py-1 rounded-md ${
-                    user.status === "Active"
-                      ? "bg-green-200 text-green-800"
-                      : "bg-yellow-200 text-yellow-800"
+                  className={`px-3 py-1 rounded-md text-white text-sm ${
+                    selectedUser.status.toLowerCase() === "active"
+                      ? "bg-green-500"
+                      : selectedUser.status.toLowerCase() === "inactive"
+                      ? "bg-yellow-500"
+                      : "bg-red-500"
                   }`}
                 >
-                  {user.status}
+                  {selectedUser.status.toUpperCase()}
                 </span>
-              </td>
-              <td className="py-2 px-4">
-                <button className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2">
-                  <FaEdit />
-                </button>
-                <button className="px-3 py-1 bg-red-500 text-white rounded-md">
-                  <MdDeleteForever />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <PaginationBar totalRecords={10} />
+              </p>
+            </div>
+
+            <div className="flex justify-end mt-6">
+              <button
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                onClick={() => setShowModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showStatusPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-80">
+            <h3 className="text-lg font-semibold mb-4">Update Status</h3>
+            <select
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md"
+            >
+              <option value="active">Active</option>
+              <option value="pending">Pending</option>
+              <option value="inactive">Inactive</option>
+            </select>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={closeStatusPopup}
+                className="px-4 py-2 bg-gray-300 rounded-md mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleStatusUpdate}
+                className="px-4 py-2 bg-blue-500 text-white rounded-md"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
