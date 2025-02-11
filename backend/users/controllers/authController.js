@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 // SignUp Controller
 export const signupUser = async (req, res) => {
@@ -15,6 +16,10 @@ export const signupUser = async (req, res) => {
         .json({ message: "User with this email already exists" });
     }
 
+    // Hash Password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     // Create a new user
     const user = new User({
       fullName,
@@ -24,12 +29,21 @@ export const signupUser = async (req, res) => {
       country,
       state,
       city,
-      password, // The pre-save hook in the schema will handle hashing
+      password: hashedPassword,
     });
 
     await user.save();
+
+    // Generate JWT Token
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
     res.status(201).json({
       message: "User registered successfully",
+      token,
       user: {
         id: user._id,
         fullName: user.fullName,
@@ -54,7 +68,7 @@ export const signinUser = async (req, res) => {
     }
 
     // Check if the entered password matches the stored password
-    const isMatch = await user.matchPassword(password);
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }

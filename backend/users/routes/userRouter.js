@@ -6,6 +6,10 @@ import {
   updateStatus,
   updateUser,
 } from "../controllers/authController.js";
+import {
+  forgotPassword,
+  resetPassword,
+} from "../controllers/ForgotPasswordController.js";
 
 import { authenticateUser } from "../middleware/authMiddleware.js";
 
@@ -13,6 +17,12 @@ const userRouter = express.Router();
 
 // Signup route
 userRouter.post("/signup", signupUser);
+
+// Forgot Password route
+userRouter.post("/forgot-password", forgotPassword);
+
+// Reset Password route
+userRouter.post("/reset-password/:token", resetPassword);
 
 // Signin route
 userRouter.post("/signin", signinUser);
