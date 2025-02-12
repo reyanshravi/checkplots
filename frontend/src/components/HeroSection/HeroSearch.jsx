@@ -1,4 +1,6 @@
 import React, { useState, useCallback } from "react";
+import { RiMapPin2Line } from "react-icons/ri";
+import { VscSettings } from "react-icons/vsc";
 
 export default function Herosearch() {
   const [filters, setFilters] = useState({
@@ -9,10 +11,6 @@ export default function Herosearch() {
     priceRange: "0-10000",
     bedrooms: 1,
     rating: 0,
-    constructionStatus: "",
-    price: 0,
-    emi: 0,
-    avgPrice: 0,
   });
   const [showAdditionalFilters, setShowAdditionalFilters] = useState(false);
 
@@ -23,35 +21,18 @@ export default function Herosearch() {
     }));
   }, []);
 
-  const handleClearAllFilters = () => {
-    setFilters({
-      type: "rent",
-      property: "plot",
-      category: "commercial",
-      location: "",
-      priceRange: "0-10000",
-      bedrooms: 1,
-      rating: 0,
-      constructionStatus: "",
-      price: 0,
-      emi: 0,
-      avgPrice: 0,
-    });
-  };
-
-  const handleApplyFilters = () => {
-    alert("Filters applied!");
-  };
-
   const handleSearch = () => {
-    console.log(filters);
+    console.log("Searching with filters:", filters);
   };
+
+  const cities = ["Patna", "Delhi", "Lucknow", "Kolkata"];
+
   return (
-    <div className="w-full bg-black text-white bg-opacity-30 backdrop-blur-sm border border-white border-opacity-20 rounded-lg p-8">
-      <div className="space-y-6 ">
+    <div className="bg-black text-white bg-opacity-30 backdrop-blur-sm border border-white border-opacity-20 rounded-lg p-8 max-w-4xl w-full mx-auto">
+      <div className="space-y-6">
         {/* Filter Row */}
         <div className="flex flex-wrap space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 divide-x">
-          <div>
+          <div className="w-full sm:w-auto">
             {["rent", "buy"].map((type) => (
               <button
                 key={type}
@@ -59,7 +40,7 @@ export default function Herosearch() {
                 className={`py-2 px-4 transition-all duration-300 ${
                   filters.type === type
                     ? "underline-offset-8 underline text-white"
-                    : " text-gray-300"
+                    : "text-gray-300"
                 } hover:underline underline-offset-8`}
               >
                 {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -67,7 +48,7 @@ export default function Herosearch() {
             ))}
           </div>
 
-          <div>
+          <div className="w-full sm:w-auto">
             {["plot", "flat"].map((property) => (
               <button
                 key={property}
@@ -75,7 +56,7 @@ export default function Herosearch() {
                 className={`py-2 px-4 transition-all duration-300 ${
                   filters.property === property
                     ? "underline-offset-8 underline text-white"
-                    : " text-gray-300"
+                    : "text-gray-300"
                 } hover:underline underline-offset-8`}
               >
                 {property.charAt(0).toUpperCase() + property.slice(1)}
@@ -83,7 +64,7 @@ export default function Herosearch() {
             ))}
           </div>
 
-          <div>
+          <div className="w-full sm:w-auto">
             {["commercial", "residential"].map((category) => (
               <button
                 key={category}
@@ -91,7 +72,7 @@ export default function Herosearch() {
                 className={`py-2 px-4 transition-all duration-300 ${
                   filters.category === category
                     ? "underline-offset-8 underline text-white"
-                    : " text-gray-300"
+                    : "text-gray-300"
                 } hover:underline underline-offset-8`}
               >
                 {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -100,87 +81,78 @@ export default function Herosearch() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center space-y-4 sm:space-y-0 sm:flex-row mt-6">
-          <div className="flex w-full justify-between items-center space-x-4">
-            <div className="flex flex-col space-y-2">
+        <div className="flex justify-between items-center space-y-4 sm:space-y-0 sm:flex-row">
+          <div className="flex items-center space-x-4 bg-white text-black rounded-full px-4 py-2 w-full sm:w-auto">
+            <div className="flex items-center space-x-4 w-full sm:w-auto">
+              {/* Location Icon */}
+              <RiMapPin2Line className="text-black text-xl" />
+
+              {/* Dropdown */}
               <select
                 name="city"
-                className="py-2 px-4 rounded-full text-white transition-all duration-300 bg-white bg-opacity-20 outline-none "
+                className="py-2 px-4 rounded-full text-black transition-all duration-300 outline-none"
                 onChange={(e) => handleFilterChange("location", e.target.value)}
                 value={filters.location}
               >
                 <option
                   value=""
-                  className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                  className="py-2 px-4 rounded-full bg-black bg-opacity-50 transition-all duration-300"
                 >
                   Select Location
                 </option>
-                <option
-                  value="patna"
-                  className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                >
-                  Patna
-                </option>
-                <option
-                  value="delhi"
-                  className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                >
-                  Delhi
-                </option>
-                <option
-                  value="lucknow"
-                  className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                >
-                  Lucknow
-                </option>
-                <option
-                  value="kolkata"
-                  className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                >
-                  Kolkata
-                </option>
+                {cities.map((city) => (
+                  <option
+                    key={city}
+                    value={city.toLowerCase()}
+                    className="py-2 px-4 rounded-full text-black bg-opacity-50 transition-all duration-300"
+                  >
+                    {city}
+                  </option>
+                ))}
               </select>
+
+              {/* Display selected city */}
+              {filters.location && (
+                <span className="text-black text-lg">
+                  {filters.location.charAt(0).toUpperCase() +
+                    filters.location.slice(1)}
+                </span>
+              )}
             </div>
 
-            <div>
+            <div className="w-full sm:w-auto">
               <input
                 type="search"
                 placeholder="Search..."
-                className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-white bg-opacity-20 outline-none"
+                className="py-2 px-4 rounded-full text-black transition-all w-full sm:w-96 duration-300 bg-white outline-none"
                 onChange={(e) => handleFilterChange("location", e.target.value)}
               />
             </div>
 
-            <div className="space-x-4">
-              <button
-                onClick={handleClearAllFilters}
-                className="py-2 px-8 bg-red-600 rounded-full text-white transition-all duration-300 hover:bg-red-500 bg-opacity-80"
-              >
-                Clear
-              </button>
-              <button
-                onClick={handleApplyFilters}
-                className="py-2 px-4 bg-transparent rounded-full text-white transition-all duration-300 hover:bg-white hover:bg-opacity-20 "
-              >
-                Apply Filters
-              </button>
+            <div className="flex space-x-4 items-center">
+              {/* Filter Button */}
               <button
                 onClick={() => setShowAdditionalFilters(!showAdditionalFilters)}
-                className="py-2 px-4 bg-transparent rounded-full text-white transition-all duration-300 hover:bg-white hover:bg-opacity-20"
+                className="border flex items-center py-2 px-4 bg-transparent rounded-full text-black transition-all duration-300 hover:bg-white hover:bg-opacity-20"
               >
-                {showAdditionalFilters
-                  ? "Hide More Filters"
-                  : "Show More Filters"}
+                <VscSettings className="mr-2" />
+                Filter
+              </button>
+
+              {/* Search Button */}
+              <button
+                onClick={handleSearch}
+                className="py-2 px-6 rounded-full text-white bg-black"
+              >
+                Search
               </button>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-end"></div>
-
         {showAdditionalFilters && (
-          <div className="space-y-4 mt-6  ">
-            <div className="flex space-x-4 w-full justify-center">
+          <div className="space-y-4 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {/* Price Range Select */}
               <div className="flex flex-col space-y-2">
                 <select
@@ -193,25 +165,25 @@ export default function Herosearch() {
                 >
                   <option
                     value="0-10000"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all duration-300 bg-black bg-opacity-50"
                   >
                     ₹0 - ₹10,000
                   </option>
                   <option
                     value="10000-50000"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all duration-300 bg-black bg-opacity-50"
                   >
                     ₹10,000 - ₹50,000
                   </option>
                   <option
                     value="50000-100000"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all duration-300 bg-black bg-opacity-50"
                   >
                     ₹50,000 - ₹1,00,000
                   </option>
                   <option
                     value="100000+"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all duration-300 bg-black bg-opacity-50"
                   >
                     ₹1,00,000+
                   </option>
@@ -230,31 +202,31 @@ export default function Herosearch() {
                 >
                   <option
                     value={1}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     1 Bedroom
                   </option>
                   <option
                     value={2}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     2 Bedrooms
                   </option>
                   <option
                     value={3}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     3 Bedrooms
                   </option>
                   <option
                     value={4}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     4 Bedrooms
                   </option>
                   <option
                     value={5}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     5+ Bedrooms
                   </option>
@@ -262,7 +234,6 @@ export default function Herosearch() {
               </div>
 
               {/* Rating Select */}
-
               <div className="flex flex-col space-y-2">
                 <select
                   name="rating"
@@ -272,99 +243,39 @@ export default function Herosearch() {
                 >
                   <option
                     value={0}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     Rating
                   </option>
                   <option
                     value={1}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     1 Star
                   </option>
                   <option
                     value={2}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     2 Stars
                   </option>
                   <option
                     value={3}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     3 Stars
                   </option>
                   <option
                     value={4}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     4 Stars
                   </option>
                   <option
                     value={5}
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
+                    className="py-2 px-4 rounded-full text-white transition-all w-96 duration-300 bg-black bg-opacity-50"
                   >
                     5 Stars
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            {/* Rating and Construction Status */}
-            <div className="flex space-x-4 w-full justify-center">
-              {/* Construction Status Select */}
-              <div className="flex flex-col space-y-2">
-                <select
-                  name="constructionStatus"
-                  className="py-2 px-4 rounded-full text-white transition-all duration-300 bg-white bg-opacity-20 outline-none"
-                  onChange={(e) =>
-                    handleFilterChange("constructionStatus", e.target.value)
-                  }
-                  value={filters.constructionStatus}
-                >
-                  <option value="">Construction Status</option>
-                  <option value="under construction">Under Construction</option>
-                  <option value="completed">Completed</option>
-                </select>
-              </div>
-              {/* Property Type (e.g., BHK, Balcony, etc.) */}
-
-              <div className="flex flex-col space-y-2">
-                <select
-                  name="propertyType"
-                  className="py-2 px-4 rounded-full text-white transition-all duration-300 bg-white bg-opacity-20 outline-none"
-                  onChange={(e) => handleFilterChange("type", e.target.value)}
-                  value={filters.type}
-                >
-                  <option
-                    value=""
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                  >
-                    Select Property Type
-                  </option>
-                  <option
-                    value="villa"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                  >
-                    Villa
-                  </option>
-                  <option
-                    value="3bhk"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                  >
-                    3 BHK
-                  </option>
-                  <option
-                    value="2bhk"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                  >
-                    2 BHK
-                  </option>
-                  <option
-                    value="flat"
-                    className="py-2 px-4 rounded-full text-white transition-all w-96  duration-300 bg-black bg-opacity-50"
-                  >
-                    Flat
                   </option>
                 </select>
               </div>
