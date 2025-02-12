@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import logo from "../assets/checkPlots.png";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -13,24 +7,24 @@ import {
   InfoCircleOutlined,
   GlobalOutlined,
   FileSearchOutlined,
-  AppstoreAddOutlined,
-  DatabaseOutlined,
   UsergroupAddOutlined,
-  CustomerServiceOutlined,
 } from "@ant-design/icons";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
+// Sidebar button component
 const SidebarButton = ({ Icon, label, onClick, className = "" }) => (
   <button
     onClick={onClick}
-    className={`flex items-center px-4 py-2 text-sm font-medium text-gray-600 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 w-full ${className}`}
+    className={`flex items-center px-4 py-3 text-sm font-medium text-gray-600 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-300 w-full ${className}`}
   >
-    <Icon className="mr-2 text-xl" />
+    <Icon className="mr-3 text-xl" />
     <span className="text-sm">{label}</span>
   </button>
 );
 
+// Logout confirmation popup component
 const LogoutPopup = ({ confirmLogout, cancelLogout }) => (
-  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-baseline">
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
     <div className="rounded-lg bg-white p-8 shadow-2xl z-50">
       <h2 className="text-lg font-bold">Are you sure you want to log out?</h2>
       <p className="mt-2 text-sm text-gray-500">
@@ -83,8 +77,6 @@ const Navbar = () => {
     [navigate]
   );
 
-  const handleLogout = () => setPopupVisible(true);
-
   const confirmLogout = () => {
     if (user) {
       localStorage.removeItem("user");
@@ -128,21 +120,9 @@ const Navbar = () => {
     };
   }, [isSidebarOpen, isDropdownOpen]);
 
-  // useEffect(() => {
-  //   const unlisten = navigate((location, action) => {
-  //     // Close the dropdown on navigation
-  //     setIsDropdownOpen(false);
-  //   });
-
-  //   return () => {
-  //     unlisten();
-  //   };
-  // }, [navigate]);
-
   return (
     <>
-      <div className="sticky top-0 z-50 flex justify-center">
-        {/* Conditionally render the popup when isPopupVisible is true */}
+      <div className="fixed w-full top-0 z-50 flex justify-center">
         {isPopupVisible && (
           <LogoutPopup
             confirmLogout={confirmLogout}
@@ -150,201 +130,216 @@ const Navbar = () => {
           />
         )}
 
-        <nav className="flex justify-between items-center w-4/5 fixed bg-white pb-4 px-10 rounded-b-3xl shadow-xl">
+        <nav className="flex items-center w-full px-4 bg-white rounded-b-3xl shadow-md relative">
           <div onClick={() => navigate("/")}>
-            <img
-              src={logo}
-              alt="logo"
-              className="h-14 md:h-16 cursor-pointer"
-            />
+            <img src={logo} alt="logo" className="h-20 cursor-pointer" />
           </div>
-          <div className="flex space-x-6 md:space-x-8 items-center">
-            <button className="md:flex hidden items-center px-4 py-2 border border-transparent rounded-full hover:bg-gray-50 transition-all duration-300">
-              <span className="mr-2 text-lg">📜</span>
-              <span className="whitespace-nowrap text-sm font-semibold">
-                List Property
-              </span>
-              <span className="ml-2 text-xs bg-red-500 text-white rounded-full px-2 py-1">
-                Free
-              </span>
-            </button>
 
-            <div className="relative">
-              <button
-                ref={dropdownButtonRef}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="md:flex hidden items-center text-sm font-semibold text-black transition-all duration-300 border px-4 py-2 rounded-full"
-              >
-                {userName || vendorName ? (
-                  <span className="mr-2">👋</span>
-                ) : (
-                  <span className="mr-2">🔑</span>
-                )}
-                <span>
-                  {userName || vendorName
-                    ? `Hi, ${userName || vendorName}`
-                    : "Sign In"}
-                </span>
-                <span className="ml-2 text-xl">▼</span>
-              </button>
-              {isDropdownOpen && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute right-0 mt-2 w-64 rounded-3xl shadow-lg bg-white border p-2 transform transition-all duration-500 ease-in-out backdrop-blur-sm"
+          {/* Centering the list items */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <ul className="flex space-x-8 text-gray-800 hidden md:flex">
+              <li>
+                <Link
+                  to="/"
+                  className="text-sm font-medium hover:text-indigo-600 transition duration-200"
                 >
-                  {userName ? (
-                    <>
-                      <Link
-                        to="/profile"
-                        className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
-                      >
-                        Profile
-                      </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="block px-6 py-4 text-sm text-red-600 hover:text-red-800 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-red-50 w-full text-left"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  ) : vendorName ? (
-                    <>
-                      <Link
-                        to="/vendor/profile"
-                        className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
-                      >
-                        Vendor Profile
-                      </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="block px-6 py-4 text-sm text-red-600 hover:text-red-800 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-red-50 w-full text-left"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <Link
-                        to="/user/signin"
-                        className="block px-6 py-4 text-sm text-gray-800 hover:text-indigo-600 rounded-lg transition duration-300 transform hover:scale-105 hover:bg-indigo-50 border-b border-indigo-200"
-                      >
-                        Login as User
-                      </Link>
-                      <div className="px-6 py-4 text-sm text-gray-800">
-                        <p>
-                          New to CheckPlots?{" "}
-                          <Link
-                            to="/signup"
-                            onClick={() => setIsDropdownOpen(false)}
-                            className="text-indigo-600 hover:underline"
-                          >
-                            Sign up
-                          </Link>
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
-            <label
-              ref={sidebarButtonRef}
-              onClick={toggleSidebar}
-              className="flex flex-col gap-2 w-8 cursor-pointer"
-            >
-              <div
-                className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
-                  isSidebarOpen ? "rotate-45 translate-y-[6px]" : ""
-                }`}
-              />
-              <div
-                className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
-                  isSidebarOpen ? "opacity-0" : ""
-                }`}
-              />
-              <div
-                className={`h-[3px] w-full bg-black rounded-full transition-all duration-300 transform ${
-                  isSidebarOpen ? "-rotate-45 -translate-y-[16px]" : ""
-                }`}
-              />
-            </label>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/services"
+                  className="text-sm font-medium hover:text-indigo-600 transition duration-200"
+                >
+                  Services
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-sm font-medium hover:text-indigo-600 transition duration-200"
+                >
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/blog"
+                  className="text-sm font-medium hover:text-indigo-600 transition duration-200"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/aboutus"
+                  className="text-sm font-medium hover:text-indigo-600 transition duration-200"
+                >
+                  About
+                </Link>
+              </li>
+            </ul>
           </div>
+
+          {/* Right-aligned buttons */}
+          <div className="flex items-center space-x-4 ml-auto">
+  {/* Sign In button */}
+  <div className="relative">
+    <button
+      ref={dropdownButtonRef}
+      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+      className="hidden md:flex items-center text-sm font-medium text-black transition-all duration-200 border px-3 py-2 rounded-lg hover:bg-gray-100"
+    >
+      {userName || vendorName ? (
+        <span className="mr-2">👋</span>
+      ) : (
+        <span className="mr-2">🔑</span>
+      )}
+      <span>
+        {userName || vendorName
+          ? `Hi, ${userName || vendorName}`
+          : "Sign In"}
+      </span>
+      <RiArrowDropDownLine size={25} />
+    </button>
+    {isDropdownOpen && (
+      <div
+        ref={dropdownRef}
+        className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-white border p-2 transform transition-all duration-300 backdrop-blur-sm"
+      >
+        {userName ? (
+          <>
+            <Link
+              to="/profile"
+              className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
+            >
+              Profile
+            </Link>
+            <button
+              onClick={() => setPopupVisible(true)}
+              className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
+            >
+              Logout
+            </button>
+          </>
+        ) : vendorName ? (
+          <>
+            <Link
+              to="/vendor/profile"
+              className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
+            >
+              Vendor Profile
+            </Link>
+            <button
+              onClick={() => setPopupVisible(true)}
+              className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/user/signin"
+              className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
+            >
+              Login as User
+            </Link>
+            <div className="px-4 py-2 text-sm text-gray-700">
+              <p>
+                New to CheckPlots?{" "}
+                <Link
+                  to="/signup"
+                  onClick={() => setIsDropdownOpen(false)}
+                  className="text-indigo-600 hover:underline"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </div>
+          </>
+        )}
+      </div>
+    )}
+  </div>
+
+  {/* List Property button */}
+  <button className="hidden md:flex items-center px-3 py-2 border border-transparent rounded-lg hover:bg-gray-100 transition-all duration-200">
+    <span className="mr-1 text-lg">📜</span>
+    <span className="whitespace-nowrap text-sm font-medium">
+      List Property
+    </span>
+    <span className="ml-1 text-xs bg-red-500 text-white rounded-full px-2 py-1">
+      Free
+    </span>
+  </button>
+
+  {/* Hamburger menu for mobile */}
+  <label
+    ref={sidebarButtonRef}
+    onClick={toggleSidebar}
+    className="flex flex-col gap-2 w-8 cursor-pointer md:hidden"
+  >
+    <div
+      className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+        isSidebarOpen ? "rotate-45 translate-y-[6px]" : ""
+      }`}
+    />
+    <div
+      className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+        isSidebarOpen ? "opacity-0" : ""
+      }`}
+    />
+    <div
+      className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+        isSidebarOpen ? "-rotate-45 -translate-y-[6px]" : ""
+      }`}
+    />
+  </label>
+</div>
+
         </nav>
       </div>
 
-      {isSidebarOpen && (
-        <>
-          <div className="fixed inset-0 bg-black bg-opacity-40 z-30" />
-          <div
-            ref={sidebarRef}
-            className={`fixed z-50 top-0 left-0 h-full w-72 bg-gradient-to-b from-gray-800 via-gray-900 to-black text-white shadow-xl transition-transform duration-300 ease-in-out transform ${
-              isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
-          >
-            <div className="flex flex-col h-full flex-grow justify-between">
-              <div>
-                <div className="flex py-8 px-4">
-                  <h2 className="text-3xl font-extrabold text-transparent bg-clip-text text-white">
-                    CheckPLots
-                  </h2>
-                </div>
-                <div className="space-y-6 px-4">
-                  <SidebarButton
-                    Icon={GlobalOutlined}
-                    label="Language"
-                    onClick={() => {}}
-                  />
-                  <SidebarButton
-                    Icon={FileSearchOutlined}
-                    label="List Property"
-                    onClick={() => {}}
-                  />
-                  <SidebarButton
-                    Icon={AppstoreAddOutlined}
-                    label="Vendor Package"
-                    onClick={() => {}}
-                  />
-                  <SidebarButton
-                    Icon={DatabaseOutlined}
-                    label="All Cities"
-                    onClick={() => {}}
-                  />
-                  <SidebarButton
-                    Icon={UsergroupAddOutlined}
-                    label="Buying Guide"
-                    onClick={() => {}}
-                  />
-                  <SidebarButton
-                    Icon={InfoCircleOutlined}
-                    label="About Us"
-                    onClick={() => handleNavigation("/aboutus")}
-                  />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 divide-x text-center text-black bg-white">
-                <button
-                  onClick={() => handleNavigation("/")}
-                  className="py-2 hover:bg-gray-700 hover:text-white"
-                >
-                  <HomeOutlined />
-                </button>
-                <button
-                  onClick={() => handleNavigation("/help")}
-                  className="py-2 hover:bg-gray-700 hover:text-white"
-                >
-                  <CustomerServiceOutlined />
-                </button>
-                <button
-                  onClick={() => handleNavigation("/contact")}
-                  className="py-2 hover:bg-gray-700 hover:text-white"
-                >
-                  <PhoneOutlined />
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      <div
+        ref={sidebarRef}
+        className={`${
+          isSidebarOpen ? "block" : "hidden"
+        } fixed top-0 left-0 z-50 w-64 bg-white shadow-xl py-8 rounded-br-3xl md:hidden transition-all duration-300`}
+      >
+        <div className="space-y-6 px-4">
+          <SidebarButton
+            Icon={HomeOutlined}
+            label="Home"
+            onClick={() => handleNavigation("/")}
+          />
+          <SidebarButton
+            Icon={InfoCircleOutlined}
+            label="About"
+            onClick={() => handleNavigation("/aboutus")}
+          />
+          <SidebarButton
+            Icon={FileSearchOutlined}
+            label="Search"
+            onClick={() => handleNavigation("/search")}
+          />
+          <SidebarButton
+            Icon={GlobalOutlined}
+            label="Services"
+            onClick={() => handleNavigation("/services")}
+          />
+          <SidebarButton
+            Icon={UsergroupAddOutlined}
+            label="Contact"
+            onClick={() => handleNavigation("/contact")}
+          />
+          <SidebarButton
+            Icon={PhoneOutlined}
+            label="Blog"
+            onClick={() => handleNavigation("/blog")}
+          />
+        </div>
+      </div>
     </>
   );
 };
