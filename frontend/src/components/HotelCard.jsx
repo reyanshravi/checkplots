@@ -1,103 +1,91 @@
 import React from "react";
 
-const HotelCard = () => {
+const HotelCard = ({ hotel }) => {
+  const image =
+    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   return (
-    <>
-      <a href="#" className="block rounded-lg p-4 shadow-sm shadow-indigo-100">
+    <a
+      href={hotel.website}
+      className="block max-w-80 w-full bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+    >
+      {/* Image Section */}
+      <div className="relative">
         <img
-          alt=""
-          src="https://images.unsplash.com/photo-1613545325278-f24b0cae1224?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-          className="h-56 w-full rounded-md object-cover"
+          alt={hotel.name}
+          src={image}
+          className="w-full h-32 object-cover rounded-t-lg"
         />
+        <div className="absolute bottom-2 left-4 text-white text-lg font-semibold shadow-lg">
+          {hotel.name}
+        </div>
+      </div>
 
-        <div className="mt-2">
-          <dl className="flex flex-col items-end">
-            <div>
-              <dt className="sr-only">Price</dt>
-
-              <dd className="text-sm text-gray-500">$240,000</dd>
-            </div>
-
-            <div>
-              <dt className="sr-only">Address</dt>
-
-              <dd className="font-medium">123 Wallaby Avenue, Park Road</dd>
-            </div>
-          </dl>
-
-          <div className="mt-6 flex items-center justify-end gap-8 text-xs">
-            <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-              <svg
-                className="size-4 text-indigo-700"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"
-                />
-              </svg>
-
-              <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-500">Parking</p>
-
-                <p className="font-medium">2 spaces</p>
-              </div>
-            </div>
-
-            <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-              <svg
-                className="size-4 text-indigo-700"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                />
-              </svg>
-
-              <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-500">Bathroom</p>
-
-                <p className="font-medium">2 rooms</p>
-              </div>
-            </div>
-
-            <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-              <svg
-                className="size-4 text-indigo-700"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                />
-              </svg>
-
-              <div className="mt-1.5 sm:mt-0">
-                <p className="text-gray-500">Bedroom</p>
-
-                <p className="font-medium">4 rooms</p>
-              </div>
-            </div>
+      {/* Hotel Info */}
+      <div className="px-3 py-2">
+        {/* Price & Type */}
+        <div className="flex justify-between items-center text-xs font-medium mb-2">
+          <div className="text-gray-700">{hotel.type}</div>
+          <div className="text-sm font-semibold text-indigo-600">
+            {hotel.price}
           </div>
         </div>
-      </a>
-    </>
+
+        {/* Room Details */}
+        <div className="text-xs text-gray-500 mb-2">{hotel.details}</div>
+
+        {/* Rating Section */}
+        <div className="flex items-center text-xs text-gray-600 mb-2">
+          <svg
+            className="w-4 h-4 text-yellow-500 mr-1"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path d="M10 15l-5 3 1.5-6.5L1 6l6.5-1L10 0l2.5 4L19 6l-5.5 5.5L15 18l-5-3z" />
+          </svg>
+          <span className="font-semibold">
+            {hotel.rating} ({hotel.reviews} reviews)
+          </span>
+        </div>
+
+        {/* Address */}
+        <div className="text-xs text-gray-500 mb-2">{hotel.address}</div>
+
+        {/* Special Offer */}
+        {hotel.specialOffers && (
+          <div className="text-xs text-green-500 font-semibold">
+            {hotel.specialOffers}
+          </div>
+        )}
+      </div>
+
+      {/* Amenities & Nearby Attractions Section */}
+      <div className="px-4 pb-4 border-t border-gray-200 grid grid-cols-2 gap-1">
+        {/* Amenities */}
+        <div>
+          <div className="font-semibold text-gray-700 text-xs mb-1">
+            Amenities:
+          </div>
+          <ul className="list-inside list-disc text-xs text-gray-600 space-y-1">
+            {hotel.amenities.slice(0, 2).map((amenity, index) => (
+              <li key={index}>{amenity}</li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Nearby Attractions */}
+        <div>
+          <div className="font-semibold text-gray-700 text-xs mb-1">
+            Nearby Attractions:
+          </div>
+          <ul className="list-inside list-disc text-xs text-gray-600 space-y-1">
+            {hotel.nearbyAttractions.slice(0, 3).map((attraction, index) => (
+              <li key={index}>{attraction}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </a>
   );
 };
 
