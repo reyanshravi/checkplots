@@ -5,6 +5,10 @@ import Properties from "../components/Properties";
 import MostPopularProperties from "../components/MostPopularProperties";
 import Slider from "../components/Slider";
 import { useLocation } from "react-router-dom";
+import HotelsByLocation from "../components/HotelsByLocation";
+import News from "../components/News";
+import { FaArrowUpLong } from "react-icons/fa6";
+
 
 export default function LandingPage() {
   const location = useLocation();
@@ -44,17 +48,19 @@ export default function LandingPage() {
       <div>
         <HeroSection />
         <Category />
-        <Properties />
         <MostPopularProperties />
-        <Slider />
+        {/* <Properties />
+        <Slider /> */}
+        <HotelsByLocation />
+        <News />
 
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-5 right-5 h-10 w-10 bg-gray-500 text-white font-extrabold rounded-full shadow-lg transition-opacity duration-300 ${
+          className={`flex justify-center items-center fixed bottom-5 right-5 h-10 w-10 bg-gray-500 text-white font-extrabold rounded-full shadow-lg transition-opacity duration-300 ${
             isVisible ? "opacity-100" : "opacity-0 pointer-events-none "
           }`}
         >
-          ↑
+        <FaArrowUpLong />
         </button>
       </div>
     </>

@@ -204,7 +204,7 @@ const InteriorTab = () => {
   });
 
   return (
-    <div className="p-6 bg-gray-50">
+    <div className="h-full flex flex-col p-6 bg-gray-50">
       <div className="flex justify-between items-center mb-6">
         {/* Heading */}
         <h2 className="text-3xl font-semibold mb-6">
@@ -284,10 +284,10 @@ const InteriorTab = () => {
         </div>
       </div>
 
-      <div className="h-[420px] overflow-y-auto">
+      <div className="flex-1 overflow-y-auto bg-slate-500 bg-opacity-10 rounded-lg">
         {/* Card View */}
         {view === "card" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-2">
             {filteredInteriors.map((interior, index) => (
               <div
                 key={index}
