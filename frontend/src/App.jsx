@@ -18,7 +18,7 @@ import UserDashboard from "./pages/user/UserDashboard";
 import HotelSection from "./components/HotelSection";
 import InteriorSection from "./components/InteriorSection";
 import PropertySection from "./components/PropertySection";
-
+import Gallery from "./pages/test";
 function App() {
   return (
     <>
@@ -37,6 +37,7 @@ function App() {
           <Route path="/user/signin" element={<UserSignin />} />
           <Route path="/user/signup" element={<UserSignup />} />
           <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/test" element={<Gallery />} />
         </Routes>
         <Footer />
       </Router>
