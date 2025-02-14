@@ -38,7 +38,7 @@ function App() {
           <Route path="/user/signin" element={<UserSignin />} />
           <Route path="/user/signup" element={<UserSignup />} />
           <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/test" element={<Gallery />} />
+          {/* <Route path="/test" element={<Gallery />} /> */}
         </Routes>
         <Footer />
       </Router>
