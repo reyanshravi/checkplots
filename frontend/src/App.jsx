@@ -15,18 +15,21 @@ import VendorSignin from "./Authentication/Vendor/VendorSignIn";
 import ProductPage from "./pages/ProductPage";
 import VendorDashboard from "./pages/vendor/VendorDashboard";
 import UserDashboard from "./pages/user/UserDashboard";
-
+import HotelCard from "./components/HotelCard";
+import HotelSection from "./components/HotelSection";
+import InteriorSection from "./components/InteriorSection";
+import PropertySection from "./components/PropertySection";
 
 function App() {
   return (
     <>
-      {/* <Router>
+      <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/Contact" element={<ContactUs />} />
-          <Route path="/search" element={<SearchList />} />
           <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/search" element={<SearchList />} />
           <Route path="/property" element={<Property />} />
           <Route path="/interior" element={<InteriorPage />} />
           <Route path="/hotel" element={<Hotels />} />
@@ -37,9 +40,7 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
         </Routes>
         <Footer />
-      </Router> */}
-      {/* <VendorDashboard />   */}
-      <UserDashboard />
+      </Router>
     </>
   );
 }
