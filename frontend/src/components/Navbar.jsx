@@ -137,7 +137,7 @@ const Navbar = () => {
 
           {/* Centering the list items */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <ul className="flex space-x-8 text-gray-800 hidden md:flex">
+            <ul className=" space-x-8 text-gray-800 hidden md:flex">
               <li>
                 <Link
                   to="/"
@@ -183,121 +183,120 @@ const Navbar = () => {
 
           {/* Right-aligned buttons */}
           <div className="flex items-center space-x-4 ml-auto">
-  {/* Sign In button */}
-  <div className="relative">
-    <button
-      ref={dropdownButtonRef}
-      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-      className="hidden md:flex items-center text-sm font-medium text-black transition-all duration-200 border px-3 py-2 rounded-lg hover:bg-gray-100"
-    >
-      {userName || vendorName ? (
-        <span className="mr-2">👋</span>
-      ) : (
-        <span className="mr-2">🔑</span>
-      )}
-      <span>
-        {userName || vendorName
-          ? `Hi, ${userName || vendorName}`
-          : "Sign In"}
-      </span>
-      <RiArrowDropDownLine size={25} />
-    </button>
-    {isDropdownOpen && (
-      <div
-        ref={dropdownRef}
-        className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-white border p-2 transform transition-all duration-300 backdrop-blur-sm"
-      >
-        {userName ? (
-          <>
-            <Link
-              to="/profile"
-              className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
-            >
-              Profile
-            </Link>
-            <button
-              onClick={() => setPopupVisible(true)}
-              className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
-            >
-              Logout
-            </button>
-          </>
-        ) : vendorName ? (
-          <>
-            <Link
-              to="/vendor/profile"
-              className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
-            >
-              Vendor Profile
-            </Link>
-            <button
-              onClick={() => setPopupVisible(true)}
-              className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link
-              to="/user/signin"
-              className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
-            >
-              Login as User
-            </Link>
-            <div className="px-4 py-2 text-sm text-gray-700">
-              <p>
-                New to CheckPlots?{" "}
-                <Link
-                  to="/signup"
-                  onClick={() => setIsDropdownOpen(false)}
-                  className="text-indigo-600 hover:underline"
+            {/* Sign In button */}
+            <div className="relative">
+              <button
+                ref={dropdownButtonRef}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="hidden md:flex items-center text-sm font-medium text-black transition-all duration-200 border px-3 py-2 rounded-lg hover:bg-gray-100"
+              >
+                {userName || vendorName ? (
+                  <span className="mr-2">👋</span>
+                ) : (
+                  <span className="mr-2">🔑</span>
+                )}
+                <span>
+                  {userName || vendorName
+                    ? `Hi, ${userName || vendorName}`
+                    : "Sign In"}
+                </span>
+                <RiArrowDropDownLine size={25} />
+              </button>
+              {isDropdownOpen && (
+                <div
+                  ref={dropdownRef}
+                  className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-white border p-2 transform transition-all duration-300 backdrop-blur-sm"
                 >
-                  Sign up
-                </Link>
-              </p>
+                  {userName ? (
+                    <>
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={() => setPopupVisible(true)}
+                        className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : vendorName ? (
+                    <>
+                      <Link
+                        to="/vendor/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
+                      >
+                        Vendor Profile
+                      </Link>
+                      <button
+                        onClick={() => setPopupVisible(true)}
+                        className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
+                      >
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/user/signin"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:text-indigo-600 rounded-md transition duration-150"
+                      >
+                        Login as User
+                      </Link>
+                      <div className="px-4 py-2 text-sm text-gray-700">
+                        <p>
+                          New to CheckPlots?{" "}
+                          <Link
+                            to="/signup"
+                            onClick={() => setIsDropdownOpen(false)}
+                            className="text-indigo-600 hover:underline"
+                          >
+                            Sign up
+                          </Link>
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
-          </>
-        )}
-      </div>
-    )}
-  </div>
 
-  {/* List Property button */}
-  <button className="hidden md:flex items-center px-3 py-2 border border-transparent rounded-lg hover:bg-gray-100 transition-all duration-200">
-    <span className="mr-1 text-lg">📜</span>
-    <span className="whitespace-nowrap text-sm font-medium">
-      List Property
-    </span>
-    <span className="ml-1 text-xs bg-red-500 text-white rounded-full px-2 py-1">
-      Free
-    </span>
-  </button>
+            {/* List Property button */}
+            <button className="hidden md:flex items-center px-3 py-2 border border-transparent rounded-lg hover:bg-gray-100 transition-all duration-200">
+              <span className="mr-1 text-lg">📜</span>
+              <span className="whitespace-nowrap text-sm font-medium">
+                List Property
+              </span>
+              <span className="ml-1 text-xs bg-red-500 text-white rounded-full px-2 py-1">
+                Free
+              </span>
+            </button>
 
-  {/* Hamburger menu for mobile */}
-  <label
-    ref={sidebarButtonRef}
-    onClick={toggleSidebar}
-    className="flex flex-col gap-2 w-8 cursor-pointer md:hidden"
-  >
-    <div
-      className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
-        isSidebarOpen ? "rotate-45 translate-y-[6px]" : ""
-      }`}
-    />
-    <div
-      className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
-        isSidebarOpen ? "opacity-0" : ""
-      }`}
-    />
-    <div
-      className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
-        isSidebarOpen ? "-rotate-45 -translate-y-[6px]" : ""
-      }`}
-    />
-  </label>
-</div>
-
+            {/* Hamburger menu for mobile */}
+            <label
+              ref={sidebarButtonRef}
+              onClick={toggleSidebar}
+              className="flex flex-col gap-2 w-8 cursor-pointer md:hidden"
+            >
+              <div
+                className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+                  isSidebarOpen ? "rotate-45 translate-y-[6px]" : ""
+                }`}
+              />
+              <div
+                className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+                  isSidebarOpen ? "opacity-0" : ""
+                }`}
+              />
+              <div
+                className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+                  isSidebarOpen ? "-rotate-45 -translate-y-[6px]" : ""
+                }`}
+              />
+            </label>
+          </div>
         </nav>
       </div>
 

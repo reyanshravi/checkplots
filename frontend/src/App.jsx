@@ -15,7 +15,6 @@ import VendorSignin from "./Authentication/Vendor/VendorSignIn";
 import ProductPage from "./pages/ProductPage";
 import VendorDashboard from "./pages/vendor/VendorDashboard";
 import UserDashboard from "./pages/user/UserDashboard";
-import HotelCard from "./components/HotelCard";
 import HotelSection from "./components/HotelSection";
 import InteriorSection from "./components/InteriorSection";
 import PropertySection from "./components/PropertySection";

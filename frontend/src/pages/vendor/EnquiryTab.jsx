@@ -159,7 +159,7 @@ export default function EnquiryTab() {
           filteredEnquiries.map((enquiry) => (
             <div
               key={enquiry.id}
-              className="bg-white p-3 rounded-xl shadow-md hover:shadow-lg transition-all ease-in-out duration-300"
+              className="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all ease-in-out duration-300"
               onClick={() => toggleExpansion(enquiry.id)}
             >
               <div className="flex justify-between items-center mb-2">
@@ -175,9 +175,7 @@ export default function EnquiryTab() {
                   </div>
                 </div>
                 <span
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    statusColors[enquiry.status]
-                  } capitalize`}
+                  className={`text-xs px-2 py-1 rounded-full ${statusColors[enquiry.status]} capitalize`}
                 >
                   {enquiry.status}
                 </span>

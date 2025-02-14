@@ -6,7 +6,7 @@ const HotelCard = ({ hotel }) => {
   return (
     <a
       href={hotel.website}
-      className="block max-w-80 w-full bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+      className="block max-w-72 w-full bg-white rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden p-2 border"
     >
       {/* Image Section */}
       <div className="relative">
@@ -60,7 +60,7 @@ const HotelCard = ({ hotel }) => {
       </div>
 
       {/* Amenities & Nearby Attractions Section */}
-      <div className="px-4 pb-4 border-t border-gray-200 grid grid-cols-2 gap-1">
+      <div className="px-4  border-t border-gray-200 grid grid-cols-2 gap-1">
         {/* Amenities */}
         <div>
           <div className="font-semibold text-gray-700 text-xs mb-1">

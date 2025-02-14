@@ -2,208 +2,7 @@ import React, { useState } from "react";
 import { VscTable, VscFilter } from "react-icons/vsc";
 import { BsCardList } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
-
-// Hotel Data
-const hotels = [
-  {
-    name: "Grand Royal Hotel",
-    type: "Luxury Hotel",
-    details: "Executive Suite • 1 King Bed • Ocean View",
-    price: "₹18,000 per night",
-    pricePerNight: "₹18K",
-    image: "https://example.com/hotel1.png",
-    address: "Marine Drive, Mumbai, Maharashtra, India - 400020",
-    verified: true,
-    underRenovation: false,
-    rating: 4.9,
-    reviews: 1520,
-    facilities: [
-      "Free Wi-Fi",
-      "Infinity Pool",
-      "Spa & Wellness",
-      "24/7 Room Service",
-      "Business Center",
-      "Concierge Service",
-    ],
-    checkInTime: "3:00 PM",
-    checkOutTime: "12:00 PM",
-    availableRooms: 20,
-    nearbyAttractions: [
-      "Gateway of India - 2 km",
-      "Marine Drive - 500 m",
-      "Elephanta Caves - 10 km",
-    ],
-    cancellationPolicy: "Free cancellation up to 48 hours before check-in",
-    specialOffers: "Stay 3 nights & get 1 night free",
-    contactNumber: "+91 22 1234 5678",
-    website: "https://grandroyalhotel.com",
-    amenities: [
-      "Air Conditioning",
-      "Mini Bar",
-      "Tea/Coffee Maker",
-      "Luxury Toiletries",
-      "Safety Deposit Box",
-      "Flat-Screen TV",
-    ],
-  },
-  {
-    name: "Horizon Inn",
-    type: "Boutique Hotel",
-    details: "Deluxe Room • Queen Bed • City Skyline View",
-    price: "₹6,500 per night",
-    pricePerNight: "₹6.5K",
-    image: "https://example.com/hotel2.png",
-    address: "Connaught Place, New Delhi, India - 110001",
-    verified: true,
-    underRenovation: false,
-    rating: 4.6,
-    reviews: 980,
-    facilities: [
-      "High-Speed Wi-Fi",
-      "Rooftop Restaurant",
-      "Gym & Fitness Center",
-      "Laundry Services",
-      "24-hour Front Desk",
-    ],
-    checkInTime: "2:00 PM",
-    checkOutTime: "11:00 AM",
-    availableRooms: 15,
-    nearbyAttractions: [
-      "India Gate - 4 km",
-      "Red Fort - 6 km",
-      "Lotus Temple - 8 km",
-    ],
-    cancellationPolicy: "Free cancellation up to 24 hours before check-in",
-    specialOffers: "10% off on direct bookings",
-    contactNumber: "+91 11 9876 5432",
-    website: "https://horizoninn.com",
-    amenities: [
-      "Smart TV",
-      "Tea/Coffee Maker",
-      "Hair Dryer",
-      "Rain Shower",
-      "Work Desk",
-    ],
-  },
-  {
-    name: "Sunset Villas",
-    type: "Resort",
-    details: "Beachfront Villa • 2 King Beds • Oceanfront View",
-    price: "₹25,000 per night",
-    pricePerNight: "₹25K",
-    image: "https://example.com/hotel3.png",
-    address: "Goa, India",
-    verified: true,
-    underRenovation: false,
-    rating: 4.8,
-    reviews: 1125,
-    facilities: [
-      "Private Beach Access",
-      "Infinity Pool",
-      "Water Sports Equipment",
-      "Spa & Wellness",
-      "Kids' Club",
-    ],
-    checkInTime: "4:00 PM",
-    checkOutTime: "10:00 AM",
-    availableRooms: 10,
-    nearbyAttractions: [
-      "Baga Beach - 2 km",
-      "Anjuna Beach - 5 km",
-      "Fort Aguada - 12 km",
-    ],
-    cancellationPolicy: "Free cancellation up to 72 hours before check-in",
-    specialOffers: "Book 5 nights & get 2 nights free",
-    contactNumber: "+91 832 1234 5678",
-    website: "https://sunsetvillas.com",
-    amenities: [
-      "Air Conditioning",
-      "Private Pool",
-      "Mini Bar",
-      "Ocean View",
-      "Flat-Screen TV",
-    ],
-  },
-  {
-    name: "Cityscape Hotel",
-    type: "Business Hotel",
-    details: "Executive Room • 1 Queen Bed • City View",
-    price: "₹7,500 per night",
-    pricePerNight: "₹7.5K",
-    image: "https://example.com/hotel4.png",
-    address: "MG Road, Bengaluru, Karnataka, India - 560001",
-    verified: true,
-    underRenovation: true,
-    rating: 4.3,
-    reviews: 800,
-    facilities: [
-      "Business Center",
-      "Conference Room",
-      "High-Speed Wi-Fi",
-      "Restaurant & Bar",
-      "Laundry Services",
-    ],
-    checkInTime: "2:00 PM",
-    checkOutTime: "11:00 AM",
-    availableRooms: 25,
-    nearbyAttractions: [
-      "Cubbon Park - 3 km",
-      "Bangalore Palace - 5 km",
-      "UB City Mall - 2 km",
-    ],
-    cancellationPolicy: "Free cancellation up to 48 hours before check-in",
-    specialOffers: "15% off on bookings above ₹15,000",
-    contactNumber: "+91 80 1234 5678",
-    website: "https://cityscapehotel.com",
-    amenities: [
-      "Air Conditioning",
-      "Mini Bar",
-      "Tea/Coffee Maker",
-      "Hair Dryer",
-      "Work Desk",
-    ],
-  },
-  {
-    name: "Mountain Retreat",
-    type: "Eco Resort",
-    details: "Cottage • 1 Double Bed • Mountain View",
-    price: "₹8,000 per night",
-    pricePerNight: "₹8K",
-    image: "https://example.com/hotel5.png",
-    address: "Shimla, Himachal Pradesh, India",
-    verified: true,
-    underRenovation: false,
-    rating: 4.7,
-    reviews: 600,
-    facilities: [
-      "Organic Farm",
-      "Hiking Trails",
-      "Restaurant with Local Cuisine",
-      "Yoga & Meditation Center",
-      "24/7 Room Service",
-    ],
-    checkInTime: "12:00 PM",
-    checkOutTime: "10:00 AM",
-    availableRooms: 12,
-    nearbyAttractions: [
-      "Kufri - 12 km",
-      "The Ridge - 6 km",
-      "Jakhoo Temple - 3 km",
-    ],
-    cancellationPolicy: "Free cancellation up to 48 hours before check-in",
-    specialOffers: "Stay 2 nights & get a free guided hike",
-    contactNumber: "+91 177 1234 5678",
-    website: "https://mountainretreat.com",
-    amenities: [
-      "Fireplace",
-      "Organic Food",
-      "Mountain View",
-      "Rain Shower",
-      "Yoga Mats",
-    ],
-  },
-];
-
+import hotels from "../../Data/hotel";
 const HotelTab = () => {
   const [view, setView] = useState("card"); // Toggle between card and table views
   const [hotelList, setHotelList] = useState(hotels); // Hotel list state
@@ -258,7 +57,7 @@ const HotelTab = () => {
   });
 
   return (
-    <div className="p-6 bg-gray-50">
+    <div className="h-full flex flex-col p-6 bg-gray-50">
       <div className="flex justify-between items-center mb-6">
         {/* Heading */}
         <h2 className="text-3xl font-semibold mb-6">Hotel Services</h2>
@@ -335,15 +134,16 @@ const HotelTab = () => {
         </div>
       </div>
 
-      <div className="h-[420px] overflow-y-auto">
+      <div className="flex-1 overflow-y-auto bg-slate-500 bg-opacity-10 rounded-lg">
         {/* Card View */}
         {view === "card" ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-2">
             {filteredHotels.map((hotel, index) => (
               <div
                 key={index}
-                className="bg-white shadow-lg rounded-lg overflow-hidden max-w-xs mx-auto p-4"
+                className="bg-white shadow-lg rounded-lg overflow-hidden w-72 mx-auto p-4 relative"
               >
+                
                 <img
                   src={hotel.image}
                   alt={hotel.name}
