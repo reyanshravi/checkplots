@@ -50,7 +50,8 @@ const ProductPage = () => {
   const images = [
     { id: 1, src: "/images/images1.jpg", alt: "Backyard" },
     { id: 2, src: "/images/pool.jpg", alt: "Balcony View" },
-    { id: 3, src: "/images/Screenshot (49).png", alt: "Floor Plan" },
+    { id: 3, src: "/images/img1.jpg", alt: "Floor Plan" },
+    { id: 4, src: "/images/img2.jpg", alt: "Floor Plan" },
   ];
 
   const [startDate, setStartDate] = useState("");
@@ -176,7 +177,7 @@ const ProductPage = () => {
               {hotelData.facilities.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-[#EDF2F7] p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all"
+                  className="bg-gray-50 p-8 rounded-lg shadow-lg hover:shadow-2xl transition-all"
                 >
                   <h3 className="text-xl font-semibold text-[#2D3748]">
                     {feature}
@@ -199,7 +200,7 @@ const ProductPage = () => {
 
               <div className="mt-8 [column-fill:_balance] sm:columns-2 sm:gap-6 lg:columns-3 lg:gap-8">
                 <div className="mb-8 sm:break-inside-avoid">
-                  <blockquote className="rounded-lg bg-gray-50 p-6 shadow-xs sm:p-8">
+                  <blockquote className="rounded-lg bg-gray-50 p-6 shadow-xs sm:p-8  shadow-lg hover:shadow-2xl">
                     <div className="flex items-center gap-4">
                       <img
                         alt=""
@@ -267,7 +268,7 @@ const ProductPage = () => {
                 </div>
 
                 <div className="mb-8 sm:break-inside-avoid">
-                  <blockquote className="rounded-lg bg-gray-50 p-6 shadow-xs sm:p-8">
+                  <blockquote className="rounded-lg bg-gray-50 p-6 shadow-xs sm:p-8  shadow-lg hover:shadow-2xl">
                     <div className="flex items-center gap-4">
                       <img
                         alt=""
@@ -906,23 +907,22 @@ const ProductPage = () => {
           </div>
 
           {/* Special Offers Section */}
-          <section className="bg-[#F7FAFC] p-8 rounded-2xl shadow-xl">
+          <section className="text-gray-700 p-6 rounded-sm shadow-sm bg-white ">
             <h2 className="text-2xl font-semibold text-[#2D3748] mb-4">
               Special Offers
             </h2>
             <ul className="space-y-4">
-              <li className="bg-[#EDF2F7] p-4 rounded-xl shadow-md hover:shadow-lg transition-all">
+              <li className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition-all">
                 <p className="text-[#2D3748] font-medium">
                   {hotelData.specialOffers}
                 </p>
               </li>
             </ul>
+            {/* Book Now Button */}
+            <button className="w-full py-3 px-4 bg-teal-700 text-white font-semibold rounded-lg hover:bg-teal-800 mt-6">
+              Book Now
+            </button>
           </section>
-
-          {/* Book Now Button */}
-          <button className="w-full py-3 px-4 bg-[#2D3748] text-white font-semibold rounded-2xl hover:bg-[#4A5568] mt-6">
-            Book Now
-          </button>
         </div>
       </div>
     </div>
