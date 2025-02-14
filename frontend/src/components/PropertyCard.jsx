@@ -5,7 +5,7 @@ const PropertyCard = ({ property }) => {
   return (
     <a
       href={property.website}
-      className="block max-w-xs w-full bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 overflow-hidden"
+      className="block max-w-72 w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform overflow-hidden"
     >
       {/* Image Section */}
       <div className="relative">

@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import HotelsByLocation from "../components/HotelsByLocation";
 import News from "../components/News";
 import { FaArrowUpLong } from "react-icons/fa6";
+import ExploreSection from "../components/ExploreSection";
 
 
 export default function LandingPage() {
@@ -53,6 +54,7 @@ export default function LandingPage() {
         <Slider /> */}
         <HotelsByLocation />
         <News />
+        <ExploreSection />
 
         <button
           onClick={scrollToTop}

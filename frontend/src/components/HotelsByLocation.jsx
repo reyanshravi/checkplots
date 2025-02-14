@@ -52,11 +52,11 @@ export default function HotelsByLocation() {
         Discover our wonderful properties.
       </p>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-6 ">
         {data.map((hotel, index) => (
           <div
             key={index}
-            className="bg-white rounded-lg shadow-sm overflow-hidden  p-2 border w-80"
+            className="bg-white rounded-lg shadow-sm  hover:shadow-xl transition duration-300 overflow-hidden  p-2 border w-80 cursor-pointer"
           >
             <img
               src={hotel.imageUrl}

@@ -18,9 +18,9 @@ export default function News() {
   };
 
   return (
-    <div className="container mx-auto px-20 my-10 bg-gray-50">
-      <div className="flex p-2 gap-4 items-center ">
-        <div className="w-full md:w-1/3 flex flex-col justify-start  p-6  space-y-8">
+    <div className="container mx-auto my-16 md:px-20">
+      <div className="flex  gap-12 items-center ">
+        <div className="w-full md:w-1/3 flex flex-col justify-start  p-  space-y-8">
           {/* Header */}
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -37,19 +37,26 @@ export default function News() {
             <div className="flex items-center bg-red-500 bg-opacity-20 hover:bg-opacity-30 rounded-lg p-4 cursor-pointer transition duration-300">
               <i className="fas fa-blog text-red-600 mr-3"></i>
               <span className="text-lg font-medium text-gray-800">
-                Latest Blog: Sustainable Architecture
+                Latest Blog:{" "}
+                <span className="font-normal">Sustainable Architecture</span>
               </span>
             </div>
             <div className="flex items-center bg-green-500 bg-opacity-20 hover:bg-opacity-30 rounded-lg p-4 cursor-pointer transition duration-300">
               <i className="fas fa-newspaper text-green-600 mr-3"></i>
               <span className="text-lg font-medium text-gray-800">
-                New Article: Luxury Property Market Trends
+                New Article:{" "}
+                <span className="font-normal">
+                  Luxury Property Market Trends
+                </span>
               </span>
             </div>
             <div className="flex items-center bg-blue-500 bg-opacity-20 hover:bg-opacity-30 rounded-lg p-4 cursor-pointer transition duration-300">
               <i className="fas fa-building text-blue-600 mr-3"></i>
               <span className="text-lg font-medium text-gray-800">
-                Breaking News: Smart Home Tech in Real Estate
+                Breaking News:{" "}
+                <span className="font-normal">
+                  Smart Home Tech in Real Estate
+                </span>
               </span>
             </div>
           </div>
@@ -128,7 +135,7 @@ export default function News() {
                   className="w-full h-full object-cover "
                 />
                 <div className="absolute top-0 left-0 right-0 bottom-0 p-6 bg-black bg-opacity-40"></div>
-                <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-[100px] hover:translate-y-0 transition duration-300">
+                <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-20 hover:translate-y-0 transition duration-300">
                   {" "}
                   <h3 className="text-xl font-medium mb-4">
                     Real Estate Investment Tips
@@ -147,7 +154,7 @@ export default function News() {
           </div>
 
           <div className="flex flex-col gap-6">
-            <div className="relative bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 h-96 w-80 overflow-hidden">
+            <div className="relative bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 h-96 w-72 overflow-hidden">
               <img
                 src={images.luxary}
                 alt="Luxury Property Developments"
@@ -176,7 +183,7 @@ export default function News() {
                 className="w-full h-full object-cover rounded-t-lg"
               />
               <div className="absolute top-0 left-0 right-0 bottom-0 p-6 bg-black bg-opacity-40"></div>
-              <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-20 hover:translate-y-0 transition duration-300">
+              <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-[100px] hover:translate-y-0 transition duration-300">
                 <h3 className="text-xl font-medium mb-4">
                   Property Market Insights
                 </h3>
