@@ -9,6 +9,7 @@ import HotelsByLocation from "../components/HotelsByLocation";
 import News from "../components/News";
 import { FaArrowUpLong } from "react-icons/fa6";
 import ExploreSection from "../components/ExploreSection";
+import TestGrid from "../components/TestGrid";
 
 
 export default function LandingPage() {
@@ -53,7 +54,8 @@ export default function LandingPage() {
         {/* <Properties />
         <Slider /> */}
         <HotelsByLocation />
-        <News />
+        {/* <News /> */}
+        <TestGrid/>
         <ExploreSection />
 
         <button

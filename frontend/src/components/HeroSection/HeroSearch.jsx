@@ -31,7 +31,7 @@ export default function Herosearch() {
     <div className="bg-black text-white bg-opacity-30 backdrop-blur-sm border border-white border-opacity-20 rounded-lg p-8 max-w-4xl w-full mx-auto">
       <div className="space-y-6">
         {/* Filter Row */}
-        <div className="flex flex-wrap space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 divide-x">
+        <div className="flex items-center space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 divide-x">
           <div className="w-full sm:w-auto">
             {["rent", "buy"].map((type) => (
               <button
@@ -48,7 +48,7 @@ export default function Herosearch() {
             ))}
           </div>
 
-          <div className="w-full sm:w-auto">
+          <div className="w-full sm:w-auto ">
             {["plot", "flat"].map((property) => (
               <button
                 key={property}
