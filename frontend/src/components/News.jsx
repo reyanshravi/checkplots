@@ -1,7 +1,12 @@
 import React from "react";
 
 // Icons import
-import { FaBed, FaBuilding, FaRegNewspaper } from "react-icons/fa";
+import {
+  FaBed,
+  FaBuilding,
+  FaRegNewspaper,
+  FaCalendarAlt,
+} from "react-icons/fa";
 
 export default function News() {
   const images = {
@@ -18,188 +23,280 @@ export default function News() {
   };
 
   return (
-    <div className="container mx-auto my-16 md:px-20">
-      <div className="flex  gap-12 items-center ">
-        <div className="w-full md:w-1/3 flex flex-col justify-start  p-  space-y-8">
-          {/* Header */}
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Latest News
-            </h1>
-            <p className="text-sm text-gray-500">
-              Catch up on the latest trends in real estate, luxury properties,
-              and interior design.
-            </p>
+    <>
+      <div className="my-16 md:px-20 md:grid md:grid-cols-5 md:grid-rows-5 gap-6 sm:flex sm:flex-wrap sm:justify-center  ">
+        {/* Latest News Section */}
+        <div className="col-span-2 row-span-5 p-6 space-y-8 bg-white shadow-md rounded-lg">
+          <h1 className="text-3xl font-semibold text-gray-900">Latest News</h1>
+          <p className="text-lg text-gray-600">
+            Stay up-to-date with the latest trends in real estate, luxury
+            properties, and interior design.
+          </p>
+
+          {/* Latest Blog */}
+          <div className="flex items-center space-x-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-gray-600 hover:text-blue-600 transition-colors"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+            <span className="text-lg font-medium text-gray-800">
+              Latest Blog:
+            </span>
+            <span className="font-normal text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">
+              Sustainable Architecture
+            </span>
           </div>
 
-          {/* News Items */}
-          <div className="space-y-4">
-            <div className="flex items-center bg-red-500 bg-opacity-20 hover:bg-opacity-30 rounded-lg p-4 cursor-pointer transition duration-300">
-              <i className="fas fa-blog text-red-600 mr-3"></i>
-              <span className="text-lg font-medium text-gray-800">
-                Latest Blog:{" "}
-                <span className="font-normal">Sustainable Architecture</span>
-              </span>
-            </div>
-            <div className="flex items-center bg-green-500 bg-opacity-20 hover:bg-opacity-30 rounded-lg p-4 cursor-pointer transition duration-300">
-              <i className="fas fa-newspaper text-green-600 mr-3"></i>
-              <span className="text-lg font-medium text-gray-800">
-                New Article:{" "}
-                <span className="font-normal">
-                  Luxury Property Market Trends
-                </span>
-              </span>
-            </div>
-            <div className="flex items-center bg-blue-500 bg-opacity-20 hover:bg-opacity-30 rounded-lg p-4 cursor-pointer transition duration-300">
-              <i className="fas fa-building text-blue-600 mr-3"></i>
-              <span className="text-lg font-medium text-gray-800">
-                Breaking News:{" "}
-                <span className="font-normal">
-                  Smart Home Tech in Real Estate
-                </span>
-              </span>
-            </div>
+          {/* New Article */}
+          <div className="flex items-center space-x-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-gray-600 hover:text-blue-600 transition-colors"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+            <span className="text-lg font-medium text-gray-800">
+              New Article:
+            </span>
+            <span className="font-normal text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">
+              Luxury Property Market Trends
+            </span>
           </div>
 
-          {/* Insight Section */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-800">
+          {/* Breaking News */}
+          <div className="flex items-center space-x-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-gray-600 hover:text-blue-600 transition-colors"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+            <span className="text-lg font-medium text-gray-800">
+              Breaking News:
+            </span>
+            <span className="font-normal text-gray-600 hover:text-blue-600 transition-colors cursor-pointer">
+              Smart Home Tech in Real Estate
+            </span>
+          </div>
+
+          {/* Insights Section */}
+          <div className="space-y-5">
+            <h2 className="text-2xl font-semibold text-gray-900">
               Insights & Trends
             </h2>
-            <p className="text-sm text-gray-600">
-              The real estate market is ever-evolving. With new technologies and
-              sustainability becoming key focal points, it's important to stay
-              informed. Explore emerging trends like the integration of wellness
-              spaces, energy-efficient designs, and the impact of artificial
-              intelligence on property management.
+            <p className="text-gray-700 leading-relaxed">
+              The real estate market is constantly evolving. Emerging
+              technologies and sustainability are becoming increasingly
+              important. Stay informed about trends such as wellness spaces,
+              energy-efficient designs, and the role of AI in property
+              management.
             </p>
           </div>
 
-          {/* Call to Action */}
-          <div className="mt-6 flex justify-start">
-            <button className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200">
+          {/* Explore More Button */}
+          <div>
+            <button className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105">
               Explore More
             </button>
           </div>
         </div>
 
-        <div className="flex gap-4 p-2">
-          <div className="grid grid-rows-2 gap-6">
-            <div className="relative bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 h-80 overflow-hidden">
-              <img
-                src={images.hotel}
-                alt="New Hotel"
-                className="w-full h-full object-cover rounded-t-lg"
-              />
-              <div className="absolute top-0 left-0 right-0 bottom-0 p-6 bg-black bg-opacity-40 text-white flex flex-col justify-end rounded-lg">
-                <h3 className="text-xl font-medium mb-4">New Hotel Openings</h3>
-                <div className="flex items-center space-x-3 mb-4">
-                  <FaBed className="text-blue-500 text-lg" />
-                  <span className="text-sm">Hotel & Resorts</span>
-                </div>
-                <p className="text-sm">
-                  Discover the best luxury hotels opening this season in popular
-                  cities worldwide.
-                </p>
-              </div>
-            </div>
+        {/* New Hotel Opening */}
+        <div className="col-span-2 row-span-2 col-start-3 relative overflow-hidden rounded-lg group  ">
+          {/* Image with Parallax Zoom Effect */}
+          <img
+            src={images.hotel}
+            alt="Hotel"
+            className="h-64 w-full object-cover rounded-lg transition-transform group-hover:scale-110 group-hover:translate-x-3 group-hover:translate-y-3"
+            loading="lazy"
+          />
 
-            <div className="flex gap-6 ">
-              <div className="relative bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 h-60 overflow-hidden">
-                <img
-                  src={images.property}
-                  alt="Interior Design Trends"
-                  className="w-full h-full object-cover rounded-t-lg"
-                />
-                <div className="absolute top-0 left-0 right-0 bottom-0 p-6 bg-black bg-opacity-40"></div>
-                <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-20 hover:translate-y-0 transition duration-300">
-                  {" "}
-                  <h3 className="text-xl font-medium mb-4">
-                    Interior Design Trends
-                  </h3>
-                  <div className="flex items-center space-x-3 mb-4">
-                    <FaBuilding className="text-yellow-500 text-lg" />
-                    <span className="text-sm">Interior Design</span>
-                  </div>
-                  <p className="text-sm">
-                    Explore the latest interior design trends shaping the future
-                    of hotel and property interiors.
-                  </p>
-                </div>
-              </div>
+          {/* Dynamic Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
 
-              <div className="relative  rounded-xl shadow-xl hover:shadow-2xl transition duration-300 h-60 overflow-hidden ">
-                <img
-                  src={images.investment}
-                  alt="Real Estate Investment Tips"
-                  className="w-full h-full object-cover "
-                />
-                <div className="absolute top-0 left-0 right-0 bottom-0 p-6 bg-black bg-opacity-40"></div>
-                <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-20 hover:translate-y-0 transition duration-300">
-                  {" "}
-                  <h3 className="text-xl font-medium mb-4">
-                    Real Estate Investment Tips
-                  </h3>
-                  <div className="flex items-center space-x-3 mb-4">
-                    <FaRegNewspaper className="text-purple-500 text-lg" />
-                    <span className="text-sm">Investment Tips</span>
-                  </div>
-                  <p className="text-sm">
-                    Get expert advice on how to make smart investments in the
-                    property market and spot profitable properties.
-                  </p>
-                </div>
-              </div>
+          {/* Text with Enhanced Animation */}
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+              New Hotel Opening
+            </h1>
+            <div className="mt-2 flex items-center gap-2">
+              <FaBed className="text-blue-500 text-lg" />
+              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+                Hotel & Resorts
+              </span>
             </div>
+            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+              Discover the most luxurious hotel openings this season in top
+              destinations across the globe. Indulge in comfort and luxury like
+              never before.
+            </p>
           </div>
+          <div className="absolute top-5 right-5 flex items-center gap-4  p-4 rounded-lg shadow-lg transform transition-all duration-300 ease-in-out hover:scale-105">
+            {/* Small Decorative Line */}
+            <div className="bg-white w-1 h-8 rounded-full"></div>
 
-          <div className="flex flex-col gap-6">
-            <div className="relative bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 h-96 w-72 overflow-hidden">
-              <img
-                src={images.luxary}
-                alt="Luxury Property Developments"
-                className="w-full h-full object-cover rounded-t-lg"
-              />
-              <div className="absolute top-0 left-0 right-0 bottom-0 p-6 bg-black bg-opacity-40"></div>
-              <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-20 hover:translate-y-0 transition duration-300">
-                {" "}
-                <h3 className="text-xl font-medium mb-4">
-                  Luxury Property Developments
-                </h3>
-                <div className="flex items-center space-x-3 mb-4">
-                  <FaBuilding className="text-red-500 text-lg" />
-                  <span className="text-sm">Property Development</span>
-                </div>
-                <p className="text-sm">
-                  Explore the most exclusive luxury property developments,
-                  setting new standards in design and comfort.
-                </p>
-              </div>
-            </div>
-            <div className="relative bg-white rounded-xl shadow-xl hover:shadow-2xl transition duration-300 h-44 overflow-hidden">
-              <img
-                src={images.market}
-                alt="Property Market Insights"
-                className="w-full h-full object-cover rounded-t-lg"
-              />
-              <div className="absolute top-0 left-0 right-0 bottom-0 p-6 bg-black bg-opacity-40"></div>
-              <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg translate-y-[100px] hover:translate-y-0 transition duration-300">
-                <h3 className="text-xl font-medium mb-4">
-                  Property Market Insights
-                </h3>
-                <div className="flex items-center space-x-3 mb-4">
-                  <FaRegNewspaper className="text-green-500 text-lg" />
-                  <span className="text-sm">Market Updates</span>
-                </div>
-                <p className="text-sm">
-                  Stay updated with the latest trends in the property market.
-                  Learn about investment opportunities and market shifts.
-                </p>
-              </div>
+            {/* Information Section */}
+            <div className="flex flex-col text-right">
+              <span className="text-sm font-semibold text-gray-900 mt-1">
+                March 20, 2025 {/* Date or event */}
+              </span>
             </div>
           </div>
         </div>
+
+        {/* Interior Design Trends */}
+        <div className="row-span-3 col-start-3 row-start-3 relative overflow-hidden rounded-lg group ">
+          <img
+            src={images.market}
+            alt="Interior Design Trends"
+            className="h-full w-full object-cover rounded-lg transition-transform group-hover:scale-110 group-hover:translate-x-3 group-hover:translate-y-3"
+            loading="lazy"
+          />
+          {/* Dynamic Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+          {/* Text with Enhanced Animation */}
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+              Interior Design Trends
+            </h1>
+            <div className="mt-2 flex items-center gap-2">
+              <FaBed className="text-blue-500 text-lg" />
+              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+                Interior Design
+              </span>
+            </div>
+            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+              Explore the latest interior design trends shaping the future of
+              hotel and property interiors.
+            </p>
+          </div>
+        </div>
+
+        {/* Luxury Property Developments */}
+        <div className="row-span-2 col-start-4 row-start-3 relative overflow-hidden rounded-lg group ">
+          <img
+            src={images.luxary}
+            alt="Luxury Property Devlopment"
+            className="h-full w-full object-cover rounded-lg transition-transform group-hover:scale-110 group-hover:translate-x-3 group-hover:translate-y-3"
+            loading="lazy"
+          />
+          {/* Dynamic Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+
+          {/* Text with Enhanced Animation */}
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
+            <h1 className="text-2xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+              Luxury Property Developments
+            </h1>
+            <div className="mt-2 flex items-center gap-2">
+              <FaBed className="text-blue-500 text-base" />
+              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+                Property Development
+              </span>
+            </div>
+            <p className="text-xs text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+              Explore the most exclusive luxury property developments, setting
+              new standards in design and comfort.
+            </p>
+          </div>
+        </div>
+
+        {/* Real Estate Property Insights */}
+        <div className="row-span-3 col-start-5 row-start-1 relative group overflow-hidden rounded-lg ">
+          {/* Image with Parallax Zoom Effect */}
+          <img
+            src={images.property}
+            alt="Real Estate Property"
+            className="h-full w-full object-cover rounded-lg transition-transform group-hover:scale-110 group-hover:translate-x-3 group-hover:translate-y-3"
+            loading="lazy"
+          />
+
+          {/* Dynamic Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+
+          {/* Text with Enhanced Animation */}
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+              New Hotel Opening
+            </h1>
+            <div className="mt-2 flex items-center gap-2">
+              <FaBed className="text-blue-500 text-lg" />
+              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+                Hotel & Resorts
+              </span>
+            </div>
+            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+              Discover the most luxurious hotel openings this season in top
+              destinations across the globe. Indulge in comfort and luxury like
+              never before.
+            </p>
+          </div>
+        </div>
+
+        {/* Property Market Insight */}
+        <div className="col-start-4 row-start-5 relative bg-blue-300 p-6 flex items-center justify-center rounded-lg shadow-lg ">
+          <h1 className="text-2xl font-semibold text-white">
+            Property Market Insight
+          </h1>
+        </div>
+
+        {/* Real Estate Investment Tips */}
+        <div className="row-span-2 col-start-5 row-start-4 relative overflow-hidden rounded-lg group ">
+          {/* Image with Parallax Zoom Effect */}
+          <img
+            src={images.investment}
+            alt="Property Market Insights"
+            className="h-full w-full object-cover rounded-lg transition-transform group-hover:scale-110 group-hover:translate-x-3 group-hover:translate-y-3"
+            loading="lazy"
+          />
+
+          {/* Dynamic Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+
+          {/* Text with Enhanced Animation */}
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+              Property Market Insights{" "}
+            </h1>
+            <div className="mt-2 flex items-center gap-2">
+              <FaRegNewspaper className="text-blue-500 text-lg" />
+              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+                Market Updates{" "}
+              </span>
+            </div>
+            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+              Stay updated with the latest trends in the property market. Learn
+              about investment opportunities and market shifts
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
