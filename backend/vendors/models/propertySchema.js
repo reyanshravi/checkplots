@@ -9,7 +9,7 @@ const propertySchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["Plot", "Apartment", "Commercial", "Villa", "Other"],
+      enum: ["Villa", "Apartment", "Commercial", "Plot", "Other"],
       required: true,
     },
     details: {
@@ -52,15 +52,33 @@ const propertySchema = new mongoose.Schema(
     },
     facing: {
       type: String,
+      enum: [
+        "East",
+        "West",
+        "North",
+        "South",
+        "Northeast",
+        "Northwest",
+        "Southeast",
+        "Southwest",
+      ],
     },
     landmark: {
       type: String,
     },
     availableFor: {
       type: String,
+      enum: ["Sale", "Rent"],
+      required: true,
     },
     ownershipType: {
       type: String,
+    },
+    numberOfBedroom: {
+      type: Number,
+    },
+    numberOfBathroom: {
+      type: Number,
     },
     amenities: [{ type: String }],
     contactNumber: {

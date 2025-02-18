@@ -1,5 +1,6 @@
 import VendorProject from "../models/projectModel.js";
 import Vendor from "../models/vendorModel.js";
+import upload from "../../utils/multer.js";
 
 export const addProject = async (req, res) => {
   try {
