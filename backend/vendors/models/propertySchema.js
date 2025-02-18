@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 const propertySchema = new mongoose.Schema(
   {
+    vendorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Vendor",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -90,6 +95,15 @@ const propertySchema = new mongoose.Schema(
     },
     investmentPotential: {
       type: String,
+    },
+    status: {
+      type: String,
+      enum: ["Ongoing", "Completed", "Upcoming"],
+      default: "Ongoing",
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
     },
   },
   { timestamps: true }

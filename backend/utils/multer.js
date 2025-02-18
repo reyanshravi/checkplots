@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 });
 
 // Initialize multer
-const upload = multer({
+export const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file size limit
   fileFilter: (req, file, cb) => {
@@ -42,18 +42,13 @@ const uploadFiles = (req, res) => {
   res.json({ message: "Files uploaded successfully", files: req.files });
 };
 
-// Single file upload endpoint
-app.post("/upload", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: "No file uploaded" });
-  }
-  res.json({ message: "File uploaded successfully", file: req.file });
-});
+// // Single file upload endpoint
+// app.post("/upload", upload.single("file"), (req, res) => {
+//   if (!req.file) {
+//     return res.status(400).json({ message: "No file uploaded" });
+//   }
+//   res.json({ message: "File uploaded successfully", file: req.file });
+// });
 
-// Multiple file upload endpoint
-app.post("/upload-multiple", upload.array("files", 10), uploadFiles);
-
-// Start server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+// // Multiple file upload endpoint
+// app.post("/upload-multiple", upload.array("files", 10), uploadFiles);

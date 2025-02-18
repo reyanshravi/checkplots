@@ -1,5 +1,7 @@
 import express from "express";
 
+import { upload } from "../../utils/multer.js";
+
 import {
   registerVendor,
   loginVendor,
@@ -20,6 +22,7 @@ import { validateVendorLogin } from "../middlewares/validateVendorLogin.js";
 import { authenticateVendor } from "../middlewares/authMiddleware.js";
 
 import {
+  addProperty,
   addProject,
   getVendorProjects,
   updateProject,
@@ -64,8 +67,11 @@ vendorRouter.get("/allVendors", getAllVendors);
 // Update vendor status
 vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
+// Add a property
+vendorRouter.post("/property", upload.array("images", 10), addProperty);
+
 //Add a project
-vendorRouter.post("/projects", addProject);
+vendorRouter.post("/projects", upload.array("images", 10), addProject);
 
 // Get all projects for a vendor
 vendorRouter.get("/projects/:vendorId", getVendorProjects);
