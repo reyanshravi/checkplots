@@ -1,6 +1,6 @@
 import React from "react";
 import InteriorCard from "./InteriorCard";
-import interiors from "../Data/interior";
+import interiors from "../Data/interiors";
 
 export default function InteriorSection({limit}) {
   return (

@@ -63,7 +63,7 @@ const hotelSchema = new mongoose.Schema(
     cancellationPolicy: {
       type: String,
     },
-    specialOffers: {
+    specialOffers: {  
       type: String,
     },
     contactNumber: {

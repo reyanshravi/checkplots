@@ -18,14 +18,12 @@ import UserDashboard from "./pages/user/UserDashboard";
 import HotelSection from "./components/HotelSection";
 import InteriorSection from "./components/InteriorSection";
 import PropertySection from "./components/PropertySection";
-// import Gallery from "./pages/Test";
 import ExploreSection from "./components/ExploreSection";
 import TestGrid from "./components/TestGrid";
-import News from "./components/News";
 function App() {
   return (
     <>
-      {/* <Router>
+      <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -37,16 +35,16 @@ function App() {
           <Route path="/hotel" element={<Hotels />} />
           <Route path="/vendor/signin" element={<VendorSignin />} />
           <Route path="/vendor/signup" element={<VendorSignup />} />
+          <Route path="/vendor/dashboard" element={<VendorDashboard />} />
           <Route path="/user/signin" element={<UserSignin />} />
           <Route path="/user/signup" element={<UserSignup />} />
+          <Route path="/user/dashboard" element={<UserDashboard />} />
           <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/explore" element={<ExploreSection/>} />
-          <Route path="/testgrid" element={<TestGrid/>} />
+          <Route path="/explore" element={<ExploreSection />} />
+          <Route path="/testgrid" element={<TestGrid />} />
         </Routes>
         <Footer />
-      </Router> */}
-     {/* <TestGrid /> */}
-      <News />
+      </Router>
     </>
   );
 }

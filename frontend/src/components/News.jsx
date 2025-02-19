@@ -26,7 +26,7 @@ export default function News() {
     <>
       <div className="my-16 md:px-20 md:grid md:grid-cols-5 md:grid-rows-5 gap-6 sm:flex sm:flex-wrap sm:justify-center  ">
         {/* Latest News Section */}
-        <div className="col-span-2 row-span-5 p-6 space-y-8 bg-white shadow-md rounded-lg">
+        <div className="col-span-2 row-span-5 p-6 space-y-8 bg-white  rounded-lg">
           <h1 className="text-3xl font-semibold text-gray-900">Latest News</h1>
           <p className="text-lg text-gray-600">
             Stay up-to-date with the latest trends in real estate, luxury
@@ -138,20 +138,20 @@ export default function News() {
           />
 
           {/* Dynamic Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
 
           {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-0 opacity-100 transition-all duration-700">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-4">
               New Hotel Opening
             </h1>
             <div className="mt-2 flex items-center gap-2">
               <FaBed className="text-blue-500 text-lg" />
-              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+              <span className="text-sm text-gray-300 opacity-100 transition-opacity duration-800">
                 Hotel & Resorts
               </span>
             </div>
-            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+            <p className="text-sm text-gray-200 opacity-100 transition-opacity duration-900">
               Discover the most luxurious hotel openings this season in top
               destinations across the globe. Indulge in comfort and luxury like
               never before.
@@ -164,7 +164,7 @@ export default function News() {
             {/* Information Section */}
             <div className="flex flex-col text-right">
               <span className="text-sm font-semibold text-gray-900 mt-1">
-                March 20, 2025 {/* Date or event */}
+                March 20, 2025
               </span>
             </div>
           </div>
@@ -179,15 +179,15 @@ export default function News() {
             loading="lazy"
           />
           {/* Dynamic Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
           {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-20 hover:translate-y-0">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
               Interior Design Trends
             </h1>
             <div className="mt-2 flex items-center gap-2">
               <FaBed className="text-blue-500 text-lg" />
-              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+              <span className="text-sm text-gray-300 ">
                 Interior Design
               </span>
             </div>
@@ -207,16 +207,16 @@ export default function News() {
             loading="lazy"
           />
           {/* Dynamic Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
 
           {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-            <h1 className="text-2xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-16 hover:translate-y-0">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
               Luxury Property Developments
             </h1>
             <div className="mt-2 flex items-center gap-2">
               <FaBed className="text-blue-500 text-base" />
-              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+              <span className="text-sm text-gray-300 ">
                 Property Development
               </span>
             </div>
@@ -241,17 +241,17 @@ export default function News() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
 
           {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-28 hover:translate-y-0  ">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
               New Hotel Opening
             </h1>
             <div className="mt-2 flex items-center gap-2">
               <FaBed className="text-blue-500 text-lg" />
-              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
+              <span className="text-sm text-gray-300 opacity-100 transition-opacity duration-800">
                 Hotel & Resorts
               </span>
             </div>
-            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-900">
               Discover the most luxurious hotel openings this season in top
               destinations across the globe. Indulge in comfort and luxury like
               never before.
@@ -277,20 +277,18 @@ export default function News() {
           />
 
           {/* Dynamic Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
 
           {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-[100px] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700">
-            <h1 className="text-3xl font-semibold text-gray-100 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-700 transform group-hover:scale-110 pl-2">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-20 group-hover:translate-y-0">
+            <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
               Property Market Insights{" "}
             </h1>
-            <div className="mt-2 flex items-center gap-2">
+            <div className="mt-4 flex items-center gap-2">
               <FaRegNewspaper className="text-blue-500 text-lg" />
-              <span className="text-sm text-gray-300 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-800">
-                Market Updates{" "}
-              </span>
+              <span className="text-sm text-gray-300 ">Market Updates </span>
             </div>
-            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
+            <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-900">
               Stay updated with the latest trends in the property market. Learn
               about investment opportunities and market shifts
             </p>

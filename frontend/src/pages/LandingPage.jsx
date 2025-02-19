@@ -54,8 +54,8 @@ export default function LandingPage() {
         {/* <Properties />
         <Slider /> */}
         <HotelsByLocation />
-        {/* <News /> */}
-        <TestGrid/>
+        <News />
+        {/* <TestGrid/> */}
         <ExploreSection />
 
         <button

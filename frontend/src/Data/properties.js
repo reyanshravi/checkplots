@@ -1,4 +1,4 @@
-const property = [
+const properties = [
     {
       id: 1,
       name: "Sunrise Estate Plot",
@@ -440,4 +440,4 @@ const property = [
     },
   ];
   
-  export default property
+  export default properties
