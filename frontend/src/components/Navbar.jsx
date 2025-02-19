@@ -588,6 +588,7 @@ const Navbar = () => {
               )}
             </div>
 
+            <Link to="/property/post">
             <button className="hidden md:flex items-center px-3 py-2 border border-transparent rounded-lg hover:bg-gray-100 transition-all duration-200">
               <span className="mr-1 text-lg">📜</span>
               <span className="whitespace-nowrap text-sm font-medium">
@@ -597,6 +598,7 @@ const Navbar = () => {
                 Free
               </span>
             </button>
+            </Link>
 
             <label
               onClick={toggleSidebar}

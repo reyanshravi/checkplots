@@ -20,6 +20,7 @@ import InteriorSection from "./components/InteriorSection";
 import PropertySection from "./components/PropertySection";
 import ExploreSection from "./components/ExploreSection";
 import TestGrid from "./components/TestGrid";
+import PropertyPost from "./components/PropertyPost";
 function App() {
   return (
     <>
@@ -42,9 +43,12 @@ function App() {
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/explore" element={<ExploreSection />} />
           <Route path="/testgrid" element={<TestGrid />} />
+          <Route path="/property/post" element={<PropertyPost />} />
         </Routes>
         <Footer />
       </Router>
+
+      
     </>
   );
 }
