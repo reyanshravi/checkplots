@@ -24,9 +24,9 @@ export default function News() {
 
   return (
     <>
-      <div className="my-16 md:px-20 md:grid md:grid-cols-5 md:grid-rows-5 gap-6 sm:flex sm:flex-wrap sm:justify-center  ">
+      <div className="my-16 md:px-20 md:grid md:grid-cols-5 md:grid-rows-5 gap-6 sm:flex sm:flex-wrap sm:justify-center">
         {/* Latest News Section */}
-        <div className="col-span-2 row-span-5 p-6 space-y-8 bg-white  rounded-lg">
+        <div className="col-span-2 row-span-5 p-6 space-y-8 bg-white rounded-lg">
           <h1 className="text-3xl font-semibold text-gray-900">Latest News</h1>
           <p className="text-lg text-gray-600">
             Stay up-to-date with the latest trends in real estate, luxury
@@ -128,8 +128,7 @@ export default function News() {
         </div>
 
         {/* New Hotel Opening */}
-        <div className="col-span-2 row-span-2 col-start-3 relative overflow-hidden rounded-lg group  ">
-          {/* Image with Parallax Zoom Effect */}
+        <div className="col-span-2 row-span-2 col-start-3 relative overflow-hidden rounded-lg group">
           <img
             src={images.hotel}
             alt="Hotel"
@@ -137,10 +136,8 @@ export default function News() {
             loading="lazy"
           />
 
-          {/* Dynamic Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
 
-          {/* Text with Enhanced Animation */}
           <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform translate-y-0 opacity-100 transition-all duration-700">
             <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-4">
               New Hotel Opening
@@ -157,11 +154,8 @@ export default function News() {
               never before.
             </p>
           </div>
-          <div className="absolute top-5 right-5 flex items-center gap-4  p-4 rounded-lg shadow-lg transform transition-all duration-300 ease-in-out hover:scale-105">
-            {/* Small Decorative Line */}
+          <div className="absolute top-5 right-5 flex items-center gap-4 p-4 rounded-lg shadow-lg transform transition-all duration-300 ease-in-out hover:scale-105">
             <div className="bg-white w-1 h-8 rounded-full"></div>
-
-            {/* Information Section */}
             <div className="flex flex-col text-right">
               <span className="text-sm font-semibold text-gray-900 mt-1">
                 March 20, 2025
@@ -171,25 +165,21 @@ export default function News() {
         </div>
 
         {/* Interior Design Trends */}
-        <div className="row-span-3 col-start-3 row-start-3 relative overflow-hidden rounded-lg group ">
+        <div className="row-span-3 col-start-3 row-start-3 relative overflow-hidden rounded-lg group">
           <img
             src={images.market}
             alt="Interior Design Trends"
             className="h-full w-full object-cover rounded-lg transition-transform group-hover:scale-110 group-hover:translate-x-3 group-hover:translate-y-3"
             loading="lazy"
           />
-          {/* Dynamic Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
-          {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-20 hover:translate-y-0">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform opacity-100 transition-all duration-700 translate-y-20 hover:translate-y-0">
             <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
               Interior Design Trends
             </h1>
             <div className="mt-2 flex items-center gap-2">
               <FaBed className="text-blue-500 text-lg" />
-              <span className="text-sm text-gray-300 ">
-                Interior Design
-              </span>
+              <span className="text-sm text-gray-300 ">Interior Design</span>
             </div>
             <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 group-hover:transition-opacity duration-900">
               Explore the latest interior design trends shaping the future of
@@ -199,18 +189,15 @@ export default function News() {
         </div>
 
         {/* Luxury Property Developments */}
-        <div className="row-span-2 col-start-4 row-start-3 relative overflow-hidden rounded-lg group ">
+        <div className="row-span-2 col-start-4 row-start-3 relative overflow-hidden rounded-lg group">
           <img
             src={images.luxary}
-            alt="Luxury Property Devlopment"
+            alt="Luxury Property Development"
             className="h-full w-full object-cover rounded-lg transition-transform group-hover:scale-110 group-hover:translate-x-3 group-hover:translate-y-3"
             loading="lazy"
           />
-          {/* Dynamic Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
-
-          {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-16 hover:translate-y-0">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform opacity-100 transition-all duration-700 translate-y-16 hover:translate-y-0">
             <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
               Luxury Property Developments
             </h1>
@@ -228,8 +215,7 @@ export default function News() {
         </div>
 
         {/* Real Estate Property Insights */}
-        <div className="row-span-3 col-start-5 row-start-1 relative group overflow-hidden rounded-lg ">
-          {/* Image with Parallax Zoom Effect */}
+        <div className="row-span-3 col-start-5 row-start-1 relative group overflow-hidden rounded-lg">
           <img
             src={images.property}
             alt="Real Estate Property"
@@ -237,11 +223,9 @@ export default function News() {
             loading="lazy"
           />
 
-          {/* Dynamic Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-50 group-hover:opacity-80 transition-opacity duration-500"></div>
 
-          {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-28 hover:translate-y-0  ">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform opacity-100 transition-all duration-700 translate-y-28 hover:translate-y-0">
             <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
               New Hotel Opening
             </h1>
@@ -260,15 +244,14 @@ export default function News() {
         </div>
 
         {/* Property Market Insight */}
-        <div className="col-start-4 row-start-5 relative bg-blue-300 p-6 flex items-center justify-center rounded-lg shadow-lg ">
+        <div className="col-start-4 row-start-5 relative bg-blue-300 p-6 flex items-center justify-center rounded-lg shadow-lg">
           <h1 className="text-2xl font-semibold text-white">
             Property Market Insight
           </h1>
         </div>
 
         {/* Real Estate Investment Tips */}
-        <div className="row-span-2 col-start-5 row-start-4 relative overflow-hidden rounded-lg group ">
-          {/* Image with Parallax Zoom Effect */}
+        <div className="row-span-2 col-start-5 row-start-4 relative overflow-hidden rounded-lg group">
           <img
             src={images.investment}
             alt="Property Market Insights"
@@ -276,21 +259,19 @@ export default function News() {
             loading="lazy"
           />
 
-          {/* Dynamic Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black to-black opacity-80 transition-opacity duration-500"></div>
 
-          {/* Text with Enhanced Animation */}
-          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform  opacity-100 transition-all duration-700 translate-y-20 group-hover:translate-y-0">
+          <div className="absolute top-0 left-0 right-0 bottom-0 p-6 text-white flex flex-col justify-end rounded-lg transform opacity-100 transition-all duration-700 translate-y-20 group-hover:translate-y-0">
             <h1 className="text-3xl font-semibold text-gray-100 opacity-100 transition-opacity duration-700 transform scale-110 pl-2">
-              Property Market Insights{" "}
+              Property Market Insights
             </h1>
             <div className="mt-4 flex items-center gap-2">
               <FaRegNewspaper className="text-blue-500 text-lg" />
-              <span className="text-sm text-gray-300 ">Market Updates </span>
+              <span className="text-sm text-gray-300">Market Updates</span>
             </div>
             <p className="text-sm text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-900">
               Stay updated with the latest trends in the property market. Learn
-              about investment opportunities and market shifts
+              about investment opportunities and market shifts.
             </p>
           </div>
         </div>

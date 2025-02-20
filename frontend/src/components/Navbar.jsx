@@ -358,7 +358,7 @@ const Navbar = () => {
   const sidebarRef = useRef(null);
   const sidebarButtonRef = useRef(null);
   const dropdownRef = useRef(null);
-  const dropdownButtonRef = useRef(null); // Define the ref here
+  const dropdownButtonRef = useRef(null); 
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
