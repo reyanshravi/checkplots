@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 
-const ProtectedRoute = ({ component: Component, redirectTo = '/vendor/signin', ...rest }) => {
+const ProtectedRoute = ({ component: Component, role = 'user', redirectTo = '/signin', ...rest }) => {
   const [isAuthorized, setIsAuthorized] = useState(null); // Loading state for authorization check
 
   useEffect(() => {
@@ -13,8 +13,11 @@ const ProtectedRoute = ({ component: Component, redirectTo = '/vendor/signin', .
       return;
     }
 
-    // Check if the user is authenticated and a vendor
-    axios.get('http://localhost:7002/api/vendor/authenticate', {
+    // Determine the endpoint based on the role
+    const endpoint = role === 'vendor' ? 'vendor/authenticate' : 'user/authenticate';
+
+    // Check if the user is authenticated and the role matches
+    axios.get(`http://localhost:7002/api/${endpoint}`, {
       headers: { Authorization: `Bearer ${token}` }, // Use `Bearer` before the token for convention
     })
       .then(response => {
@@ -27,7 +30,7 @@ const ProtectedRoute = ({ component: Component, redirectTo = '/vendor/signin', .
         }
         setIsAuthorized(false);
       });
-  }, []);
+  }, [role]); // Rerun effect when role changes
 
   if (isAuthorized === null) {
     return <div>Loading...</div>; // Show loading state while checking

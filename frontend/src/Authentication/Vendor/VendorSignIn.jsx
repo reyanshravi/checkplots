@@ -1,8 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import InputField from "../../components/InputField";
-import signin_bg from "../../assets/Signin/bg_vendor.jpg";
 import { useNavigate } from "react-router-dom";
+import HomeButton from "../../components/HomeButton";
 
 const VendorSignin = () => {
   const [email, setEmail] = useState("");
@@ -52,7 +51,8 @@ const VendorSignin = () => {
 
   return (
     <>
-      <section className="bg-white">
+      <section className="bg-white relative">
+        <HomeButton />
         <div className="lg:grid lg:h-[calc(100vh)] lg:grid-cols-12">
           <section className="relative flex h-64 items-end bg-gray-900 lg:col-span-5 lg:h-screen xl:col-span-6">
             <img

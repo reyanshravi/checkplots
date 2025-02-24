@@ -3,17 +3,19 @@ import React from "react";
 const HotelCard = ({ hotel }) => {
   const image =
     "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+
   return (
     <a
       href={hotel.website}
-      className="block max-w-72 w-full bg-white rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden p-2 border"
+      className="block h-[452px] max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full bg-white rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden p-2 border"
+      aria-label={`Go to ${hotel.name}'s website`}
     >
       {/* Image Section */}
       <div className="relative">
         <img
           alt={hotel.name}
           src={image}
-          className="w-full h-32 object-cover rounded-t-lg"
+          className="w-full h-32 sm:h-40 md:h-48 object-cover rounded-t-lg"
         />
         <div className="absolute bottom-2 left-4 text-white text-lg font-semibold shadow-lg">
           {hotel.name}
@@ -31,7 +33,7 @@ const HotelCard = ({ hotel }) => {
         </div>
 
         {/* Room Details */}
-        <div className="text-xs text-gray-500 mb-2">{hotel.details}</div>
+        <div className="text-xs text-gray-500 mb-2 line-clamp-2">{hotel.details}</div>
 
         {/* Rating Section */}
         <div className="flex items-center text-xs text-gray-600 mb-2">
@@ -60,7 +62,7 @@ const HotelCard = ({ hotel }) => {
       </div>
 
       {/* Amenities & Nearby Attractions Section */}
-      <div className="px-4  border-t border-gray-200 grid grid-cols-2 gap-1">
+      <div className="px-4 border-t border-gray-200 grid grid-cols-2 gap-1">
         {/* Amenities */}
         <div>
           <div className="font-semibold text-gray-700 text-xs mb-1">

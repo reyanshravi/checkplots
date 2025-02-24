@@ -128,9 +128,11 @@ function App() {
         <Route
           path="/user/dashboard"
           element={
-            <NoLayout>
-              <UserDashboard />
-            </NoLayout>
+            <ProtectedRoute
+              component={UserDashboard}
+              role="user"
+              redirectTo="/user/signin"
+            />
           }
         />
         <Route
@@ -159,7 +161,13 @@ function App() {
         />
         <Route
           path="/vendor/dashboard"
-          element={<ProtectedRoute component={VendorDashboard} />}
+          element={
+            <ProtectedRoute
+              component={VendorDashboard}
+              role="vendor"
+              redirectTo="/vendor/signin"
+            />
+          }
         />
       </Routes>
     </Router>
