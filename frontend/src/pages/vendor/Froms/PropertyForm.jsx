@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"
 import {
   RiDeleteBinLine,
   RiAddFill,
@@ -186,12 +187,58 @@ const PropertyForm = ({ onSubmit, existingData = {} }) => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
-      onSubmit(propertyData);
+      try {
+        // Prepare the form data to be submitted
+        const formData = new FormData();
+        formData.append("vendorId", "679b5504384bb55d7309be5b");  // Use your actual vendorId
+        formData.append("name", propertyData.name);
+        formData.append("type", propertyData.type);
+        formData.append("details", propertyData.details);
+        formData.append("price", propertyData.price);
+        formData.append("pricePerSqft", propertyData.pricePerSqft);
+        formData.append("address", propertyData.address);
+        formData.append("verified", propertyData.verified);
+        formData.append("underDevelopment", propertyData.underDevelopment);
+        formData.append("rating", propertyData.rating);
+        formData.append("reviews", propertyData.reviews);
+        formData.append("plotDimensions", propertyData.plotDimensions);
+        formData.append("facing", propertyData.facing);
+        formData.append("landmark", propertyData.landmark);
+        formData.append("availableFor", propertyData.availableFor);
+        formData.append("ownershipType", propertyData.ownershipType);
+        formData.append("numberOfBedroom", propertyData.numberOfBedroom);
+        formData.append("numberOfBathroom", propertyData.numberOfBathroom);
+        formData.append("contactNumber", propertyData.contactNumber);
+        formData.append("website", propertyData.website);
+        formData.append("investmentPotential", propertyData.investmentPotential);
+  
+        // Handle amenities, since it's an array
+        propertyData.amenities.forEach((amenity, index) => {
+          formData.append(`amenities[${index}]`, amenity);
+        });
+  
+        // Handle images (if any)
+        if (propertyData.image) {
+          // Assuming 'image' is a file object
+          formData.append("images", propertyData.image[0]); // Only append the first file
+        }
+  
+        // Send the POST request to the API
+        const response = await axios.post("http://localhost:7002/api/vendor/property", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        console.log("Property submitted successfully:", response.data);
+      } catch (error) {
+        console.error("Error submitting property:", error);
+      }
     }
   };
 
