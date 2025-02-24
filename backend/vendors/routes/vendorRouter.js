@@ -54,7 +54,9 @@ vendorRouter.get("/profile", authenticateVendor, (req, res) => {
 });
 
 // Middleware to authenticate vendor
-vendorRouter.get("/authenticate", authenticateVendor);
+vendorRouter.get("/authenticate", authenticateVendor, (req, res) => {
+  res.status(200).json({ message: "Vendor authenticated" });
+});
 
 // Middleware to authenticate vendor and update
 vendorRouter.put("/profile/update", authenticateVendor, updateVendorProfile);
