@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import signup_bg from "../../assets/Signup/bg-signup.jpg";
 
 const VendorSignUp = () => {
   const navigate = useNavigate();
