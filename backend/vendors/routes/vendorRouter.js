@@ -53,13 +53,11 @@ vendorRouter.get("/profile", authenticateVendor, (req, res) => {
   res.status(200).json({ message: "Vendor authenticated", vendor: req.vendor });
 });
 
+// Middleware to authenticate vendor
+vendorRouter.get("/authenticate", authenticateVendor);
+
 // Middleware to authenticate vendor and update
-vendorRouter.put(
-  "/profile/update",
-  authenticateVendor,
-  authenticateVendor,
-  updateVendorProfile
-);
+vendorRouter.put("/profile/update", authenticateVendor, updateVendorProfile);
 
 // Protected Route: Get all vendors
 vendorRouter.get("/allVendors", getAllVendors);
