@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"
+import axios from "axios";
 import {
   RiDeleteBinLine,
   RiAddFill,
@@ -195,7 +195,7 @@ const PropertyForm = ({ onSubmit, existingData = {} }) => {
       try {
         // Prepare the form data to be submitted
         const formData = new FormData();
-        formData.append("vendorId", "679b5504384bb55d7309be5b");  // Use your actual vendorId
+        formData.append("vendorId", "679b5504384bb55d7309be5b"); // Use your actual vendorId
         formData.append("name", propertyData.name);
         formData.append("type", propertyData.type);
         formData.append("details", propertyData.details);
@@ -215,26 +215,33 @@ const PropertyForm = ({ onSubmit, existingData = {} }) => {
         formData.append("numberOfBathroom", propertyData.numberOfBathroom);
         formData.append("contactNumber", propertyData.contactNumber);
         formData.append("website", propertyData.website);
-        formData.append("investmentPotential", propertyData.investmentPotential);
-  
+        formData.append(
+          "investmentPotential",
+          propertyData.investmentPotential
+        );
+
         // Handle amenities, since it's an array
         propertyData.amenities.forEach((amenity, index) => {
           formData.append(`amenities[${index}]`, amenity);
         });
-  
+
         // Handle images (if any)
         if (propertyData.image) {
           // Assuming 'image' is a file object
           formData.append("images", propertyData.image[0]); // Only append the first file
         }
-  
+
         // Send the POST request to the API
-        const response = await axios.post("http://localhost:7002/api/vendor/property", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-  
+        const response = await axios.post(
+          "http://localhost:7002/api/vendor/property",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
         console.log("Property submitted successfully:", response.data);
       } catch (error) {
         console.error("Error submitting property:", error);
@@ -317,6 +324,7 @@ const PropertyForm = ({ onSubmit, existingData = {} }) => {
             Property Image
           </label>
           <input
+            multiple
             type="file"
             name="image"
             onChange={handleImageChange}
