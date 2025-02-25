@@ -30,7 +30,7 @@ export const upload = multer({
     if (extName && mimeType) {
       return cb(null, true);
     } else {
-      return cb(new Error("Only images and PDFs are allowed!"));
+      return cb(new Error("Only images are allowed!"));
     }
   },
 });
