@@ -1,18 +1,19 @@
-import express from "express";
 import multer from "multer";
 import path from "path";
 
-const app = express();
-const port = 3000;
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinaryConfig.js"; // Ensure you've configured Cloudinary
 
-// Set up storage engine
-const storage = multer.diskStorage({
-  destination: "./uploads/",
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
+// Set up Cloudinary storage engine
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "checkplots", // Folder in Cloudinary where images will be stored
+    allowedFormats: ["jpg", "png", "jpeg"], // Specify allowed formats
+    // Optionally, customize public_id (filename) using a function:
+    public_id: (req, file) => {
+      return `${file.fieldname}-${Date.now()}`;
+    },
   },
 });
 
@@ -21,7 +22,7 @@ export const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file size limit
   fileFilter: (req, file, cb) => {
-    const fileTypes = /jpeg|jpg|png|gif|pdf/;
+    const fileTypes = /jpeg|jpg|png/;
     const extName = fileTypes.test(
       path.extname(file.originalname).toLowerCase()
     );
@@ -41,14 +42,3 @@ const uploadFiles = (req, res) => {
   }
   res.json({ message: "Files uploaded successfully", files: req.files });
 };
-
-// // Single file upload endpoint
-// app.post("/upload", upload.single("file"), (req, res) => {
-//   if (!req.file) {
-//     return res.status(400).json({ message: "No file uploaded" });
-//   }
-//   res.json({ message: "File uploaded successfully", file: req.file });
-// });
-
-// // Multiple file upload endpoint
-// app.post("/upload-multiple", upload.array("files", 10), uploadFiles);
