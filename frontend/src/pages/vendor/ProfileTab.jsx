@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import userImage from "../../assets/user.png";
+import React, { useEffect, useState } from "react";
+import userImage from "../../assets/user.png"; // Default image
 
 // Reusable input component
 const EditableField = ({ label, value, name, isEditing, handleInputChange, type = "text" }) => {
@@ -37,172 +37,227 @@ const ProfileHeader = ({ imageUrl, fullName, businessName }) => {
 };
 
 const ProfileTab = () => {
-  const vendorData = {
-    fullName: "John Doe",
-    businessName: "Doe Electronics",
-    email: "contact@doeelectronics.com",
-    phone: "+1234567890",
+  const [isEditing, setIsEditing] = useState(false);
+  const [vendorData, setVendorData] = useState({
+    fullName: "",
+    businessName: "",
+    email: "",
+    phone: "",
     address: {
-      street: "123 Tech Street",
-      city: "Tech City",
-      state: "Tech State",
-      zipCode: "12345",
-      country: "Techland",
+      street: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
     },
-    businessType: "Retail",
+    businessType: "",
     profileImageUrl: userImage,
     documents: {
-      businessLicense: "https://www.example.com/business-license.pdf",
-      taxId: "https://www.example.com/tax-id.pdf",
-      otherDocs: [
-        "https://www.example.com/other-doc-1.pdf",
-        "https://www.example.com/other-doc-2.pdf",
-      ],
+      businessLicense: "",
+      taxId: "",
+      otherDocs: [],
     },
-  };
+  });
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedData, setEditedData] = useState(vendorData);
+  const token = localStorage.getItem("token"); // Assuming token is saved in localStorage
+
+  // Fetch vendor profile data on component mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("http://localhost:7002/api/vendor/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Add token to request headers
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch vendor profile");
+        }
+
+        const data = await response.json();
+        if (data.vendor) {
+          setVendorData(data.vendor); // Store the vendor data in state
+        }
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfile();
+  }, [token]);
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsEditing(false);
-    console.log("Saving data:", editedData);
+    console.log("Saving data:", vendorData);
+
+    // Update the vendor profile
+    try {
+      const response = await fetch("http://localhost:7002/api/vendor/profile/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Add token to request headers
+        },
+        body: JSON.stringify(vendorData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update vendor profile");
+      }
+
+      const updatedData = await response.json();
+      setVendorData(updatedData.vendor);
+      console.log("Profile updated:", updatedData);
+    } catch (error) {
+      console.error("Error saving profile data:", error);
+    }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditedData({ ...editedData, [name]: value });
+
+    // Handle nested address object changes
+    if (name.includes("address.")) {
+      const addressKey = name.split(".")[1];
+      setVendorData((prevState) => ({
+        ...prevState,
+        address: {
+          ...prevState.address,
+          [addressKey]: value,
+        },
+      }));
+    } else {
+      setVendorData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
   return (
     <div className="p-6 h-full flex flex-col bg-gray-50">
-  {/* Profile Header */}
-  <ProfileHeader
-    imageUrl={editedData.profileImageUrl}
-    fullName={editedData.fullName}
-    businessName={editedData.businessName}
-  />
+      {/* Profile Header */}
+      <ProfileHeader
+        imageUrl={vendorData.profileImageUrl}
+        fullName={vendorData.fullName}
+        businessName={vendorData.businessName}
+      />
 
-  {/* Profile Content Section (Scrollable) */}
-  <div className="overflow-y-auto flex-1">
-    <div className="flow-root">
-      <dl className="-my-3 divide-y divide-gray-100 text-sm">
-        {/* Editable fields */}
-        <EditableField
-          label="Business Name"
-          value={editedData.businessName}
-          name="businessName"
-          isEditing={isEditing}
-          handleInputChange={handleInputChange}
-        />
-        <EditableField
-          label="Business Type"
-          value={editedData.businessType}
-          name="businessType"
-          isEditing={isEditing}
-          handleInputChange={handleInputChange}
-        />
-        <EditableField
-          label="Email"
-          value={editedData.email}
-          name="email"
-          type="email"
-          isEditing={isEditing}
-          handleInputChange={handleInputChange}
-        />
-        <EditableField
-          label="Phone"
-          value={editedData.phone}
-          name="phone"
-          type="tel"
-          isEditing={isEditing}
-          handleInputChange={handleInputChange}
-        />
-        <EditableField
-          label="Address"
-          value={`${editedData.address.street}, ${editedData.address.city}, ${editedData.address.state} ${editedData.address.zipCode}, ${editedData.address.country}`}
-          name="address"
-          isEditing={isEditing}
-          handleInputChange={handleInputChange}
-        />
+      {/* Profile Content Section (Scrollable) */}
+      <div className="overflow-y-auto flex-1">
+        <div className="flow-root">
+          <dl className="-my-3 divide-y divide-gray-100 text-sm">
+            {/* Editable fields */}
+            <EditableField
+              label="Business Name"
+              value={vendorData.businessName}
+              name="businessName"
+              isEditing={isEditing}
+              handleInputChange={handleInputChange}
+            />
+            <EditableField
+              label="Business Type"
+              value={vendorData.businessType}
+              name="businessType"
+              isEditing={isEditing}
+              handleInputChange={handleInputChange}
+            />
+            <EditableField
+              label="Email"
+              value={vendorData.email}
+              name="email"
+              type="email"
+              isEditing={isEditing}
+              handleInputChange={handleInputChange}
+            />
+            <EditableField
+              label="Phone"
+              value={vendorData.phone}
+              name="phone"
+              type="tel"
+              isEditing={isEditing}
+              handleInputChange={handleInputChange}
+            />
+            <EditableField
+              label="Address"
+              value={`${vendorData.address.street}, ${vendorData.address.city}, ${vendorData.address.state} ${vendorData.address.zipCode}, ${vendorData.address.country}`}
+              name="address"
+              isEditing={isEditing}
+              handleInputChange={handleInputChange}
+            />
 
-        {/* Documents */}
-        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-          <dt className="font-medium text-gray-900">Business License</dt>
-          <dd className="text-gray-700 sm:col-span-2">
-            <a
-              href={editedData.documents.businessLicense}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:underline"
-            >
-              View Document
-            </a>
-          </dd>
+            {/* Documents */}
+            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+              <dt className="font-medium text-gray-900">Business License</dt>
+              <dd className="text-gray-700 sm:col-span-2">
+                <a
+                  href={vendorData.documents.businessLicense}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:underline"
+                >
+                  View Document
+                </a>
+              </dd>
+            </div>
+            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+              <dt className="font-medium text-gray-900">Tax ID</dt>
+              <dd className="text-gray-700 sm:col-span-2">
+                <a
+                  href={vendorData.documents.taxId}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:underline"
+                >
+                  View Document
+                </a>
+              </dd>
+            </div>
+
+            {/* Additional Documents */}
+            {vendorData.documents.otherDocs.map((doc, index) => (
+              <div key={index} className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Other Document {index + 1}</dt>
+                <dd className="text-gray-700 sm:col-span-2">
+                  <a
+                    href={doc}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-600 hover:underline"
+                  >
+                    View Document
+                  </a>
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
-        <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-          <dt className="font-medium text-gray-900">Tax ID</dt>
-          <dd className="text-gray-700 sm:col-span-2">
-            <a
-              href={editedData.documents.taxId}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:underline"
-            >
-              View Document
-            </a>
-          </dd>
-        </div>
+      </div>
 
-        {/* Additional Documents */}
-        {editedData.documents.otherDocs.map((doc, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4"
+      {/* Edit and Save buttons */}
+      <div className="flex justify-end mt-4 space-x-4 sm:space-x-6">
+        {!isEditing ? (
+          <button
+            onClick={handleEdit}
+            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm sm:text-base"
           >
-            <dt className="font-medium text-gray-900">
-              Other Document {index + 1}
-            </dt>
-            <dd className="text-gray-700 sm:col-span-2">
-              <a
-                href={doc}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:underline"
-              >
-                View Document
-              </a>
-            </dd>
-          </div>
-        ))}
-      </dl>
+            Edit
+          </button>
+        ) : (
+          <button
+            onClick={handleSave}
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm sm:text-base"
+          >
+            Save
+          </button>
+        )}
+      </div>
     </div>
-  </div>
-
-  {/* Edit and Save buttons */}
-  <div className="flex justify-end mt-4 space-x-4 sm:space-x-6">
-    {!isEditing ? (
-      <button
-        onClick={handleEdit}
-        className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm sm:text-base"
-      >
-        Edit
-      </button>
-    ) : (
-      <button
-        onClick={handleSave}
-        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm sm:text-base"
-      >
-        Save
-      </button>
-    )}
-  </div>
-</div>
-
   );
 };
 

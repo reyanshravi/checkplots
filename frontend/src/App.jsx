@@ -16,21 +16,12 @@ import UserDashboard from "./pages/user/UserDashboard";
 import ExploreSection from "./components/ExploreSection";
 import TestGrid from "./components/TestGrid";
 import PropertyPost from "./components/PropertyPost";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+
+import ProtectedRoute from "./Router/ProtectedRoute";
+// Import Layouts
+import { MainLayout, NoLayout } from "./Router/Layout";
 
 function App() {
-  // Main Layout (with Navbar and Footer)
-  const MainLayout = ({ children }) => (
-    <>
-      <Navbar />
-      {children}
-      <Footer />
-    </>
-  );
-
-  // No Layout (no Navbar or Footer)
-  const NoLayout = ({ children }) => <>{children}</>;
   return (
     <Router>
       <Routes>
@@ -91,7 +82,7 @@ function App() {
             </MainLayout>
           }
         />
-        
+
         <Route
           path="/user/signup"
           element={
@@ -137,9 +128,11 @@ function App() {
         <Route
           path="/user/dashboard"
           element={
-            <NoLayout>
-              <UserDashboard />
-            </NoLayout>
+            <ProtectedRoute
+              component={UserDashboard}
+              role="user"
+              redirectTo="/user/signin"
+            />
           }
         />
         <Route
@@ -169,9 +162,11 @@ function App() {
         <Route
           path="/vendor/dashboard"
           element={
-            <NoLayout>
-              <VendorDashboard />
-            </NoLayout>
+            <ProtectedRoute
+              component={VendorDashboard}
+              role="vendor"
+              redirectTo="/vendor/signin"
+            />
           }
         />
       </Routes>

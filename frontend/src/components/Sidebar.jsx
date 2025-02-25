@@ -15,9 +15,9 @@ const Sidebar = ({ isSidebarOpen, handleNavigation, toggleSidebar }) => {
     <div
       className={`${
         isSidebarOpen ? "block" : "hidden"
-      } fixed top-0 left-0 z-50 w-64 bg-black shadow-xl py-8 rounded-br-3xl md:hidden transition-all duration-300`}
+      } fixed top-0 left-0 z-50 w-64 bg-white bg-opacity-70 shadow-xl py-8 rounded-br-3xl md:hidden transition-all duration-300 h-full`}
     >
-      <div className="space-y-6 px-4">
+      <div className="space-y-6 px-4 ">
         <SidebarButton
           Icon={HomeOutlined}
           label="Home"

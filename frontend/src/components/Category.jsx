@@ -1,19 +1,20 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import interior from "../assets/interior.png";
 import property from "../assets/property.png";
 import hotel from "../assets/hotel.png";
 
+// Card component for each category
 const Card = ({ title, description, image, badge, badgeColor, navigateTo }) => {
   return (
     <div
       onClick={() => navigateTo()}
-      className="w-80 relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-slate-300"
+      className="w-80 sm:w-80 relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-slate-300"
     >
       <div className="relative h-48 sm:h-56 md:h-64 w-full overflow-hidden">
         <img
           src={image}
-          alt={title}
+          alt={`Image of ${title} category`}
           className="w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-110"
         />
       </div>
@@ -25,19 +26,20 @@ const Card = ({ title, description, image, badge, badgeColor, navigateTo }) => {
             {badge}
           </span>
         )}
-        <h6 className="mb-2 text-xl font-semibold text-slate-800 hover:text-blue-500 transition-colors duration-300">
+        <h3 className="mb-2 text-xl sm:text-2xl font-semibold text-slate-800 hover:text-blue-500 transition-colors duration-300">
           {title}
-        </h6>
+        </h3>
         <p className="text-slate-600 text-sm font-light">{description}</p>
       </div>
     </div>
   );
 };
 
+// Category component to display all categories
 const Category = () => {
   const navigate = useNavigate();
 
-  // Card data
+  // Category data
   const categories = [
     {
       title: "Interior",
@@ -68,9 +70,9 @@ const Category = () => {
   ];
 
   return (
-    <div className="my-16 px-4 md:px-12">
-      {/* Section Heading */}
-      <h2 className="text-3xl font-medium text-center text-slate-800 tracking-tight">
+    <div className="my-16 px-4 sm:px-8 md:px-12">
+      {/* SEO Optimized Heading */}
+      <h2 className="text-3xl sm:text-4xl font-medium text-center text-slate-800 tracking-tight">
         Explore Our Categories
       </h2>
       <p className="mb-12 mt-2 text-base text-slate-600 text-center w-full md:w-2/3 mx-auto">
@@ -81,17 +83,18 @@ const Category = () => {
       </p>
 
       {/* Cards Container */}
-      <div className="flex justify-center space-x-14">
+      <div className="flex flex-wrap justify-center gap-16">
         {categories.map((category, index) => (
-          <Card
-            key={index}
-            title={category.title}
-            description={category.description}
-            image={category.image}
-            badge={category.badge}
-            badgeColor={category.badgeColor}
-            navigateTo={category.navigateTo}
-          />
+          <Suspense key={index} fallback={<div>Loading...</div>}>
+            <Card
+              title={category.title}
+              description={category.description}
+              image={category.image}
+              badge={category.badge}
+              badgeColor={category.badgeColor}
+              navigateTo={category.navigateTo}
+            />
+          </Suspense>
         ))}
       </div>
     </div>

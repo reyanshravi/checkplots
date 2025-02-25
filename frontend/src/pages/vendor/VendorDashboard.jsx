@@ -10,6 +10,7 @@ import SettingsTab from "./SettingsTab";
 import TabButton from "../../components/TabButton";
 import DropdownMenu from "../../components/DropdownMenu";
 import NavButton from "../../components/NavButton";
+import { useNavigate } from "react-router-dom";
 
 const tabConfig = [
   { id: "profile", label: "Profile", icon: FiUser, component: <ProfileTab /> },
@@ -43,6 +44,7 @@ const tabConfig = [
 const VendorDashboard = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleTabChange = useCallback((tab) => {
     setActiveTab(tab);
@@ -53,9 +55,22 @@ const VendorDashboard = () => {
   }, []);
 
   const handleLogout = useCallback(() => {
-    console.log("Logging out...");
-    // navigate("/login"); // Uncomment to navigate to the login page
-  }, []);
+    // Notify the user (consider using a modal or custom confirmation dialog)
+    const confirmed = window.confirm("Are you sure you want to log out?");
+
+    if (!confirmed) return;
+
+    try {
+      // Remove the authentication token from localStorage
+      localStorage.removeItem("token");
+
+      // Redirect to the login page (or another page after logout)
+      navigate("/vendor/signin");
+    } catch (error) {
+      console.error("Error logging out: ", error);
+      // Optionally, show a user-friendly message
+    }
+  }, [navigate]);
 
   const renderTabContent = () => {
     const activeTabConfig = tabConfig.find((tab) => tab.id === activeTab);
