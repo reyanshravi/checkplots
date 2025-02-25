@@ -29,6 +29,9 @@ import {
   deleteProject,
 } from "../controllers/vendorProjectController.js";
 
+import { addInterior } from "../controllers/vendorInteriorController.js";
+import { addHotel } from "../controllers/vendorHotelController.js";
+
 const vendorRouter = express.Router();
 
 // Vendor test routes
@@ -69,6 +72,12 @@ vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
 // Add a property
 vendorRouter.post("/property", upload.array("images", 10), addProperty);
+
+// Add a Interior
+vendorRouter.post("/interior", upload.array("images", 10), addInterior);
+
+// Add a hotel
+vendorRouter.post("/hotels", upload.array("images", 10), addHotel);
 
 //Add a project
 vendorRouter.post("/projects", upload.array("images", 10), addProject);
