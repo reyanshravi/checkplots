@@ -63,7 +63,7 @@ const hotelSchema = new mongoose.Schema(
     cancellationPolicy: {
       type: String,
     },
-    specialOffers: {  
+    specialOffers: {
       type: String,
     },
     contactNumber: {
@@ -72,6 +72,10 @@ const hotelSchema = new mongoose.Schema(
     },
     website: {
       type: String,
+    },
+    status: {
+      type: Number,
+      default: 0,
     },
     amenities: [{ type: String }],
   },

@@ -96,10 +96,14 @@ const propertySchema = new mongoose.Schema(
     investmentPotential: {
       type: String,
     },
-    status: {
+    currentStatus: {
       type: String,
       enum: ["Ongoing", "Completed", "Upcoming"],
       default: "Ongoing",
+    },
+    status: {
+      type: Number,
+      default: 0,
     },
     createdAt: {
       type: Date,

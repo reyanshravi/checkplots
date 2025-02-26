@@ -21,13 +21,7 @@ import {
 import { validateVendorLogin } from "../middlewares/validateVendorLogin.js";
 import { authenticateVendor } from "../middlewares/authMiddleware.js";
 
-import {
-  addProperty,
-  addProject,
-  getVendorProjects,
-  updateProject,
-  deleteProject,
-} from "../controllers/vendorProjectController.js";
+import { addProperty } from "../controllers/vendorPropertyController.js";
 
 import { addInterior } from "../controllers/vendorInteriorController.js";
 import { addHotel } from "../controllers/vendorHotelController.js";
@@ -70,25 +64,13 @@ vendorRouter.get("/allVendors", getAllVendors);
 // Update vendor status
 vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
-// Add a property
+// Add a Property
 vendorRouter.post("/property", upload.array("images", 10), addProperty);
 
 // Add a Interior
 vendorRouter.post("/interior", upload.array("images", 10), addInterior);
 
-// Add a hotel
+// Add a Hotel
 vendorRouter.post("/hotels", upload.array("images", 10), addHotel);
-
-//Add a project
-vendorRouter.post("/projects", upload.array("images", 10), addProject);
-
-// Get all projects for a vendor
-vendorRouter.get("/projects/:vendorId", getVendorProjects);
-
-// Update a project
-vendorRouter.put("/projects/:projectId", updateProject);
-
-// Delete a project
-vendorRouter.delete("/projects/:projectId/:vendorId", deleteProject);
 
 export default vendorRouter;
