@@ -18,10 +18,14 @@ import {
   validateVendorSignup,
   validateVendorProfileUpdate,
 } from "../middlewares/validateVendor.js";
+
 import { validateVendorLogin } from "../middlewares/validateVendorLogin.js";
 import { authenticateVendor } from "../middlewares/authMiddleware.js";
 
-import { addProperty } from "../controllers/vendorPropertyController.js";
+import {
+  addProperty,
+  getProperty,
+} from "../controllers/vendorPropertyController.js";
 
 import { addInterior } from "../controllers/vendorInteriorController.js";
 import { addHotel } from "../controllers/vendorHotelController.js";
@@ -66,6 +70,9 @@ vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
 // Add a Property
 vendorRouter.post("/property", upload.array("images", 10), addProperty);
+
+// GET all properties
+vendorRouter.get("/properties", getProperty);
 
 // Add a Interior
 vendorRouter.post("/interior", upload.array("images", 10), addInterior);

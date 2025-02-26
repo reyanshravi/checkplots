@@ -51,3 +51,29 @@ export const forgotPassword = async (req, res) => {
     res.status(500).json({ message: "Server error, please try again later." });
   }
 };
+
+// Reset password function
+export const resetPassword = async (req, res) => {
+  const { token } = req.params; // Get token from URL params
+  const { newPassword } = req.body;
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Find the admin by ID from decoded token
+    const admin = await adminModel.findById(decoded.adminId);
+    if (!admin) {
+      return res.status(404).json({ message: "Invalid or expired token" });
+    }
+
+    // Update the password in the database (plain text)
+    admin.password = newPassword;
+    await admin.save();
+
+    res.status(200).json({ message: "Password has been reset successfully" });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res.status(400).json({ message: "Invalid or expired token" });
+  }
+};

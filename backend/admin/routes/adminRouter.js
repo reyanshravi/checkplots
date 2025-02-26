@@ -8,7 +8,10 @@ import {
 
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-import { forgotPassword } from "../controllers/forgotPasswordController.js";
+import {
+  forgotPassword,
+  resetPassword,
+} from "../controllers/forgotPasswordController.js";
 
 const adminRouter = express.Router();
 
@@ -21,9 +24,13 @@ adminRouter.post("/signup", signUpAdmin);
 // Endpoint for admin reset password
 adminRouter.post("/forgot-password", forgotPassword);
 
+// Route to reset password
+adminRouter.post("/reset-password/:token", resetPassword);
+
 // Endpoint for admin update profile
 adminRouter.put("/update-profile/:id", verifyToken, updateAdminProfile);
 
+// Endpoint for admin change password
 adminRouter.put("/change-password", verifyToken, changeAdminPassword);
 
 // Test route for admin route

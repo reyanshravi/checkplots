@@ -72,3 +72,53 @@ export const addProperty = async (req, res) => {
     res.status(500).json({ message: "Server error, please try again later." });
   }
 };
+
+export const getProperty = async (req, res) => {
+  try {
+    // Extract query parameters (optional filters)
+    const { type, availableFor, minPrice, maxPrice, status, page, limit } =
+      req.query;
+
+    // Build the filter object dynamically
+    let filter = {};
+
+    if (type) filter.type = type;
+    if (availableFor) filter.availableFor = availableFor;
+    if (minPrice || maxPrice) {
+      filter.price = {};
+      if (minPrice) filter.price.$gte = minPrice;
+      if (maxPrice) filter.price.$lte = maxPrice;
+    }
+    if (status) filter.status = status;
+
+    // Pagination settings
+    const pageNumber = parseInt(page) || 1;
+    const pageSize = parseInt(limit) || 10;
+    const skip = (pageNumber - 1) * pageSize;
+
+    // Fetch properties from the database
+    const properties = await Property.find(filter)
+      .skip(skip)
+      .limit(pageSize)
+      .sort({ createdAt: -1 }); // Sorting by latest properties
+
+    // Get total count for pagination metadata
+    const totalProperties = await Property.countDocuments(filter);
+
+    // Response
+    res.status(200).json({
+      success: true,
+      totalProperties,
+      currentPage: pageNumber,
+      totalPages: Math.ceil(totalProperties / pageSize),
+      properties,
+    });
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error. Unable to fetch properties.",
+      error: error.message,
+    });
+  }
+};
