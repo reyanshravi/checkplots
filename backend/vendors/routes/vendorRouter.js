@@ -18,6 +18,7 @@ import {
   validateVendorSignup,
   validateVendorProfileUpdate,
 } from "../middlewares/validateVendor.js";
+
 import { validateVendorLogin } from "../middlewares/validateVendorLogin.js";
 import { authenticateVendor } from "../middlewares/authMiddleware.js";
 
@@ -71,7 +72,7 @@ vendorRouter.get("/allVendors", getAllVendors);
 // Update vendor status
 vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
-// Add a property
+// Add a Property
 vendorRouter.post("/property", upload.array("images", 10), addProperty);
 
 // Route to update an existing property by ID
@@ -91,19 +92,7 @@ vendorRouter.get("/property/:id", getPropertyById);
 // Add a Interior
 vendorRouter.post("/interior", upload.array("images", 10), addInterior);
 
-// Add a hotel
+// Add a Hotel
 vendorRouter.post("/hotels", upload.array("images", 10), addHotel);
-
-//Add a project
-vendorRouter.post("/projects", upload.array("images", 10), addProject);
-
-// Get all projects for a vendor
-vendorRouter.get("/projects/:vendorId", getVendorProjects);
-
-// Update a project
-vendorRouter.put("/projects/:projectId", updateProject);
-
-// Delete a project
-vendorRouter.delete("/projects/:projectId/:vendorId", deleteProject);
 
 export default vendorRouter;

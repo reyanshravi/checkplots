@@ -62,6 +62,10 @@ const interiorSchema = new mongoose.Schema(
     consultation: {
       type: String,
     },
+    status: {
+      type: Number,
+      default: 0,
+    },
     designStyle: [{ type: String }],
     pastClients: [{ type: String }],
   },

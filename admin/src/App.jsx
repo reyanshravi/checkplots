@@ -21,6 +21,7 @@ import CreateInterior from "./pages/CreateInterior";
 import ForgotPassword from "./pages/ForgotPassword";
 import EditProfile from "./pages/EditProfile";
 import ChangePassword from "./pages/ChnagePassword";
+import ResetPassword from "./pages/ResetPassword";
 
 // Check if the user is authenticated
 const isAuthenticated = () => {
@@ -52,6 +53,7 @@ const App = () => {
         {/* Public Route */}
         <Route path="/" element={<AdminLogin />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* Protected Routes */}
         <Route
