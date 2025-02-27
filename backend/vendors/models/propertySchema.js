@@ -46,11 +46,9 @@ const propertySchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      required: true,
     },
     reviews: {
       type: Number,
-      required: true,
     },
     plotDimensions: {
       type: String,

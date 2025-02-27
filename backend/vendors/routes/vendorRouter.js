@@ -27,6 +27,7 @@ import {
   getVendorProjects,
   updateProject,
   deleteProject,
+  getAllProperties, getPropertyById, updateProperty, deleteProperty
 } from "../controllers/vendorProjectController.js";
 
 import { addInterior } from "../controllers/vendorInteriorController.js";
@@ -72,6 +73,20 @@ vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
 // Add a property
 vendorRouter.post("/property", upload.array("images", 10), addProperty);
+
+// Route to update an existing property by ID
+vendorRouter.put("/property/:id", upload.array("images", 10), updateProperty);
+
+// Route to delete a property by ID
+vendorRouter.delete("/property/:id", deleteProperty);
+
+// Route to get all properties with optional pagination and sorting
+vendorRouter.get("/properties", getAllProperties);
+
+// Route to get a property by its ID
+vendorRouter.get("/property/:id", getPropertyById);
+
+
 
 // Add a Interior
 vendorRouter.post("/interior", upload.array("images", 10), addInterior);
