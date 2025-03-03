@@ -24,12 +24,9 @@ import { authenticateVendor } from "../middlewares/authMiddleware.js";
 
 import {
   addProperty,
-  addProject,
-  getVendorProjects,
-  updateProject,
-  deleteProject,
+ 
   getAllProperties, getPropertyById, updateProperty, deleteProperty
-} from "../controllers/vendorProjectController.js";
+} from "../controllers/vendorPropertyController.js";
 
 import { addInterior } from "../controllers/vendorInteriorController.js";
 import { addHotel } from "../controllers/vendorHotelController.js";
