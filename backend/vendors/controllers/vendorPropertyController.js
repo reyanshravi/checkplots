@@ -1,4 +1,3 @@
-import Vendor from "../models/vendorModel.js";
 import Property from "../models/propertySchema.js";
 
 export const addProperty = async (req, res) => {
@@ -73,40 +72,22 @@ export const addProperty = async (req, res) => {
   }
 };
 
-export const getProperty = async (req, res) => {
+export const getAllProperties = async (req, res) => {
   try {
-    const { type, availableFor, minPrice, maxPrice, status, page, limit } =
-      req.query;
+    const { page = 1, limit = 10, sortBy = "name", order = "asc" } = req.query;
 
-    // Build filter object
-    let filter = {};
-    if (type) filter.type = type;
-    if (availableFor) filter.availableFor = availableFor;
-    if (minPrice || maxPrice) {
-      filter.price = {};
-      if (minPrice) filter.price.$gte = minPrice;
-      if (maxPrice) filter.price.$lte = maxPrice;
-    }
-    if (status) filter.status = status;
+    // Set up pagination
+    const skip = (page - 1) * limit;
+    const sortOrder = order === "desc" ? -1 : 1; // Ascending or descending order
 
-    // Pagination
-    const pageNumber = parseInt(page) || 1;
-    const pageSize = parseInt(limit) || 10;
-    const skip = (pageNumber - 1) * pageSize;
-
-    // Fetch properties
-    const properties = await Property.find(filter)
+    // Find all properties with pagination and sorting
+    const properties = await Property.find()
       .skip(skip)
-      .limit(pageSize)
-      .sort({ createdAt: -1 });
-
-    const totalProperties = await Property.countDocuments(filter);
+      .limit(Number(limit))
+      .sort({ [sortBy]: sortOrder });
 
     res.status(200).json({
-      success: true,
-      totalProperties,
-      currentPage: pageNumber,
-      totalPages: Math.ceil(totalProperties / pageSize),
+      message: "Properties retrieved successfully",
       properties,
     });
   } catch (error) {
@@ -117,13 +98,19 @@ export const getProperty = async (req, res) => {
 
 export const getPropertyById = async (req, res) => {
   try {
-    const property = await Property.findById(req.params.id);
+    const { id } = req.params; // Get property ID from URL params
+
+    // Find the property by ID
+    const property = await Property.findById(id);
 
     if (!property) {
-      return res.status(404).json({ message: "Property not found" });
+      return res.status(404).json({ message: "Property not found." });
     }
 
-    res.status(200).json({ property });
+    res.status(200).json({
+      message: "Property retrieved successfully",
+      property,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error, please try again later." });
@@ -132,20 +119,79 @@ export const getPropertyById = async (req, res) => {
 
 export const updateProperty = async (req, res) => {
   try {
-    const { id } = req.params;
-    const updatedProperty = req.body;
+    const { id } = req.params; // Get property ID from URL params
+    const {
+      vendorId,
+      name,
+      type,
+      details,
+      price,
+      pricePerSqft,
+      address,
+      verified,
+      underDevelopment,
+      rating,
+      reviews,
+      plotDimensions,
+      facing,
+      landmark,
+      availableFor,
+      ownershipType,
+      numberOfBedroom,
+      numberOfBathroom,
+      amenities,
+      contactNumber,
+      website,
+      investmentPotential,
+    } = req.body;
 
-    const property = await Property.findByIdAndUpdate(id, updatedProperty, {
-      new: true,
-    });
+    // Find the property by ID
+    const property = await Property.findById(id);
 
     if (!property) {
-      return res.status(404).json({ message: "Property not found" });
+      return res.status(404).json({ message: "Property not found." });
     }
+
+    // If new images are uploaded, map the file paths
+    const images = req.files ? req.files.map((file) => file.path) : [];
+    if (images.length > 0) {
+      property.image = images[0]; // Update the main image
+    }
+
+    // Update property details
+    property.vendorId = vendorId || property.vendorId;
+    property.name = name || property.name;
+    property.type = type || property.type;
+    property.details = details || property.details;
+    property.price = price || property.price;
+    property.pricePerSqft = pricePerSqft || property.pricePerSqft;
+    property.address = address || property.address;
+    property.verified = verified !== undefined ? verified : property.verified;
+    property.underDevelopment =
+      underDevelopment !== undefined
+        ? underDevelopment
+        : property.underDevelopment;
+    property.rating = rating || property.rating;
+    property.reviews = reviews || property.reviews;
+    property.plotDimensions = plotDimensions || property.plotDimensions;
+    property.facing = facing || property.facing;
+    property.landmark = landmark || property.landmark;
+    property.availableFor = availableFor || property.availableFor;
+    property.ownershipType = ownershipType || property.ownershipType;
+    property.numberOfBedroom = numberOfBedroom || property.numberOfBedroom;
+    property.numberOfBathroom = numberOfBathroom || property.numberOfBathroom;
+    property.amenities = amenities || property.amenities;
+    property.contactNumber = contactNumber || property.contactNumber;
+    property.website = website || property.website;
+    property.investmentPotential =
+      investmentPotential || property.investmentPotential;
+
+    // Save the updated property
+    const updatedProperty = await property.save();
 
     res.status(200).json({
       message: "Property updated successfully",
-      property,
+      property: updatedProperty,
     });
   } catch (error) {
     console.error(error);
@@ -155,15 +201,21 @@ export const updateProperty = async (req, res) => {
 
 export const deleteProperty = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // Get property ID from URL params
 
-    const property = await Property.findByIdAndDelete(id);
+    // Find the property by ID
+    const property = await Property.findById(id);
 
     if (!property) {
-      return res.status(404).json({ message: "Property not found" });
+      return res.status(404).json({ message: "Property not found." });
     }
 
-    res.status(200).json({ message: "Property deleted successfully" });
+    // Delete the property
+    await property.remove();
+
+    res.status(200).json({
+      message: "Property deleted successfully",
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error, please try again later." });
