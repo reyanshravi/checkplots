@@ -30,8 +30,21 @@ import {
   deleteProperty,
 } from "../controllers/vendorPropertyController.js";
 
-import { addInterior } from "../controllers/vendorInteriorController.js";
-import { addHotel } from "../controllers/vendorHotelController.js";
+import {
+  addInterior,
+  getAllInterior,
+  getInteriorById,
+  updateInterior,
+  deleteInterior,
+} from "../controllers/vendorInteriorController.js";
+
+import {
+  addHotel,
+  getAllHotels,
+  getHotelById,
+  updateHotel,
+  deleteHotel,
+} from "../controllers/vendorHotelController.js";
 
 const vendorRouter = express.Router();
 
@@ -71,6 +84,7 @@ vendorRouter.get("/allVendors", getAllVendors);
 // Update vendor status
 vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 
+// Property Section
 // Add a Property
 vendorRouter.post("/property", upload.array("images", 10), addProperty);
 
@@ -86,10 +100,36 @@ vendorRouter.get("/properties", getAllProperties);
 // Route to get a property by its ID
 vendorRouter.get("/property/:id", getPropertyById);
 
+// Interior Section
 // Add a Interior
 vendorRouter.post("/interior", upload.array("images", 10), addInterior);
 
-// Add a Hotel
-vendorRouter.post("/hotels", upload.array("images", 10), addHotel);
+// Get all interiors
+vendorRouter.get("/interiors", getAllInterior);
+
+// Get a single interior by ID
+vendorRouter.get("/:id", getInteriorById);
+
+// Update an interior by ID, including images
+vendorRouter.put("/:id", upload.array("images", 10), updateInterior);
+
+// Delete an interior by ID
+vendorRouter.delete("/:id", deleteInterior);
+
+// Hotel Section
+// Add a new hotel
+vendorRouter.post("/hotel", upload.array("images", 10), addHotel);
+
+// Get all hotels
+vendorRouter.get("/hotels", getAllHotels);
+
+// Get a single hotel by ID
+vendorRouter.get("/:id", getHotelById);
+
+// Update a hotel by ID, including images
+vendorRouter.put("/:id", upload.array("images", 10), updateHotel);
+
+// Delete a hotel by ID
+vendorRouter.delete("/:id", deleteHotel);
 
 export default vendorRouter;
