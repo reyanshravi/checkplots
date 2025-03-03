@@ -75,13 +75,11 @@ export const addProperty = async (req, res) => {
 
 export const getProperty = async (req, res) => {
   try {
-    // Extract query parameters (optional filters)
     const { type, availableFor, minPrice, maxPrice, status, page, limit } =
       req.query;
 
-    // Build the filter object dynamically
+    // Build filter object
     let filter = {};
-
     if (type) filter.type = type;
     if (availableFor) filter.availableFor = availableFor;
     if (minPrice || maxPrice) {
@@ -91,21 +89,19 @@ export const getProperty = async (req, res) => {
     }
     if (status) filter.status = status;
 
-    // Pagination settings
+    // Pagination
     const pageNumber = parseInt(page) || 1;
     const pageSize = parseInt(limit) || 10;
     const skip = (pageNumber - 1) * pageSize;
 
-    // Fetch properties from the database
+    // Fetch properties
     const properties = await Property.find(filter)
       .skip(skip)
       .limit(pageSize)
-      .sort({ createdAt: -1 }); // Sorting by latest properties
+      .sort({ createdAt: -1 });
 
-    // Get total count for pagination metadata
     const totalProperties = await Property.countDocuments(filter);
 
-    // Response
     res.status(200).json({
       success: true,
       totalProperties,
@@ -114,11 +110,62 @@ export const getProperty = async (req, res) => {
       properties,
     });
   } catch (error) {
-    console.error("Error fetching properties:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error. Unable to fetch properties.",
-      error: error.message,
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later." });
+  }
+};
+
+export const getPropertyById = async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    res.status(200).json({ property });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later." });
+  }
+};
+
+export const updateProperty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedProperty = req.body;
+
+    const property = await Property.findByIdAndUpdate(id, updatedProperty, {
+      new: true,
     });
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    res.status(200).json({
+      message: "Property updated successfully",
+      property,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later." });
+  }
+};
+
+export const deleteProperty = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const property = await Property.findByIdAndDelete(id);
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    res.status(200).json({ message: "Property deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later." });
   }
 };

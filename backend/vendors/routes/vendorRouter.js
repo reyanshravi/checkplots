@@ -25,6 +25,9 @@ import { authenticateVendor } from "../middlewares/authMiddleware.js";
 import {
   addProperty,
   getProperty,
+  getPropertyById,
+  updateProperty,
+  deleteProperty,
 } from "../controllers/vendorPropertyController.js";
 
 import { addInterior } from "../controllers/vendorInteriorController.js";
@@ -73,6 +76,15 @@ vendorRouter.post("/property", upload.array("images", 10), addProperty);
 
 // GET all properties
 vendorRouter.get("/properties", getProperty);
+
+// Get a single property by ID
+vendorRouter.get("/property/:id", getPropertyById);
+
+// Update property by ID, including images
+vendorRouter.put("/property/:id", upload.array("images", 10), updateProperty);
+
+// Delete property by ID
+vendorRouter.delete("/property/:id", deleteProperty);
 
 // Add a Interior
 vendorRouter.post("/interior", upload.array("images", 10), addInterior);
