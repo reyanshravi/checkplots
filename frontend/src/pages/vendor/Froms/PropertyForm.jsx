@@ -97,39 +97,34 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
   </div>
 );
 
-const PropertyForm = ({ onSubmit, existingData = {} }) => {
+const PropertyForm = ({ propertyId, onSubmit, existingData = {} }) => {
+  console.log('Received propertyId:', propertyId); // Log to check
+
+  const isEditMode = Object.keys(existingData).length > 0;
   const [propertyData, setPropertyData] = useState({
-    name: existingData.name || "Sunny Beachfront Bungalow",
-    type: existingData.type || "Villa",
-    details:
-      existingData.details ||
-      "3 BHK • 2200 sqft • Beachfront Property with Ocean View",
-    price: existingData.price || "₹6.5 Cr",
-    pricePerSqft: existingData.pricePerSqft || "₹29,545",
-    image: existingData.image || "https://example.com/villa4.png",
-    address: existingData.address || "Alibaug, Maharashtra, India - 402201",
-    verified: existingData.verified || true,
-    underDevelopment: existingData.underDevelopment || false,
-    rating: existingData.rating || 4.8,
-    reviews: existingData.reviews || 140,
-    plotDimensions: existingData.plotDimensions || "",
-    facing: existingData.facing || "East",
-    landmark: existingData.landmark || "Near Alibaug Beach",
-    availableFor: existingData.availableFor || "Sale",
-    ownershipType: existingData.ownershipType || "Freehold",
-    numberOfBedroom: existingData.numberOfBedroom || 3,
-    numberOfBathroom: existingData.numberOfBathroom || 3,
-    amenities: existingData.amenities || [
-      "Private Beach Access",
-      "Swimming Pool",
-      "Garden Area",
-    ],
-    contactNumber: existingData.contactNumber || "+91 9701 345678",
-    website: existingData.website || "https://sunnybeachfrontbungalow.com",
-    investmentPotential:
-      existingData.investmentPotential ||
-      "Great for vacation rentals with high ROI potential",
-    status: existingData.status || "Ongoing",
+    name: isEditMode ? existingData.name : "",
+    type: isEditMode ? existingData.type : "Villa",
+    details: isEditMode ? existingData.details : "",
+    price: isEditMode ? existingData.price : "",
+    pricePerSqft: isEditMode ? existingData.pricePerSqft : "",
+    image: isEditMode ? existingData.image : "",
+    address: isEditMode ? existingData.address : "",
+    verified: isEditMode ? existingData.verified : false,
+    underDevelopment: isEditMode ? existingData.underDevelopment : false,
+    rating: isEditMode ? existingData.rating : "",
+    reviews: isEditMode ? existingData.reviews : "",
+    plotDimensions: isEditMode ? existingData.plotDimensions : "",
+    facing: isEditMode ? existingData.facing : "",
+    landmark: isEditMode ? existingData.landmark : "",
+    availableFor: isEditMode ? existingData.availableFor : "Sale",
+    ownershipType: isEditMode ? existingData.ownershipType : "Freehold",
+    numberOfBedroom: isEditMode ? existingData.numberOfBedroom : "",
+    numberOfBathroom: isEditMode ? existingData.numberOfBathroom : "",
+    amenities: isEditMode ? existingData.amenities : [],
+    contactNumber: isEditMode ? existingData.contactNumber : "",
+    website: isEditMode ? existingData.website : "",
+    investmentPotential: isEditMode ? existingData.investmentPotential : "",
+    status: isEditMode ? existingData.status : "Ongoing",
   });
 
   const [errors, setErrors] = useState({});
@@ -193,9 +188,8 @@ const PropertyForm = ({ onSubmit, existingData = {} }) => {
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
       try {
-        // Prepare the form data to be submitted
         const formData = new FormData();
-        formData.append("vendorId", "679b5504384bb55d7309be5b"); // Use your actual vendorId
+        formData.append("vendorId", "679b5504384bb55d7309be5b");
         formData.append("name", propertyData.name);
         formData.append("type", propertyData.type);
         formData.append("details", propertyData.details);
@@ -219,30 +213,32 @@ const PropertyForm = ({ onSubmit, existingData = {} }) => {
           "investmentPotential",
           propertyData.investmentPotential
         );
-
-        // Handle amenities, since it's an array
         propertyData.amenities.forEach((amenity, index) => {
           formData.append(`amenities[${index}]`, amenity);
         });
-
-        // Handle images (if any)
         if (propertyData.image) {
-          // Assuming 'image' is a file object
-          formData.append("images", propertyData.image[0]); // Only append the first file
+          formData.append("images", propertyData.image[0]);
         }
 
-        // Send the POST request to the API
-        const response = await axios.post(
-          "http://localhost:7002/api/vendor/property",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const url = isEditMode
+          ? `http://localhost:7002/api/vendor/property/${existingData.id  }` // Edit URL with ID
+          : "http://localhost:7002/api/vendor/property";
 
-        console.log("Property submitted successfully:", response.data);
+        const method = isEditMode ? "PUT" : "POST"; // PUT for editing, POST for adding
+
+        const response = await axios({
+          method,
+          url,
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        console.log(
+          isEditMode ? "Property updated" : "Property added",
+          response.data
+        );
       } catch (error) {
         console.error("Error submitting property:", error);
       }
@@ -473,12 +469,12 @@ const PropertyForm = ({ onSubmit, existingData = {} }) => {
       />
 
       {/* Submit Button */}
-      <div className="px-3">
+      <div className="sm:flex sm:justify-center sm:space-x-6">
         <button
           type="submit"
           className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
         >
-          Submit
+          {isEditMode ? "Update Property" : "Add Property"}
         </button>
       </div>
     </form>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaChevronRight, FaTrashAlt, FaMoon, FaSun } from "react-icons/fa";
+import ResetPassword from "./ResetPassword";
 
 export default function SettingsTab() {
   const [isPasswordReset, setIsPasswordReset] = useState(false);
@@ -209,7 +210,7 @@ export default function SettingsTab() {
 
   return (
     <div className="bg-gray-50 p-6">
-      {isPasswordReset ? renderPasswordResetContent() : renderSettingsContent()}
+      {isPasswordReset ? <ResetPassword/> : renderSettingsContent()}
     </div>
   );
 }

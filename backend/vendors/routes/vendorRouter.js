@@ -24,11 +24,15 @@ import { authenticateVendor } from "../middlewares/authMiddleware.js";
 
 import {
   addProperty,
-  getProperty,
+  addProject,
+  getVendorProjects,
+  updateProject,
+  deleteProject,
+  getAllProperties,
   getPropertyById,
   updateProperty,
   deleteProperty,
-} from "../controllers/vendorPropertyController.js";
+} from "../controllers/vendorProjectController.js";
 
 import { addInterior } from "../controllers/vendorInteriorController.js";
 import { addHotel } from "../controllers/vendorHotelController.js";
@@ -74,17 +78,17 @@ vendorRouter.put("/:id/updateStatus", updateVendorStatus);
 // Add a Property
 vendorRouter.post("/property", upload.array("images", 10), addProperty);
 
-// GET all properties
-vendorRouter.get("/properties", getProperty);
-
-// Get a single property by ID
-vendorRouter.get("/property/:id", getPropertyById);
-
-// Update property by ID, including images
+// Route to update an existing property by ID
 vendorRouter.put("/property/:id", upload.array("images", 10), updateProperty);
 
-// Delete property by ID
+// Route to delete a property by ID
 vendorRouter.delete("/property/:id", deleteProperty);
+
+// Route to get all properties with optional pagination and sorting
+vendorRouter.get("/properties", getAllProperties);
+
+// Route to get a property by its ID
+vendorRouter.get("/property/:id", getPropertyById);
 
 // Add a Interior
 vendorRouter.post("/interior", upload.array("images", 10), addInterior);

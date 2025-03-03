@@ -16,10 +16,12 @@ import UserDashboard from "./pages/user/UserDashboard";
 import ExploreSection from "./components/ExploreSection";
 import TestGrid from "./components/TestGrid";
 import PropertyPost from "./components/PropertyPost";
+import PList from "./components/PList";
 
 import ProtectedRoute from "./Router/ProtectedRoute";
 // Import Layouts
 import { MainLayout, NoLayout } from "./Router/Layout";
+import PropertyDataProvider from "./Context/PropertyDataProvider";
 
 function App() {
   return (
@@ -171,6 +173,10 @@ function App() {
         />
       </Routes>
     </Router>
+
+    // <PropertyDataProvider>
+    //   <PList />
+    // </PropertyDataProvider>
   );
 }
 

@@ -1,15 +1,12 @@
 import React, { useEffect ,useState} from "react";
 import HeroSection from "../components/HeroSection/HeroSection";
 import Category from "../components/Category";
-import Properties from "../components/Properties";
 import MostPopularProperties from "../components/MostPopularProperties";
-import Slider from "../components/Slider";
 import { useLocation } from "react-router-dom";
 import HotelsByLocation from "../components/HotelsByLocation";
 import News from "../components/News";
 import { FaArrowUpLong } from "react-icons/fa6";
 import ExploreSection from "../components/ExploreSection";
-import TestGrid from "../components/TestGrid";
 
 
 export default function LandingPage() {

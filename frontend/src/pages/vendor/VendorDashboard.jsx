@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { FiUser, FiSettings, FiMail } from "react-icons/fi";
 import { FaBuilding, FaHotel, FaCouch } from "react-icons/fa";
 import ProfileTab from "./ProfileTab";
@@ -11,6 +11,7 @@ import TabButton from "../../components/TabButton";
 import DropdownMenu from "../../components/DropdownMenu";
 import NavButton from "../../components/NavButton";
 import { useNavigate } from "react-router-dom";
+import ResetPassword from "./ResetPassword";
 
 const tabConfig = [
   { id: "profile", label: "Profile", icon: FiUser, component: <ProfileTab /> },
@@ -44,6 +45,7 @@ const tabConfig = [
 const VendorDashboard = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null); // Ref for dropdown menu
   const navigate = useNavigate();
 
   const handleTabChange = useCallback((tab) => {
@@ -55,24 +57,27 @@ const VendorDashboard = () => {
   }, []);
 
   const handleLogout = useCallback(() => {
-    // Notify the user (consider using a modal or custom confirmation dialog)
+    // Confirm logout and remove authentication token
     const confirmed = window.confirm("Are you sure you want to log out?");
-
     if (!confirmed) return;
 
     try {
-      // Remove the authentication token from localStorage
-      localStorage.removeItem("token");
-
-      // Redirect to the login page (or another page after logout)
-      navigate("/vendor/signin");
+      localStorage.removeItem("token"); // Remove token from localStorage
+      navigate("/vendor/signin"); // Redirect to login page
     } catch (error) {
       console.error("Error logging out: ", error);
-      // Optionally, show a user-friendly message
     }
   }, [navigate]);
 
+  const handleChangePassword = () => {
+    setActiveTab("change-password"); // Switch to change password tab
+  };
+
   const renderTabContent = () => {
+    if (activeTab === "change-password") {
+      return <ResetPassword />;
+    }
+
     const activeTabConfig = tabConfig.find((tab) => tab.id === activeTab);
     return activeTabConfig ? activeTabConfig.component : null;
   };
@@ -90,17 +95,36 @@ const VendorDashboard = () => {
     ));
   };
 
+  // Handle clicks outside the dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Add event listener for mousedown
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup event listener when component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []); // Empty dependency array to run effect only on mount/unmount
+
   return (
-    <div className="flex flex-col h-screen bg-gray-50 ">
+    <div className="flex flex-col h-screen bg-gray-50">
       {/* Navbar */}
       <div className="w-full bg-gray-800 text-white py-4 px-6 flex justify-between items-center shadow-md">
         <h1 className="text-3xl font-semibold tracking-tight text-white">
           Vendor Dashboard
         </h1>
         <DropdownMenu
+          ref={dropdownRef}
           isOpen={isDropdownOpen}
           onToggle={handleDropdownToggle}
           onLogout={handleLogout}
+          handleChangePassword={handleChangePassword}
         />
       </div>
 

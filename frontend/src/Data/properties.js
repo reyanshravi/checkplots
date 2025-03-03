@@ -1,6 +1,6 @@
 const properties = [
     {
-      id: 1,
+      id: "67b46bfdc5178aa265a1ab76",
       name: "Sunrise Estate Plot",
       type: "Plot",
       details: "5000 sqft • Prime Location • Ready for Construction",
@@ -30,7 +30,7 @@ const properties = [
       investmentPotential: "High demand area with excellent ROI in 5 years",
     },
     {
-      id: 2,
+      id: "67b46bfdc5178aa265a1ab76",
       name: "Luxury Heights Apartment",
       type: "Apartment",
       details: "3 BHK • 1800 sqft • Semi-Furnished with Modern Interiors",
@@ -441,3 +441,5 @@ const properties = [
   ];
   
   export default properties
+
+  

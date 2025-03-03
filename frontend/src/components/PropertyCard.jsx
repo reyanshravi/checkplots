@@ -1,12 +1,10 @@
 import React from "react";
 
-const PropertyCard = ({ property }) => {
-  const image = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+const PropertyCard = ({ property, onEdit, onDelete, showActions = false }) => {
+  const image =
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   return (
-    <a
-      href={property.website}
-      className="block h-[470px] max-w-72 w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform overflow-hidden"
-    >
+    <div className="block h-[470px] max-w-72 w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform overflow-hidden">
       {/* Image Section */}
       <div className="relative">
         <img
@@ -24,7 +22,9 @@ const PropertyCard = ({ property }) => {
         {/* Price & Type */}
         <div className="flex justify-between items-center text-xs font-medium mb-2">
           <div className="text-gray-700">{property.type}</div>
-          <div className="text-sm font-semibold text-indigo-600">{property.price}</div>
+          <div className="text-sm font-semibold text-indigo-600">
+            {property.price}
+          </div>
         </div>
 
         {/* Details */}
@@ -59,7 +59,9 @@ const PropertyCard = ({ property }) => {
             <div className="font-semibold text-green-500">Verified</div>
           )}
           {property.underDevelopment && (
-            <div className="font-semibold text-yellow-500">Under Development</div>
+            <div className="font-semibold text-yellow-500">
+              Under Development
+            </div>
           )}
         </div>
       </div>
@@ -68,27 +70,57 @@ const PropertyCard = ({ property }) => {
       <div className="px-4 pb-4 border-t border-gray-200 grid grid-cols-2 gap-1">
         {/* Plot Dimensions */}
         <div>
-          <div className="font-semibold text-gray-700 text-xs mb-1">Plot Dimensions:</div>
+          <div className="font-semibold text-gray-700 text-xs mb-1">
+            Plot Dimensions:
+          </div>
           <div className="text-xs text-gray-600">{property.plotDimensions}</div>
         </div>
 
         {/* Facing */}
         <div>
-          <div className="font-semibold text-gray-700 text-xs mb-1">Facing:</div>
+          <div className="font-semibold text-gray-700 text-xs mb-1">
+            Facing:
+          </div>
           <div className="text-xs text-gray-600">{property.facing}</div>
         </div>
       </div>
 
       {/* Amenities Section */}
       <div className="px-4 pb-4 border-t border-gray-200">
-        <div className="font-semibold text-gray-700 text-xs mb-1">Amenities:</div>
+        <div className="font-semibold text-gray-700 text-xs mb-1">
+          Amenities:
+        </div>
         <ul className="list-inside list-disc text-xs text-gray-600 space-y-1">
           {property.amenities.slice(0, 3).map((amenity, index) => (
             <li key={index}>{amenity}</li>
           ))}
         </ul>
       </div>
-    </a>
+
+      {/* Conditionally Render Edit and Delete Buttons */}
+      {showActions && (
+        <div className="absolute top-2 right-2 flex space-x-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(); // This now receives the property id correctly
+            }}
+            className="bg-blue-500 text-white text-xs px-3 py-1 rounded-md hover:bg-blue-600"
+          >
+            Edit
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            className="bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+    </div>
   );
 };
 
