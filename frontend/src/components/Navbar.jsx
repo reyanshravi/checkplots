@@ -3,6 +3,7 @@ import logo from "../assets/checkPlots.png";
 import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import Sidebar from "./Sidebar"; // Import the Sidebar component
+import { CiUser } from "react-icons/ci";
 
 const Navbar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -12,7 +13,7 @@ const Navbar = () => {
   const sidebarRef = useRef(null);
   const sidebarButtonRef = useRef(null);
   const dropdownRef = useRef(null);
-  const dropdownButtonRef = useRef(null); 
+  const dropdownButtonRef = useRef(null);
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -32,7 +33,7 @@ const Navbar = () => {
 
   // Logout confirmation popup component
   const LogoutPopup = ({ confirmLogout, cancelLogout }) => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center ">
       <div className="rounded-lg bg-white p-8 shadow-2xl z-50">
         <h2 className="text-lg font-bold">Are you sure you want to log out?</h2>
         <p className="mt-2 text-sm text-gray-500">
@@ -57,7 +58,7 @@ const Navbar = () => {
         </div>
       </div>
     </div>
-  )
+  );
 
   const confirmLogout = () => {
     if (user) {
@@ -114,7 +115,11 @@ const Navbar = () => {
 
         <nav className="flex items-center w-full px-4 bg-white rounded-b-3xl shadow-md relative">
           <div onClick={() => navigate("/")}>
-            <img src={logo} alt="logo" className="h-20 cursor-pointer" />
+            <img
+              src={logo}
+              alt="logo"
+              className="cursor-pointer h-16 md:h-20"
+            />
           </div>
 
           <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -162,24 +167,25 @@ const Navbar = () => {
             </ul>
           </div>
 
-          <div className="flex items-center space-x-4 ml-auto">
+          <div className="flex items-center space-x-2 ml-auto">
             <div className="relative">
               <button
                 ref={dropdownButtonRef}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="hidden md:flex items-center text-sm font-medium text-black transition-all duration-200 border px-3 py-2 rounded-lg hover:bg-gray-100"
+                className="flex items-center text-sm font-medium text-black transition-all duration-200 border md:px-3 md:py-2 p-2 md:rounded-lg rounded-full  hover:bg-gray-100"
               >
                 {userName || vendorName ? (
-                  <span className="mr-2">👋</span>
+                  <span className="mr-2 hidden md:block">👋</span>
                 ) : (
-                  <span className="mr-2">🔑</span>
+                  <span className="mr-2 hidden md:block">🔑</span>
                 )}
-                <span>
+                <span className="hidden md:block">
                   {userName || vendorName
                     ? `Hi, ${userName || vendorName}`
                     : "Sign In"}
                 </span>
-                <RiArrowDropDownLine size={25} />
+                <RiArrowDropDownLine size={25} className="hidden md:block" />
+                <CiUser className="block md:hidden" />
               </button>
               {isDropdownOpen && (
                 <div
@@ -243,33 +249,33 @@ const Navbar = () => {
             </div>
 
             <Link to="/property/post">
-            <button className="hidden md:flex items-center px-3 py-2 border border-transparent rounded-lg hover:bg-gray-100 transition-all duration-200">
-              <span className="mr-1 text-lg">📜</span>
-              <span className="whitespace-nowrap text-sm font-medium">
-                List Property
-              </span>
-              <span className="ml-1 text-xs bg-red-500 text-white rounded-full px-2 py-1">
-                Free
-              </span>
-            </button>
+              <button className="hidden md:flex items-center px-3 py-2 border border-transparent rounded-lg hover:bg-gray-100 transition-all duration-200">
+                <span className="mr-1 text-lg">📜</span>
+                <span className="whitespace-nowrap text-sm font-medium">
+                  List Property
+                </span>
+                <span className="ml-1 text-xs bg-red-500 text-white rounded-full px-2 py-1">
+                  Free
+                </span>
+              </button>
             </Link>
 
             <label
               onClick={toggleSidebar}
-              className="flex flex-col gap-2 w-8 cursor-pointer md:hidden"
+              className="flex flex-col gap-1 w-6 cursor-pointer md:hidden" // Adjusted width and gap for smaller screen
             >
               <div
-                className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+                className={`h-[2px] w-full bg-black rounded-full transition-all duration-200 transform ${
                   isSidebarOpen ? "rotate-45 translate-y-[6px]" : ""
                 }`}
               />
               <div
-                className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+                className={`h-[2px] w-full bg-black rounded-full transition-all duration-200 transform ${
                   isSidebarOpen ? "opacity-0" : ""
                 }`}
               />
               <div
-                className={`h-[3px] w-full bg-black rounded-full transition-all duration-200 transform ${
+                className={`h-[2px] w-full bg-black rounded-full transition-all duration-200 transform ${
                   isSidebarOpen ? "-rotate-45 -translate-y-[6px]" : ""
                 }`}
               />

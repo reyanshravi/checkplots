@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import userRouter from "./users/routes/userRouter.js";
 import adminRouter from "./admin/routes/adminRouter.js";
 import vendorRouter from "./vendors/routes/vendorRouter.js";
+import multer from "multer";
 
 // Load environment variables
 dotenv.config();
@@ -30,6 +31,18 @@ app.use("/api/head", adminRouter);
 
 // Routes
 app.use("/api/vendor", vendorRouter);
+
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // Handle multer-specific errors
+    return res.status(400).json({ success: false, message: err.message });
+  } else if (err) {
+    // Handle other types of errors
+    return res.status(500).json({ success: false, message: 'Server error', error: err.message });
+  }
+  next();
+});
+
 
 // Port and server start
 const PORT = process.env.PORT || 5000;

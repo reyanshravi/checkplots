@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import image from "../../assets/hero_image.jpeg";
 import Herosearch from "./HeroSearch";
+import DomainSearch from "./DomainSearch";
 
 const HeroSection = () => {
   return (
@@ -11,7 +12,7 @@ const HeroSection = () => {
         backgroundPosition: "center",
         height: "100vh",
       }}
-      className="relative text-white flex items-center justify-center text-center"
+      className="relative text-white flex flex-col items-center justify-center text-center"
     >
       <div className="absolute inset-0 bg-black opacity-40 z-0"></div>
 
@@ -22,8 +23,9 @@ const HeroSection = () => {
         <p className="text-lg sm:text-xl text-gray-200 mb-8">
           Search properties across the country.
         </p>
-        <Herosearch />
+        {/* <Herosearch /> */}
       </div>
+      <DomainSearch />
     </section>
   );
 };

@@ -9,9 +9,9 @@ const Card = ({ title, description, image, badge, badgeColor, navigateTo }) => {
   return (
     <div
       onClick={() => navigateTo()}
-      className="w-80 sm:w-80 relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-slate-300"
+      className="w-full sm:w-80 md:w-72 lg:w-80 relative flex flex-col bg-white shadow-lg border border-slate-200 rounded-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:border-slate-300"
     >
-      <div className="relative h-48 sm:h-56 md:h-64 w-full overflow-hidden">
+      <div className="relative h-48 sm:h-56 md:h-64 lg:h-72 w-full overflow-hidden">
         <img
           src={image}
           alt={`Image of ${title} category`}
@@ -70,7 +70,7 @@ const Category = () => {
   ];
 
   return (
-    <div className="my-16 px-4 sm:px-8 md:px-12">
+    <div className="my-16 px-4 sm:px-8 md:px-12 ">
       {/* SEO Optimized Heading */}
       <h2 className="text-3xl sm:text-4xl font-medium text-center text-slate-800 tracking-tight">
         Explore Our Categories
@@ -83,7 +83,7 @@ const Category = () => {
       </p>
 
       {/* Cards Container */}
-      <div className="flex flex-wrap justify-center gap-16">
+      <div className="flex flex-wrap justify-center gap-8 md:gap-16">
         {categories.map((category, index) => (
           <Suspense key={index} fallback={<div>Loading...</div>}>
             <Card

@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import {
-  RiDeleteBinLine,
-  RiAddFill,
-  RiArrowDropDownLine,
-  RiPhoneFill,
-} from "react-icons/ri";
+import axios from "axios";
+import { RiDeleteBinLine, RiAddFill, RiArrowDropDownLine } from "react-icons/ri";
 
 // Reusable input component
 const InputField = ({ label, name, value, onChange, type = "text", error }) => (
@@ -96,39 +92,35 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
   </div>
 );
 
-const InteriorForm = ({ onSubmit, existingData = {} }) => {
+const InteriorForm = ({ onButtonClick, existingData = {} }) => {
+  const isEditMode = Object.keys(existingData).length > 0;
+
   const [interiorData, setInteriorData] = useState({
-    name: existingData.name || "Modern Living Room",
-    type: existingData.type || "Living Room",
-    details:
-      existingData.details || "Contemporary design with minimalist furniture",
-    price: existingData.price || "₹5,00,000",
-    priceRange: existingData.priceRange || "₹4,00,000 - ₹6,00,000",
-    image: existingData.image || "https://example.com/livingroom.png",
-    address: existingData.address || "Mumbai, Maharashtra, India",
-    verified: existingData.verified || true,
-    rating: existingData.rating || 4.5,
-    reviews: existingData.reviews || 120,
-    services: existingData.services || [
-      "Design Consultation",
-      "Installation",
-      "Furniture",
-      "Lighting",
-    ],
-    specialOffers:
-      existingData.specialOffers || "10% off on first consultation",
-    portfolioLink: existingData.portfolioLink || "https://exampleportfolio.com",
-    contactNumber: existingData.contactNumber || "+91 9821 234567",
-    website: existingData.website || "https://modernlivingroom.com",
-    projectTimeline: existingData.projectTimeline || "3-4 weeks",
-    consultation: existingData.consultation || "Free initial consultation",
-    designStyle: existingData.designStyle || ["Modern", "Minimalist"],
-    pastClients: existingData.pastClients || ["Client1", "Client2"],
+    name: isEditMode ? existingData.name : "",
+    type: isEditMode ? existingData.type : "",
+    details: isEditMode ? existingData.details : "",
+    price: isEditMode ? existingData.price : "",
+    priceRange: isEditMode ? existingData.priceRange : "",
+    image: isEditMode ? existingData.image : "",
+    address: isEditMode ? existingData.address : "",
+    verified: isEditMode ? existingData.verified : false,
+    rating: isEditMode ? existingData.rating : "",
+    reviews: isEditMode ? existingData.reviews : "",
+    services: isEditMode ? existingData.services : [],
+    specialOffers: isEditMode ? existingData.specialOffers : "",
+    portfolioLink: isEditMode ? existingData.portfolioLink : "",
+    contactNumber: isEditMode ? existingData.contactNumber : "",
+    website: isEditMode ? existingData.website : "",
+    projectTimeline: isEditMode ? existingData.projectTimeline : "",
+    consultation: isEditMode ? existingData.consultation : "",
+    status: isEditMode ? existingData.status : 0,
+    designStyle: isEditMode ? existingData.designStyle : [],
+    pastClients: isEditMode ? existingData.pastClients : [],
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Handle generic field change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setInteriorData((prevState) => ({
@@ -137,52 +129,103 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
     }));
   };
 
-  // Handle image change
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setInteriorData((prevState) => ({
       ...prevState,
-      image: files,
+      image: files[0],
     }));
   };
 
-  // Handle adding services dynamically
-  const handleServicesChange = (e, index) => {
-    const newServices = [...interiorData.services];
-    newServices[index] = e.target.value;
-    setInteriorData({ ...interiorData, services: newServices });
-  };
-
-  const addService = () => {
+  const handleDynamicChange = (e, index, arrayName) => {
+    const { value } = e.target;
+    const updatedArray = [...interiorData[arrayName]];
+    updatedArray[index] = value;
     setInteriorData((prevState) => ({
       ...prevState,
-      services: [...prevState.services, ""],
+      [arrayName]: updatedArray,
     }));
   };
 
-  const removeService = (index) => {
-    const updatedServices = [...interiorData.services];
-    updatedServices.splice(index, 1);
-    setInteriorData({ ...interiorData, services: updatedServices });
+  const addDynamicField = (arrayName) => {
+    setInteriorData((prevState) => ({
+      ...prevState,
+      [arrayName]: [...prevState[arrayName], ""],
+    }));
   };
 
-  // Form validation
+  const removeDynamicField = (index, arrayName) => {
+    const updatedArray = interiorData[arrayName].filter((_, i) => i !== index);
+    setInteriorData((prevState) => ({
+      ...prevState,
+      [arrayName]: updatedArray,
+    }));
+  };
+
   const validateForm = () => {
     const newErrors = {};
     if (!interiorData.name) newErrors.name = "Interior Name is required";
     if (!interiorData.type) newErrors.type = "Interior Type is required";
     if (!interiorData.price) newErrors.price = "Price is required";
     if (!interiorData.address) newErrors.address = "Address is required";
-    if (!interiorData.rating) newErrors.rating = "Rating is required";
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
-      onSubmit(interiorData);
+      setIsSubmitting(true);
+      try {
+        const formData = new FormData();
+        formData.append("name", interiorData.name);
+        formData.append("type", interiorData.type);
+        formData.append("details", interiorData.details);
+        formData.append("price", interiorData.price);
+        formData.append("priceRange", interiorData.priceRange);
+        formData.append("address", interiorData.address);
+        formData.append("verified", interiorData.verified);
+        formData.append("rating", interiorData.rating);
+        formData.append("reviews", interiorData.reviews);
+        formData.append("specialOffers", interiorData.specialOffers);
+        formData.append("portfolioLink", interiorData.portfolioLink);
+        formData.append("contactNumber", interiorData.contactNumber);
+        formData.append("website", interiorData.website);
+        formData.append("projectTimeline", interiorData.projectTimeline);
+        formData.append("consultation", interiorData.consultation);
+        formData.append("status", interiorData.status);
+        formData.append("designStyle", interiorData.designStyle.join(","));
+        formData.append("pastClients", interiorData.pastClients.join(","));
+        interiorData.services.forEach((service, index) => {
+          formData.append(`services[${index}]`, service);
+        });
+        if (interiorData.image) {
+          formData.append("image", interiorData.image);
+        }
+
+        const url = isEditMode
+          ? `http://localhost:7002/api/interior/${existingData.id}` // Edit URL with ID
+          : "http://localhost:7002/api/vendor/interior";
+
+        const method = isEditMode ? "PUT" : "POST"; // PUT for editing, POST for adding
+
+        const response = await axios({
+          method,
+          url,
+          data: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        setIsSubmitting(false);
+        alert("Interior added successfully");
+        onButtonClick();
+      } catch (error) {
+        console.error("Error submitting interior:", error);
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -191,7 +234,8 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
       onSubmit={handleSubmit}
       className="flex flex-col my-2 h-full overflow-hidden"
     >
-      <div className="flex justify-between items-center">
+      <div className="mx-1 md:flex ">
+        {/* Interior Name */}
         <InputField
           label="Interior Name"
           name="name"
@@ -199,6 +243,8 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
           onChange={handleChange}
           error={errors.name}
         />
+
+        {/* Interior Type */}
         <SelectField
           label="Interior Type"
           name="type"
@@ -209,6 +255,7 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
         />
       </div>
 
+      {/* Details */}
       <TextAreaField
         label="Details"
         name="details"
@@ -216,21 +263,29 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
         onChange={handleChange}
         error={errors.details}
       />
-      <div className="flex justify-between items-center">
-      <InputField
-        label="Price"
-        name="price"
-        value={interiorData.price}
-        onChange={handleChange}
-        error={errors.price}
-      />
-      <InputField
-        label="Price Range"
-        name="priceRange"
-        value={interiorData.priceRange}
-        onChange={handleChange}
-      />
+
+      {/* Price */}
+      <div className="-mx-3 md:flex ">
+        <div className="md:w-1/2 px-3">
+          <InputField
+            label="Price"
+            name="price"
+            value={interiorData.price}
+            onChange={handleChange}
+            error={errors.price}
+          />
+        </div>
+        <div className="md:w-1/2 px-3">
+          <InputField
+            label="Price Range"
+            name="priceRange"
+            value={interiorData.priceRange}
+            onChange={handleChange}
+          />
+        </div>
       </div>
+
+      {/* Address */}
       <InputField
         label="Address"
         name="address"
@@ -239,6 +294,7 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
         error={errors.address}
       />
 
+      {/* Image */}
       <div className="-mx-3 md:flex mb-6">
         <div className="md:w-full px-3">
           <label
@@ -256,31 +312,38 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
         </div>
       </div>
 
+      {/* Verified */}
       <CheckboxField
         label="Verified"
         name="verified"
         checked={interiorData.verified}
         onChange={handleChange}
       />
-      {/* <InputField
+
+      {/* Rating */}
+      <InputField
         label="Rating"
         name="rating"
         value={interiorData.rating}
         onChange={handleChange}
         type="number"
-        error={errors.rating}
       />
+
+      {/* Reviews */}
       <InputField
         label="Reviews"
         name="reviews"
         value={interiorData.reviews}
         onChange={handleChange}
         type="number"
-      /> */}
+      />
 
-      {/* Services Section */}
+      {/* Services */}
       <div className="md:w-full px-3 mb-6">
-        <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-services"
+        >
           Services
         </label>
         {interiorData.services.map((service, index) => (
@@ -288,12 +351,12 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
             <input
               type="text"
               value={service}
-              onChange={(e) => handleServicesChange(e, index)}
+              onChange={(e) => handleDynamicChange(e, index, "services")}
               className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             />
             <button
               type="button"
-              onClick={() => removeService(index)}
+              onClick={() => removeDynamicField(index, "services")}
               className="ml-2 text-red-500"
             >
               <RiDeleteBinLine size={20} />
@@ -302,38 +365,94 @@ const InteriorForm = ({ onSubmit, existingData = {} }) => {
         ))}
         <button
           type="button"
-          onClick={addService}
-          className="bg-gray-500 text-white px-4 py-2 rounded flex items-center gap-2"
+          onClick={() => addDynamicField("services")}
+          className="bg-gray-500 text-white px-4 py-2 rounded-full inline-flex items-center"
         >
-          <RiAddFill size={20} /> Add Service
+          <RiAddFill size={20} className="mr-2" />
+          Add Service
         </button>
       </div>
 
-      <InputField
-        label="Contact Number"
-        name="contactNumber"
-        value={interiorData.contactNumber}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Website"
-        name="website"
-        value={interiorData.website}
-        onChange={handleChange}
-      />
-      <InputField
-        label="Portfolio Link"
-        name="portfolioLink"
-        value={interiorData.portfolioLink}
-        onChange={handleChange}
-      />
+      {/* Design Style */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-design-style"
+        >
+          Design Style
+        </label>
+        {interiorData.designStyle.map((style, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={style}
+              onChange={(e) => handleDynamicChange(e, index, "designStyle")}
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeDynamicField(index, "designStyle")}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine size={20} />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => addDynamicField("designStyle")}
+          className="bg-gray-500 text-white px-4 py-2 rounded-full inline-flex items-center"
+        >
+          <RiAddFill size={20} className="mr-2" />
+          Add Design Style
+        </button>
+      </div>
 
-      <div className="px-3">
+      {/* Past Clients */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-past-clients"
+        >
+          Past Clients
+        </label>
+        {interiorData.pastClients.map((client, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={client}
+              onChange={(e) => handleDynamicChange(e, index, "pastClients")}
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeDynamicField(index, "pastClients")}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine size={20} />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => addDynamicField("pastClients")}
+          className="bg-gray-500 text-white px-4 py-2 rounded-full inline-flex items-center"
+        >
+          <RiAddFill size={20} className="mr-2" />
+          Add Past Client
+        </button>
+      </div>
+
+      {/* Submit Button */}
+      <div className="md:w-full px-3 mb-6">
         <button
           type="submit"
-          className="bg-gray-500 text-white font-bold py-2 px-4 rounded"
+          className={`py-2 px-6 bg-blue-600 text-white rounded-md ${
+            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={isSubmitting}
         >
-          Submit
+          {isSubmitting ? "Submitting..." : "Submit"}
         </button>
       </div>
     </form>

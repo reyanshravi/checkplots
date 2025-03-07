@@ -96,59 +96,56 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
   </div>
 );
 
-const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
-
+const TestForm = ({ onButtonClick, existingData = {} }) => {
   const isEditMode = Object.keys(existingData).length > 0;
-  const [propertyData, setPropertyData] = useState({
+  const [hotelData, setHotelData] = useState({
     name: isEditMode ? existingData.name : "",
     type: isEditMode ? existingData.type : "",
     details: isEditMode ? existingData.details : "",
     price: isEditMode ? existingData.price : "",
-    pricePerSqft: isEditMode ? existingData.pricePerSqft : "",
+    pricePerNight: isEditMode ? existingData.pricePerNight : "",
     image: isEditMode ? existingData.image : "",
     address: isEditMode ? existingData.address : "",
     verified: isEditMode ? existingData.verified : false,
-    underDevelopment: isEditMode ? existingData.underDevelopment : false,
+    underRenovation: isEditMode ? existingData.underRenovation : false,
     rating: isEditMode ? existingData.rating : "",
     reviews: isEditMode ? existingData.reviews : "",
-    plotDimensions: isEditMode ? existingData.plotDimensions : "",
-    facing: isEditMode ? existingData.facing : "",
-    landmark: isEditMode ? existingData.landmark : "",
-    availableFor: isEditMode ? existingData.availableFor : "",
-    ownershipType: isEditMode ? existingData.ownershipType : "",
-    numberOfBedroom: isEditMode ? existingData.numberOfBedroom : "",
-    numberOfBathroom: isEditMode ? existingData.numberOfBathroom : "",
-    amenities: isEditMode ? existingData.amenities : [],
+    facilities: isEditMode ? existingData.facilities : [],
+    checkInTime: isEditMode ? existingData.checkInTime : "",
+    checkOutTime: isEditMode ? existingData.checkOutTime : "",
+    availableRooms: isEditMode ? existingData.availableRooms : "",
+    nearbyAttractions: isEditMode ? existingData.nearbyAttractions : [],
+    cancellationPolicy: isEditMode ? existingData.cancellationPolicy : "",
+    specialOffers: isEditMode ? existingData.specialOffers : "",
     contactNumber: isEditMode ? existingData.contactNumber : "",
     website: isEditMode ? existingData.website : "",
-    investmentPotential: isEditMode ? existingData.investmentPotential : "",
     status: isEditMode ? existingData.status : "",
+    amenities: isEditMode ? existingData.amenities : [],
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Function to handle adding/removing amenities
   const handleAmenitiesChange = (e, index) => {
     const { value } = e.target;
-    const newAmenities = [...propertyData.amenities];
+    const newAmenities = [...hotelData.amenities];
     newAmenities[index] = value;
-    setPropertyData((prevState) => ({
+    setHotelData((prevState) => ({
       ...prevState,
       amenities: newAmenities,
     }));
   };
 
   const addAmenity = () => {
-    setPropertyData((prevState) => ({
+    setHotelData((prevState) => ({
       ...prevState,
       amenities: [...prevState.amenities, ""],
     }));
   };
 
   const removeAmenity = (index) => {
-    const newAmenities = propertyData.amenities.filter((_, i) => i !== index);
-    setPropertyData((prevState) => ({
+    const newAmenities = hotelData.amenities.filter((_, i) => i !== index);
+    setHotelData((prevState) => ({
       ...prevState,
       amenities: newAmenities,
     }));
@@ -156,7 +153,7 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setPropertyData((prevState) => ({
+    setHotelData((prevState) => ({
       ...prevState,
       [name]: type === "checkbox" ? checked : value,
     }));
@@ -164,7 +161,7 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setPropertyData((prevState) => ({
+    setHotelData((prevState) => ({
       ...prevState,
       image: files,
     }));
@@ -172,12 +169,10 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!propertyData.name) newErrors.name = "Property Name is required";
-    if (!propertyData.type) newErrors.type = "Property Type is required";
-    if (!propertyData.price) newErrors.price = "Price is required";
-    if (!propertyData.address) newErrors.address = "Address is required";
-    if (!propertyData.availableFor)
-      newErrors.availableFor = "Availability is required";
+    if (!hotelData.name) newErrors.name = "Hotel Name is required";
+    if (!hotelData.type) newErrors.type = "Hotel Type is required";
+    if (!hotelData.price) newErrors.price = "Price is required";
+    if (!hotelData.address) newErrors.address = "Address is required";
     return newErrors;
   };
 
@@ -189,41 +184,43 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
       setIsSubmitting(true);
       try {
         const formData = new FormData();
-        formData.append("vendorId", "679b5504384bb55d7309be5b");
-        formData.append("name", propertyData.name);
-        formData.append("type", propertyData.type);
-        formData.append("details", propertyData.details);
-        formData.append("price", propertyData.price);
-        formData.append("pricePerSqft", propertyData.pricePerSqft);
-        formData.append("address", propertyData.address);
-        formData.append("verified", propertyData.verified);
-        formData.append("underDevelopment", propertyData.underDevelopment);
-        formData.append("rating", propertyData.rating);
-        formData.append("reviews", propertyData.reviews);
-        formData.append("plotDimensions", propertyData.plotDimensions);
-        formData.append("facing", propertyData.facing);
-        formData.append("landmark", propertyData.landmark);
-        formData.append("availableFor", propertyData.availableFor);
-        formData.append("ownershipType", propertyData.ownershipType);
-        formData.append("numberOfBedroom", propertyData.numberOfBedroom);
-        formData.append("numberOfBathroom", propertyData.numberOfBathroom);
-        formData.append("contactNumber", propertyData.contactNumber);
-        formData.append("website", propertyData.website);
-        formData.append(
-          "investmentPotential",
-          propertyData.investmentPotential
-        );
-        propertyData.amenities.forEach((amenity, index) => {
+        formData.append("name", hotelData.name || "Default Hotel Name");
+        formData.append("type", hotelData.type || "Standard");
+        formData.append("details", hotelData.details || "No details available");
+        formData.append("price", hotelData.price || "0");
+        formData.append("pricePerNight", hotelData.pricePerNight || "0");
+        formData.append("address", hotelData.address || "Unknown Address");
+        formData.append("verified", hotelData.verified !== undefined ? hotelData.verified : false); // Assuming false as the default for verification
+        formData.append("underRenovation", hotelData.underRenovation !== undefined ? hotelData.underRenovation : false); // Default as false if undefined
+        formData.append("rating", hotelData.rating || "0"); // Default to "0" if not specified
+        formData.append("reviews", hotelData.reviews || "No reviews yet");
+        formData.append("checkInTime", hotelData.checkInTime || "14:00");
+        formData.append("checkOutTime", hotelData.checkOutTime || "12:00");
+        formData.append("availableRooms", hotelData.availableRooms || "0");
+        formData.append("cancellationPolicy", hotelData.cancellationPolicy || "No cancellation policy");
+        formData.append("specialOffers", hotelData.specialOffers || "None");
+        formData.append("contactNumber", hotelData.contactNumber || "000-000-0000");
+        formData.append("website", hotelData.website || "https://www.defaultwebsite.com");
+        formData.append("status", hotelData.status || "active");
+        
+
+        hotelData.facilities.forEach((facility, index) => {
+          formData.append(`facilities[${index}]`, facility);
+        });
+
+        hotelData.nearbyAttractions.forEach((attraction, index) => {
+          formData.append(`nearbyAttractions[${index}]`, attraction);
+        });
+
+        hotelData.amenities.forEach((amenity, index) => {
           formData.append(`amenities[${index}]`, amenity);
         });
-        if (propertyData.image) {
-          formData.append("images", propertyData.image[0]);
+
+        if (hotelData.image) {
+          formData.append("image", hotelData.image[0]);
         }
 
-        const url = isEditMode
-          ? `http://localhost:7002/api/vendor/property/${property.id}` // Edit URL with ID
-          : "http://localhost:7002/api/vendor/property";
-
+        const url = "http://localhost:7002/api/vendor/hotels";
         const method = isEditMode ? "PUT" : "POST"; // PUT for editing, POST for adding
 
         const response = await axios({
@@ -236,42 +233,34 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
         });
 
         setIsSubmitting(false);
-
-        console.log(
-          isEditMode ? "Property updated" : "Property added",
-          response.data
-        );
-        alert("Property added successfully");
+        alert("Hotel added/updated successfully");
         onButtonClick();
       } catch (error) {
-        console.error("Error submitting property:", error);
+        console.error("Error submitting hotel:", error);
         setIsSubmitting(false);
       }
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col my-2 h-full overflow-hidden"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col my-2 h-full overflow-hidden">
       <div className="mx-1 md:flex ">
-        {/* Property Name */}
+        {/* Hotel Name */}
         <InputField
-          label="Property Name"
+          label="Hotel Name"
           name="name"
-          value={propertyData.name}
+          value={hotelData.name}
           onChange={handleChange}
           error={errors.name}
         />
 
-        {/* Property Type */}
+        {/* Hotel Type */}
         <SelectField
-          label="Property Type"
+          label="Hotel Type"
           name="type"
-          value={propertyData.type}
+          value={hotelData.type}
           onChange={handleChange}
-          options={["Villa", "Apartment", "Commercial", "Plot", "Other"]}
+          options={["Luxury", "Economy", "Budget", "Boutique", "Other"]}
           error={errors.type}
         />
       </div>
@@ -280,7 +269,7 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
       <TextAreaField
         label="Details"
         name="details"
-        value={propertyData.details}
+        value={hotelData.details}
         onChange={handleChange}
         error={errors.details}
       />
@@ -291,16 +280,16 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
           <InputField
             label="Price"
             name="price"
-            value={propertyData.price}
+            value={hotelData.price}
             onChange={handleChange}
             error={errors.price}
           />
         </div>
         <div className="md:w-1/2 px-3">
           <InputField
-            label="Price Per Sqft"
-            name="pricePerSqft"
-            value={propertyData.pricePerSqft}
+            label="Price Per Night"
+            name="pricePerNight"
+            value={hotelData.pricePerNight}
             onChange={handleChange}
           />
         </div>
@@ -310,7 +299,7 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
       <InputField
         label="Address"
         name="address"
-        value={propertyData.address}
+        value={hotelData.address}
         onChange={handleChange}
         error={errors.address}
       />
@@ -322,7 +311,7 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
             className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
             htmlFor="grid-image"
           >
-            Property Image
+            Hotel Image
           </label>
           <input
             multiple
@@ -338,87 +327,50 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
       <CheckboxField
         label="Verified"
         name="verified"
-        checked={propertyData.verified}
+        checked={hotelData.verified}
         onChange={handleChange}
       />
 
-      {/* Under Development */}
+      {/* Under Renovation */}
       <CheckboxField
-        label="Under Development"
-        name="underDevelopment"
-        checked={propertyData.underDevelopment}
+        label="Under Renovation"
+        name="underRenovation"
+        checked={hotelData.underRenovation}
         onChange={handleChange}
       />
 
-      {/* Facing */}
-      <SelectField
-        label="Facing"
-        name="facing"
-        value={propertyData.facing}
-        onChange={handleChange}
-        options={["East", "West", "North", "South"]}
-      />
-
-      {/* Landmark */}
+      {/* Rating */}
       <InputField
-        label="Landmark"
-        name="landmark"
-        value={propertyData.landmark}
+        label="Rating"
+        name="rating"
+        value={hotelData.rating}
         onChange={handleChange}
+        type="number"
+        step="0.1"
       />
 
-      <div className="flex justify-center items-center">
-        {/* Available For */}
-        <SelectField
-          label="Available For"
-          name="availableFor"
-          value={propertyData.availableFor}
-          onChange={handleChange}
-          options={["Sale", "Rent"]}
-          error={errors.availableFor}
-        />
-
-        {/* Ownership Type */}
-        <SelectField
-          label="Ownership Type"
-          name="ownershipType"
-          value={propertyData.ownershipType}
-          onChange={handleChange}
-          options={["Freehold", "Leasehold"]}
-        />
-      </div>
-
-      {/* Number of Bedrooms */}
+      {/* Reviews */}
       <InputField
-        label="Number of Bedrooms"
-        name="numberOfBedroom"
-        value={propertyData.numberOfBedroom}
+        label="Reviews"
+        name="reviews"
+        value={hotelData.reviews}
         onChange={handleChange}
         type="number"
       />
 
-      {/* Number of Bathrooms */}
-      <InputField
-        label="Number of Bathrooms"
-        name="numberOfBathroom"
-        value={propertyData.numberOfBathroom}
-        onChange={handleChange}
-        type="number"
-      />
-
-      {/* Amenities */}
+      {/* Facilities */}
       <div className="md:w-full px-3 mb-6">
         <label
           className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-          htmlFor="grid-amenities"
+          htmlFor="grid-facilities"
         >
-          Amenities
+          Facilities
         </label>
-        {propertyData.amenities.map((amenity, index) => (
+        {hotelData.facilities.map((facility, index) => (
           <div className="flex items-center mb-3" key={index}>
             <input
               type="text"
-              value={amenity}
+              value={facility}
               onChange={(e) => handleAmenitiesChange(e, index)}
               className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             />
@@ -436,15 +388,65 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
           onClick={addAmenity}
           className="bg-gray-500 text-white px-4 py-2 rounded flex items-center gap-2"
         >
-          <RiAddFill size={20} /> Add Amenity
+          <RiAddFill size={20} /> Add Facility
         </button>
       </div>
+
+      {/* Nearby Attractions */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-attractions"
+        >
+          Nearby Attractions
+        </label>
+        {hotelData.nearbyAttractions.map((attraction, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={attraction}
+              onChange={(e) => handleAmenitiesChange(e, index)}
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeAmenity(index)}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine size={20} />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addAmenity}
+          className="bg-gray-500 text-white px-4 py-2 rounded flex items-center gap-2"
+        >
+          <RiAddFill size={20} /> Add Attraction
+        </button>
+      </div>
+
+      {/* Cancellation Policy */}
+      <TextAreaField
+        label="Cancellation Policy"
+        name="cancellationPolicy"
+        value={hotelData.cancellationPolicy}
+        onChange={handleChange}
+      />
+
+      {/* Special Offers */}
+      <TextAreaField
+        label="Special Offers"
+        name="specialOffers"
+        value={hotelData.specialOffers}
+        onChange={handleChange}
+      />
 
       {/* Contact Number */}
       <InputField
         label="Contact Number"
         name="contactNumber"
-        value={propertyData.contactNumber}
+        value={hotelData.contactNumber}
         onChange={handleChange}
       />
 
@@ -452,15 +454,7 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
       <InputField
         label="Website"
         name="website"
-        value={propertyData.website}
-        onChange={handleChange}
-      />
-
-      {/* Investment Potential */}
-      <TextAreaField
-        label="Investment Potential"
-        name="investmentPotential"
-        value={propertyData.investmentPotential}
+        value={hotelData.website}
         onChange={handleChange}
       />
 
@@ -468,31 +462,20 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
       <SelectField
         label="Status"
         name="status"
-        value={propertyData.status}
+        value={hotelData.status}
         onChange={handleChange}
-        options={["Ongoing", "Completed", "Upcoming"]}
+        options={["Active", "Inactive"]}
       />
 
-      {/* Submit Button */}
-      <div className="sm:flex sm:justify-start sm:space-x-6 ml-3">
-        <button
-          type="submit"
-          className="bg-gray-500 text-white font-bold py-2 px-4 rounded flex items-center justify-center space-x-2"
-          disabled={isSubmitting} // Disable button while submitting
-        >
-          {isSubmitting ? (
-            <>
-              <div className="w-5 h-5 border-4 border-t-4 border-white rounded-full animate-spin"></div>
-              <span>Loading...</span>
-            </>
-          ) : (
-            <span>{isEditMode ? "Update Property" : "Add Property"}</span>
-          )}
-        </button>
-       
-      </div>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="bg-blue-500 text-white px-4 py-2 rounded mt-6"
+      >
+        {isSubmitting ? "Submitting..." : "Submit"}
+      </button>
     </form>
   );
 };
 
-export default PropertyForm;
+export default TestForm;

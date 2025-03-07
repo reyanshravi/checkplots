@@ -14,6 +14,8 @@ export default function PropertyDataProvider({ children }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  console.log(data);
+  
 
   useEffect(() => {
     const fetchData = async () => {

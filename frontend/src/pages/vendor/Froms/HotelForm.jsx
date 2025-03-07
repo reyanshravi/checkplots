@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   RiDeleteBinLine,
   RiAddFill,
   RiArrowDropDownLine,
 } from "react-icons/ri";
 
-// Reusable input component
+// Reusable Input component
 const InputField = ({ label, name, value, onChange, type = "text", error }) => (
   <div className="md:w-full px-3 mb-6">
     <label
@@ -25,7 +26,7 @@ const InputField = ({ label, name, value, onChange, type = "text", error }) => (
   </div>
 );
 
-// Reusable textarea component
+// Reusable Textarea component
 const TextAreaField = ({ label, name, value, onChange, error }) => (
   <div className="md:w-full px-3 mb-6">
     <label
@@ -44,7 +45,7 @@ const TextAreaField = ({ label, name, value, onChange, error }) => (
   </div>
 );
 
-// Reusable checkbox component
+// Reusable Checkbox component
 const CheckboxField = ({ label, name, checked, onChange }) => (
   <div className="md:w-full px-3 mb-6">
     <label className="flex items-center space-x-3">
@@ -60,7 +61,7 @@ const CheckboxField = ({ label, name, checked, onChange }) => (
   </div>
 );
 
-// Dropdown component for enums
+// SelectField for Enums
 const SelectField = ({ label, name, value, onChange, options, error }) => (
   <div className="md:w-full px-3 mb-6 relative">
     <label
@@ -89,32 +90,35 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
   </div>
 );
 
-const HotelForm = ({ onSubmit, existingData = {} }) => {
+// Main Form Component
+const HotelForm = () => {
   const [hotelData, setHotelData] = useState({
-    name: existingData.name || "",
-    type: existingData.type || "Luxury",
-    details: existingData.details || "",
-    price: existingData.price || "",
-    pricePerNight: existingData.pricePerNight || "",
-    image: existingData.image || "",
-    address: existingData.address || "",
-    verified: existingData.verified || false,
-    underRenovation: existingData.underRenovation || false,
-    rating: existingData.rating || 0,
-    reviews: existingData.reviews || 0,
-    facilities: existingData.facilities || [],
-    checkInTime: existingData.checkInTime || "",
-    checkOutTime: existingData.checkOutTime || "",
-    availableRooms: existingData.availableRooms || 0,
-    nearbyAttractions: existingData.nearbyAttractions || [],
-    cancellationPolicy: existingData.cancellationPolicy || "",
-    specialOffers: existingData.specialOffers || "",
-    contactNumber: existingData.contactNumber || "",
-    website: existingData.website || "",
-    amenities: existingData.amenities || [],
+    name: "",
+    type: "Luxury",
+    details: "",
+    price: "",
+    pricePerNight: "",
+    image: null,
+    address: "",
+    verified: false,
+    underRenovation: false,
+    rating: 0,
+    reviews: 0,
+    facilities: [],
+    checkInTime: "",
+    checkOutTime: "",
+    availableRooms: 0,
+    nearbyAttractions: [],
+    cancellationPolicy: "",
+    specialOffers: "",
+    contactNumber: "",
+    website: "",
+    amenities: [],
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -128,32 +132,32 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
     const files = Array.from(e.target.files);
     setHotelData((prevState) => ({
       ...prevState,
-      image: files[0],  // Change from array to single file as you expect one image upload
+      image: files[0],
     }));
   };
 
-  const addFacility = () => {
+  const addField = (fieldName) => {
     setHotelData((prevState) => ({
       ...prevState,
-      facilities: [...prevState.facilities, ""],
+      [fieldName]: [...prevState[fieldName], ""],
     }));
   };
 
-  const handleFacilityChange = (e, index) => {
-    const newFacilities = [...hotelData.facilities];
-    newFacilities[index] = e.target.value;
+  const handleFieldChange = (e, index, fieldName) => {
+    const newFields = [...hotelData[fieldName]];
+    newFields[index] = e.target.value;
     setHotelData((prevState) => ({
       ...prevState,
-      facilities: newFacilities,
+      [fieldName]: newFields,
     }));
   };
 
-  const removeFacility = (index) => {
-    const newFacilities = [...hotelData.facilities];
-    newFacilities.splice(index, 1);
+  const removeField = (index, fieldName) => {
+    const newFields = [...hotelData[fieldName]];
+    newFields.splice(index, 1);
     setHotelData((prevState) => ({
       ...prevState,
-      facilities: newFacilities,
+      [fieldName]: newFields,
     }));
   };
 
@@ -161,43 +165,131 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
     const newErrors = {};
     if (!hotelData.name) newErrors.name = "Hotel Name is required";
     if (!hotelData.type) newErrors.type = "Hotel Type is required";
+    if (!hotelData.details) newErrors.details = "Hotel details are required";
     if (!hotelData.price) newErrors.price = "Price is required";
     if (!hotelData.address) newErrors.address = "Address is required";
     if (!hotelData.rating) newErrors.rating = "Rating is required";
+    if (!hotelData.reviews) newErrors.reviews = "Reviews count is required";
+    if (!hotelData.checkInTime)
+      newErrors.checkInTime = "Check-in Time is required";
+    if (!hotelData.checkOutTime)
+      newErrors.checkOutTime = "Check-out Time is required";
+    if (!hotelData.availableRooms)
+      newErrors.availableRooms = "Available Rooms is required";
+    if (!hotelData.contactNumber)
+      newErrors.contactNumber = "Contact Number is required";
+    if (!hotelData.website) newErrors.website = "Website is required";
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const validationErrors = validateForm();
     setErrors(validationErrors);
+
     if (Object.keys(validationErrors).length === 0) {
-      onSubmit(hotelData);
+      setLoading(true);
+      try {
+        const formData = new FormData();
+        formData.append("name", hotelData.name);
+        formData.append("type", hotelData.type);
+        formData.append("details", hotelData.details);
+        formData.append("price", hotelData.price);
+        formData.append("pricePerNight", hotelData.pricePerNight);
+        formData.append("address", hotelData.address);
+        formData.append("verified", hotelData.verified);
+        formData.append("underRenovation", hotelData.underRenovation);
+        formData.append("rating", hotelData.rating);
+        formData.append("reviews", hotelData.reviews);
+        formData.append("checkInTime", hotelData.checkInTime);
+        formData.append("checkOutTime", hotelData.checkOutTime);
+        formData.append("availableRooms", hotelData.availableRooms);
+        formData.append("cancellationPolicy", hotelData.cancellationPolicy);
+        formData.append("specialOffers", hotelData.specialOffers);
+        formData.append("contactNumber", hotelData.contactNumber);
+        formData.append("website", hotelData.website);
+        formData.append("facilities", JSON.stringify(hotelData.facilities));
+        formData.append("amenities", JSON.stringify(hotelData.amenities));
+        formData.append("nearbyAttractions", JSON.stringify(hotelData.nearbyAttractions));
+
+        // Append image file (if any)
+        if (hotelData.image) {
+          formData.append("images", hotelData.image);
+        }
+
+        const response = await axios.post(
+          "http://localhost:7002/api/vendor/hotels",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        if (response.data.success) {
+          setSuccessMessage("Hotel added successfully!");
+          setHotelData({
+            name: "",
+            type: "Luxury",
+            details: "",
+            price: "",
+            pricePerNight: "",
+            image: null,
+            address: "",
+            verified: false,
+            underRenovation: false,
+            facilities: [],
+            checkInTime: "",
+            checkOutTime: "",
+            availableRooms: 0,
+            nearbyAttractions: [],
+            cancellationPolicy: "",
+            specialOffers: "",
+            contactNumber: "",
+            website: "",
+            amenities: [],
+            rating: 0,
+            reviews: 0,
+          });
+        } else {
+          setErrors({ form: "Error: Hotel submission failed" });
+        }
+      } catch (error) {
+        setErrors({ form: "Server error. Unable to add hotel." });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col my-2 h-full overflow-hidden">
-      {/* Hotel Name */}
-      <InputField
-        label="Hotel Name"
-        name="name"
-        value={hotelData.name}
-        onChange={handleChange}
-        error={errors.name}
-      />
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col my-2 h-full overflow-hidden"
+    >
+      {successMessage && <p className="text-green-500">{successMessage}</p>}
+      {errors.form && <p className="text-red-500">{errors.form}</p>}
 
-      {/* Hotel Type */}
-      <SelectField
-        label="Hotel Type"
-        name="type"
-        value={hotelData.type}
-        onChange={handleChange}
-        options={["Luxury", "Budget", "Resort", "Boutique", "Other"]}
-        error={errors.type}
-      />
+      <div className="flex justify-between items-center">
+        <InputField
+          label="Hotel Name"
+          name="name"
+          value={hotelData.name}
+          onChange={handleChange}
+          error={errors.name}
+        />
+        <SelectField
+          label="Hotel Type"
+          name="type"
+          value={hotelData.type}
+          onChange={handleChange}
+          options={["Luxury", "Budget", "Resort", "Boutique", "Other"]}
+          error={errors.type}
+        />
+      </div>
 
-      {/* Details */}
       <TextAreaField
         label="Details"
         name="details"
@@ -206,24 +298,22 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
         error={errors.details}
       />
 
-      {/* Price */}
-      <InputField
-        label="Price"
-        name="price"
-        value={hotelData.price}
-        onChange={handleChange}
-        error={errors.price}
-      />
+      <div className="flex justify-between items-center">
+        <InputField
+          label="Price"
+          name="price"
+          value={hotelData.price}
+          onChange={handleChange}
+          error={errors.price}
+        />
+        <InputField
+          label="Price per Night"
+          name="pricePerNight"
+          value={hotelData.pricePerNight}
+          onChange={handleChange}
+        />
+      </div>
 
-      {/* Price per Night */}
-      <InputField
-        label="Price per Night"
-        name="pricePerNight"
-        value={hotelData.pricePerNight}
-        onChange={handleChange}
-      />
-
-      {/* Address */}
       <InputField
         label="Address"
         name="address"
@@ -232,10 +322,12 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
         error={errors.address}
       />
 
-      {/* Image */}
       <div className="-mx-3 md:flex mb-6">
         <div className="md:w-full px-3">
-          <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" htmlFor="grid-image">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="grid-image"
+          >
             Hotel Image
           </label>
           <input
@@ -246,13 +338,16 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
           />
           {hotelData.image && (
             <div className="mt-2">
-              <img src={URL.createObjectURL(hotelData.image)} alt="Hotel preview" className="h-20 w-20 object-cover" />
+              <img
+                src={URL.createObjectURL(hotelData.image)}
+                alt="Hotel preview"
+                className="h-20 w-20 object-cover"
+              />
             </div>
           )}
         </div>
       </div>
 
-      {/* Verified */}
       <CheckboxField
         label="Verified"
         name="verified"
@@ -260,7 +355,6 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
         onChange={handleChange}
       />
 
-      {/* Under Renovation */}
       <CheckboxField
         label="Under Renovation"
         name="underRenovation"
@@ -268,28 +362,12 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
         onChange={handleChange}
       />
 
-      {/* Rating */}
-      <InputField
-        label="Rating"
-        name="rating"
-        value={hotelData.rating}
-        onChange={handleChange}
-        type="number"
-        error={errors.rating}
-      />
-
-      {/* Reviews */}
-      <InputField
-        label="Reviews"
-        name="reviews"
-        value={hotelData.reviews}
-        onChange={handleChange}
-        type="number"
-      />
-
       {/* Facilities */}
       <div className="md:w-full px-3 mb-6">
-        <label className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" htmlFor="grid-facilities">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-facilities"
+        >
           Facilities
         </label>
         {hotelData.facilities.map((facility, index) => (
@@ -297,53 +375,117 @@ const HotelForm = ({ onSubmit, existingData = {} }) => {
             <input
               type="text"
               value={facility}
-              onChange={(e) => handleFacilityChange(e, index)}
+              onChange={(e) => handleFieldChange(e, index, "facilities")}
               className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             />
-            <button type="button" onClick={() => removeFacility(index)} className="ml-2 text-red-500">
-              <RiDeleteBinLine size={20} />
+            <button
+              type="button"
+              onClick={() => removeField(index, "facilities")}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine />
             </button>
           </div>
         ))}
         <button
           type="button"
-          onClick={addFacility}
-          className="bg-gray-500 text-white px-4 py-2 rounded flex items-center gap-2"
+          onClick={() => addField("facilities")}
+          className="text-green-500 flex items-center"
         >
-          <RiAddFill size={20} /> Add Facility
+          <RiAddFill /> Add Facility
         </button>
       </div>
 
-      {/* Contact Number */}
-      <InputField
-        label="Contact Number"
-        name="contactNumber"
-        value={hotelData.contactNumber}
+      {/* Nearby Attractions */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-nearbyAttractions"
+        >
+          Nearby Attractions
+        </label>
+        {hotelData.nearbyAttractions.map((attraction, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={attraction}
+              onChange={(e) =>
+                handleFieldChange(e, index, "nearbyAttractions")
+              }
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeField(index, "nearbyAttractions")}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => addField("nearbyAttractions")}
+          className="text-green-500 flex items-center"
+        >
+          <RiAddFill /> Add Attraction
+        </button>
+      </div>
+
+      {/* New Inputs for Cancellation Policy, Special Offers, Contact Number, Website */}
+      <TextAreaField
+        label="Cancellation Policy"
+        name="cancellationPolicy"
+        value={hotelData.cancellationPolicy}
         onChange={handleChange}
       />
-
-      {/* Website */}
-      <InputField
-        label="Website"
-        name="website"
-        value={hotelData.website}
-        onChange={handleChange}
-      />
-
-      {/* Special Offers */}
-      <InputField
+      <TextAreaField
         label="Special Offers"
         name="specialOffers"
         value={hotelData.specialOffers}
         onChange={handleChange}
       />
+      <InputField
+        label="Contact Number"
+        name="contactNumber"
+        value={hotelData.contactNumber}
+        onChange={handleChange}
+        error={errors.contactNumber}
+      />
+      <InputField
+        label="Website"
+        name="website"
+        value={hotelData.website}
+        onChange={handleChange}
+        error={errors.website}
+      />
 
-      {/* Submit Button */}
-      <div className="px-3">
-        <button type="submit" className="bg-gray-500 text-white font-bold py-2 px-4 rounded">
-          Submit
-        </button>
+      <div className="flex justify-between items-center">
+        <InputField
+          label="Rating"
+          name="rating"
+          value={hotelData.rating}
+          onChange={handleChange}
+          type="number"
+          error={errors.rating}
+        />
+        <InputField
+          label="Reviews"
+          name="reviews"
+          value={hotelData.reviews}
+          onChange={handleChange}
+          type="number"
+          error={errors.reviews}
+        />
       </div>
+
+      <button
+        type="submit"
+        className="bg-blue-500 text-white py-2 px-6 rounded mt-4"
+        disabled={loading}
+      >
+        {loading ? "Submitting..." : "Submit"}
+      </button>
     </form>
   );
 };

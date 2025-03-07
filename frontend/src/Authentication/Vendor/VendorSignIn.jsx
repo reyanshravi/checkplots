@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HomeButton from "../../components/HomeButton";
 
 const VendorSignin = () => {
@@ -189,13 +189,12 @@ const VendorSignin = () => {
 
                   <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                     Don't have an account ?
-                    <a
-                      href="#"
+                    <Link to="/vendor/signup"
                       className="text-gray-700 underline"
                       onClick={() => navigate("/signup")}
                     >
                       Sign Up
-                    </a>
+                    </Link>
                     .
                   </p>
                 </div>

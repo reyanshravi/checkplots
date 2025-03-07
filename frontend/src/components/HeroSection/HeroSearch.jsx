@@ -31,8 +31,8 @@ export default function Herosearch() {
     <div className="bg-black text-white bg-opacity-30 backdrop-blur-sm border border-white border-opacity-20 rounded-lg p-8 max-w-4xl w-full mx-auto">
       <div className="space-y-6">
         {/* Filter Row */}
-        <div className="flex items-center space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 divide-x">
-          <div className="w-full sm:w-auto">
+        <div className="flex flex-wrap items-center justify-between space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 divide-x">
+          <div className="w-full sm:w-auto mb-4 sm:mb-0">
             {["rent", "buy"].map((type) => (
               <button
                 key={type}
@@ -48,7 +48,7 @@ export default function Herosearch() {
             ))}
           </div>
 
-          <div className="w-full sm:w-auto ">
+          <div className="w-full sm:w-auto mb-4 sm:mb-0">
             {["plot", "flat"].map((property) => (
               <button
                 key={property}
@@ -81,8 +81,8 @@ export default function Herosearch() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center space-y-4 sm:space-y-0 sm:flex-row">
-          <div className="flex items-center space-x-4 bg-white text-black rounded-full px-4 py-2 w-full sm:w-auto">
+        <div className="flex flex-wrap justify-between items-center space-y-4 sm:space-y-0 sm:flex-row">
+          <div className="flex flex-wrap items-center space-x-4 bg-white text-black rounded-full px-4 py-2 w-full sm:w-auto">
             <div className="flex items-center space-x-4 w-full sm:w-auto">
               {/* Location Icon */}
               <RiMapPin2Line className="text-black text-xl" />
@@ -90,7 +90,7 @@ export default function Herosearch() {
               {/* Dropdown */}
               <select
                 name="city"
-                className="py-2 px-4 rounded-full text-black transition-all duration-300 outline-none"
+                className="py-2 px-4 rounded-full text-black transition-all duration-300 outline-none w-full sm:w-auto"
                 onChange={(e) => handleFilterChange("location", e.target.value)}
                 value={filters.location}
               >
@@ -120,7 +120,7 @@ export default function Herosearch() {
               )}
             </div>
 
-            <div className="w-full sm:w-auto">
+            <div className="w-full sm:w-auto mt-4 sm:mt-0">
               <input
                 type="search"
                 placeholder="Search..."
@@ -129,7 +129,7 @@ export default function Herosearch() {
               />
             </div>
 
-            <div className="flex space-x-4 items-center">
+            <div className="flex space-x-4 items-center mt-4 sm:mt-0">
               {/* Filter Button */}
               <button
                 onClick={() => setShowAdditionalFilters(!showAdditionalFilters)}
@@ -152,7 +152,7 @@ export default function Herosearch() {
 
         {showAdditionalFilters && (
           <div className="space-y-4 mt-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Price Range Select */}
               <div className="flex flex-col space-y-2">
                 <select

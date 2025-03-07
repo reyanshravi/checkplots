@@ -22,6 +22,12 @@ import ProtectedRoute from "./Router/ProtectedRoute";
 // Import Layouts
 import { MainLayout, NoLayout } from "./Router/Layout";
 import PropertyDataProvider from "./Context/PropertyDataProvider";
+import HeroSection from "./components/HeroSection/HeroSection";
+import Herosearch from "./components/HeroSection/HeroSearch";
+import DomainSearch from "./components/HeroSection/DomainSearch";
+import ForgotPassword from "./Authentication/Vendor/ForgotPassword";
+import ResetPassword from "./Authentication/Vendor/RestPassword";
+import HotelForm from "./components/TestForm";
 
 function App() {
   return (
@@ -162,6 +168,17 @@ function App() {
           }
         />
         <Route
+          path="/vendor/forgotpassword"
+          element={
+            <NoLayout>
+              <ForgotPassword />
+            </NoLayout>
+          }
+        />
+        <Route
+        path="/reset-password/:token"
+        element={<ResetPassword/>}/>
+        <Route
           path="/vendor/dashboard"
           element={
             <ProtectedRoute
@@ -174,6 +191,10 @@ function App() {
       </Routes>
     </Router>
 
+    // <HotelForm />
+    // <DomainSearch />
+    // <Herosearch />
+    //<HeroSection />
     // <PropertyDataProvider>
     //   <PList />
     // </PropertyDataProvider>

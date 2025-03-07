@@ -1,4 +1,4 @@
-import React, { useEffect ,useState} from "react";
+import React, { useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection/HeroSection";
 import Category from "../components/Category";
 import MostPopularProperties from "../components/MostPopularProperties";
@@ -8,7 +8,6 @@ import News from "../components/News";
 import { FaArrowUpLong } from "react-icons/fa6";
 import ExploreSection from "../components/ExploreSection";
 
-
 export default function LandingPage() {
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
@@ -16,7 +15,6 @@ export default function LandingPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
-
 
   const checkScroll = () => {
     if (window.scrollY > 100) {
@@ -44,24 +42,33 @@ export default function LandingPage() {
 
   return (
     <>
-      <div>
+      <div className="container mx-auto ">
+        {/* Hero Section */}
         <HeroSection />
+
+        {/* Category Section */}
         <Category />
+
+        {/* Most Popular Properties Section */}
         <MostPopularProperties />
-        {/* <Properties />
-        <Slider /> */}
+
+        {/* Hotels By Location Section */}
         <HotelsByLocation />
+
+        {/* News Section */}
         <News />
-        {/* <TestGrid/> */}
+
+        {/* Explore Section */}
         <ExploreSection />
 
+        {/* Scroll to Top Button */}
         <button
           onClick={scrollToTop}
-          className={`flex justify-center items-center fixed bottom-5 right-5 h-10 w-10 bg-gray-500 text-white font-extrabold rounded-full shadow-lg transition-opacity duration-300 ${
-            isVisible ? "opacity-100" : "opacity-0 pointer-events-none "
+          className={`flex justify-center items-center fixed bottom-5 right-5 md:bottom-10 md:right-10 h-12 w-12 md:h-10 md:w-10 bg-gray-500 text-white font-extrabold rounded-full shadow-lg transition-opacity duration-300 ${
+            isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-        <FaArrowUpLong />
+          <FaArrowUpLong />
         </button>
       </div>
     </>
