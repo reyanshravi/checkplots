@@ -117,8 +117,6 @@ export const getPropertyById = async (req, res) => {
   }
 };
 
-
-
 export const updateProperty = async (req, res) => {
   try {
     const { id } = req.params; // Get property ID from URL params
@@ -169,7 +167,10 @@ export const updateProperty = async (req, res) => {
     property.pricePerSqft = pricePerSqft || property.pricePerSqft;
     property.address = address || property.address;
     property.verified = verified !== undefined ? verified : property.verified;
-    property.underDevelopment = underDevelopment !== undefined ? underDevelopment : property.underDevelopment;
+    property.underDevelopment =
+      underDevelopment !== undefined
+        ? underDevelopment
+        : property.underDevelopment;
     property.rating = rating || property.rating;
     property.reviews = reviews || property.reviews;
     property.plotDimensions = plotDimensions || property.plotDimensions;
@@ -182,7 +183,8 @@ export const updateProperty = async (req, res) => {
     property.amenities = amenities || property.amenities;
     property.contactNumber = contactNumber || property.contactNumber;
     property.website = website || property.website;
-    property.investmentPotential = investmentPotential || property.investmentPotential;
+    property.investmentPotential =
+      investmentPotential || property.investmentPotential;
 
     // Save the updated property
     const updatedProperty = await property.save();
