@@ -10,7 +10,6 @@ export const addInterior = async (req, res) => {
       details,
       price,
       priceRange,
-      image,
       address,
       verified,
       rating,
@@ -26,6 +25,9 @@ export const addInterior = async (req, res) => {
       pastClients,
     } = req.body;
 
+    // Extract uploaded file paths
+    const images = req.files.map((file) => file.path);
+
     // Create a new Interior instance
     const newInterior = new Interior({
       name,
@@ -33,7 +35,7 @@ export const addInterior = async (req, res) => {
       details,
       price,
       priceRange,
-      image,
+      image: images.length > 0 ? images[0] : "", // Store first image as main image
       address,
       verified, // Optional - defaults to false if not provided
       rating,
@@ -75,12 +77,10 @@ export const getAllInterior = async (req, res) => {
     res.status(200).json({ success: true, interiors });
   } catch (error) {
     console.error("Error fetching interiors:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Server error. Unable to fetch interiors",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Server error. Unable to fetch interiors",
+    });
   }
 };
 
@@ -96,12 +96,10 @@ export const getInteriorById = async (req, res) => {
     res.status(200).json({ success: true, interior });
   } catch (error) {
     console.error("Error fetching interior:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Server error. Unable to fetch interior",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Server error. Unable to fetch interior",
+    });
   }
 };
 
@@ -118,21 +116,17 @@ export const updateInterior = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Interior not found" });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Interior updated successfully",
-        interior: updatedInterior,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Interior updated successfully",
+      interior: updatedInterior,
+    });
   } catch (error) {
     console.error("Error updating interior:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Server error. Unable to update interior",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Server error. Unable to update interior",
+    });
   }
 };
 
@@ -150,11 +144,9 @@ export const deleteInterior = async (req, res) => {
       .json({ success: true, message: "Interior deleted successfully" });
   } catch (error) {
     console.error("Error deleting interior:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Server error. Unable to delete interior",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Server error. Unable to delete interior",
+    });
   }
 };
