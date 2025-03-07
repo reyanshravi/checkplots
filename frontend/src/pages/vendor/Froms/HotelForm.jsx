@@ -188,6 +188,8 @@ const HotelForm = () => {
     const validationErrors = validateForm();
     setErrors(validationErrors);
 
+    console.log(validationErrors);
+
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true);
       try {
@@ -211,7 +213,10 @@ const HotelForm = () => {
         formData.append("website", hotelData.website);
         formData.append("facilities", JSON.stringify(hotelData.facilities));
         formData.append("amenities", JSON.stringify(hotelData.amenities));
-        formData.append("nearbyAttractions", JSON.stringify(hotelData.nearbyAttractions));
+        formData.append(
+          "nearbyAttractions",
+          JSON.stringify(hotelData.nearbyAttractions)
+        );
 
         // Append image file (if any)
         if (hotelData.image) {
@@ -219,7 +224,7 @@ const HotelForm = () => {
         }
 
         const response = await axios.post(
-          "http://localhost:7002/api/vendor/hotels",
+          "http://localhost:7002/api/vendor/hotel",
           formData,
           {
             headers: {
@@ -409,9 +414,7 @@ const HotelForm = () => {
             <input
               type="text"
               value={attraction}
-              onChange={(e) =>
-                handleFieldChange(e, index, "nearbyAttractions")
-              }
+              onChange={(e) => handleFieldChange(e, index, "nearbyAttractions")}
               className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             />
             <button
@@ -458,6 +461,30 @@ const HotelForm = () => {
         value={hotelData.website}
         onChange={handleChange}
         error={errors.website}
+      />
+
+      <InputField
+        label="Available Rooms"
+        name="availableRooms"
+        value={hotelData.availableRooms}
+        onChange={handleChange}
+        error={errors.availableRooms}
+      />
+
+      <InputField
+        label="Check-in Time"
+        name="checkInTime"
+        value={hotelData.checkInTime}
+        onChange={handleChange}
+        error={errors.checkInTime}
+      />
+
+      <InputField
+        label="Check-out Time"
+        name="checkOutTime"
+        value={hotelData.checkOutTime}
+        onChange={handleChange}
+        error={errors.checkOutTime}
       />
 
       <div className="flex justify-between items-center">

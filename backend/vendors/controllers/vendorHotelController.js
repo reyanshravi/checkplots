@@ -10,7 +10,6 @@ export const addHotel = async (req, res) => {
       details,
       price,
       pricePerNight,
-      image,
       address,
       verified,
       underRenovation,
@@ -28,6 +27,9 @@ export const addHotel = async (req, res) => {
       amenities,
     } = req.body;
 
+    // Extract uploaded file paths
+    const images = req.files.map((file) => file.path);
+
     // Create a new Hotel document
     const newHotel = new Hotel({
       name,
@@ -35,7 +37,7 @@ export const addHotel = async (req, res) => {
       details,
       price,
       pricePerNight,
-      image,
+      image: images.length > 0 ? images[0] : "", // Store first image as main image
       address,
       verified, // If not provided, it will default to false
       underRenovation, // If not provided, it will default to false
@@ -53,6 +55,8 @@ export const addHotel = async (req, res) => {
       amenities,
     });
 
+    console.log("New Hotel:", req.body);
+
     // Save the new hotel record to the database
     const savedHotel = await newHotel.save();
 
@@ -64,9 +68,11 @@ export const addHotel = async (req, res) => {
     });
   } catch (error) {
     console.error("Error adding hotel:", error);
+    console.log(error);
+
     res.status(500).json({
       success: false,
-      message: "Server error. Unable to add hotel.",
+      message: "Server error. Unable to add hotel." + error,
       error: error.message,
     });
   }
