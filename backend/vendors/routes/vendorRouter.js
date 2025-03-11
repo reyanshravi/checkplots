@@ -111,7 +111,7 @@ vendorRouter.get("/interiors", getAllInterior);
 vendorRouter.get("/interior/:id", getInteriorById);
 
 // Update an interior by ID, including images
-vendorRouter.put("/:id", upload.array("images", 10), updateInterior);
+vendorRouter.put("/interior/:id", upload.array("images", 10), updateInterior);
 
 // Delete an interior by ID
 vendorRouter.delete("/:id", deleteInterior);
