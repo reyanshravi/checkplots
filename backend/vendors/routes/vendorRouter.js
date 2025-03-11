@@ -108,7 +108,7 @@ vendorRouter.post("/interior", upload.array("images", 10), addInterior);
 vendorRouter.get("/interiors", getAllInterior);
 
 // Get a single interior by ID
-vendorRouter.get("/:id", getInteriorById);
+vendorRouter.get("/interior/:id", getInteriorById);
 
 // Update an interior by ID, including images
 vendorRouter.put("/:id", upload.array("images", 10), updateInterior);
