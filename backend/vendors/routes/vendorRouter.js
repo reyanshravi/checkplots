@@ -114,7 +114,7 @@ vendorRouter.get("/interior/:id", getInteriorById);
 vendorRouter.put("/interior/:id", upload.array("images", 10), updateInterior);
 
 // Delete an interior by ID
-vendorRouter.delete("/:id", deleteInterior);
+vendorRouter.delete("/interior/:id", deleteInterior);
 
 // Hotel Section
 // Add a new hotel
