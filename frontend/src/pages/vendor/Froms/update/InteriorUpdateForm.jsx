@@ -6,81 +6,59 @@ import {
   RiArrowDropDownLine,
 } from "react-icons/ri";
 
-// Reusable Input component
+// Reusable Form Field Components
 const InputField = ({ label, name, value, onChange, type = "text", error }) => (
   <div className="md:w-full px-3 mb-6">
-    <label
-      className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-      htmlFor={name}
-    >
-      {label}
-    </label>
+    <label className="block uppercase text-xs font-bold mb-2">{label}</label>
     <input
       type={type}
       name={name}
-      value={value}
+      value={value || ""}
       onChange={onChange}
-      className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+      className="block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4"
     />
     {error && <p className="text-red text-xs italic">{error}</p>}
   </div>
 );
 
-// Reusable Textarea component
 const TextAreaField = ({ label, name, value, onChange, error }) => (
   <div className="md:w-full px-3 mb-6">
-    <label
-      className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-      htmlFor={name}
-    >
-      {label}
-    </label>
+    <label className="block uppercase text-xs font-bold mb-2">{label}</label>
     <textarea
       name={name}
-      value={value}
+      value={value || ""}
       onChange={onChange}
-      className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+      className="block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4"
     />
     {error && <p className="text-red text-xs italic">{error}</p>}
   </div>
 );
 
-// Reusable Checkbox component
 const CheckboxField = ({ label, name, checked, onChange }) => (
   <div className="md:w-full px-3 mb-6">
     <label className="flex items-center space-x-3">
-      <div className="relative flex items-center">
-        <input
-          type="checkbox"
-          name={name}
-          checked={checked}
-          onChange={onChange}
-          className="hidden peer"
-        />
-        <div className="w-6 h-6 bg-gray-200 rounded-full border-2 border-gray-400 peer-checked:bg-gray-500 peer-checked:border-gray-500 peer-checked:ring-2 peer-checked:ring-gray-500 transition-colors duration-300"></div>
-        <div
-          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full peer-checked:left-1/2 peer-checked:transform-none transition-all duration-300`}
-        ></div>
-      </div>
-      <span className="text-gray-700 text-sm font-medium">{label}</span>
+      <input
+        type="checkbox"
+        name={name}
+        checked={checked || false}
+        onChange={onChange}
+        className="hidden peer"
+      />
+      <div className="w-6 h-6 bg-gray-200 rounded-full border-2 border-gray-400 peer-checked:bg-gray-500 peer-checked:border-gray-500 peer-checked:ring-2 peer-checked:ring-gray-500"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full peer-checked:left-1/2 peer-checked:transform-none"></div>
+      <span className="text-gray-700 text-sm">{label}</span>
     </label>
   </div>
 );
 
-// SelectField for Enums
 const SelectField = ({ label, name, value, onChange, options, error }) => (
   <div className="md:w-full px-3 mb-6 relative">
-    <label
-      className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-      htmlFor={name}
-    >
-      {label}
-    </label>
+    <label className="block uppercase text-xs font-bold mb-2">{label}</label>
     <select
       name={name}
-      value={value}
+      value={value || ""}
       onChange={onChange}
-      className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+      className="block w-full bg-grey-lighter text-grey-darker border rounded py-3 px-4"
     >
       <option value="">Select</option>
       {options.map((option) => (
@@ -90,25 +68,22 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
       ))}
     </select>
     {error && <p className="text-red text-xs italic">{error}</p>}
-    <div className="absolute right-5 top-9">
-      <RiArrowDropDownLine size={25} />
-    </div>
   </div>
 );
 
-// Main Form Component for Updating
+// Main Form Component
 const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
   const [interiorData, setInteriorData] = useState({
     name: "",
-    type: "Residential",
+    type: "",
     details: "",
     price: "",
     priceRange: "",
     image: null,
     address: "",
     verified: false,
-    rating: 0,
-    reviews: 0,
+    rating: "",
+    reviews: "",
     services: [],
     specialOffers: "",
     portfolioLink: "",
@@ -121,40 +96,41 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
     pastClients: [],
   });
 
+  console.log(interiorData);
+
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Fetch existing data based on the interiorId when component mounts
   useEffect(() => {
-    // Fetch existing data for the update form
-    const fetchInteriorData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:7002/api/vendor/interior/${interiorId}`
-        );
-        setInteriorData(response.data); // Set the data to the form
-      } catch (error) {
-        console.error("Error fetching interior data:", error);
-        setErrors({ form: "Error fetching interior data for update." });
-      }
-    };
-
-    fetchInteriorData();
-  }, [interiorId]);
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setInteriorData((prevState) => ({
-      ...prevState,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+    if (interiorId) {
+      axios
+        .get(`http://localhost:7002/api/vendor/interior/${interiorId}`)
+        .then((response) => {
+          // Populate form fields with the fetched data
+          setInteriorData(response.data.interior);
+        })
+        .catch((error) => {
+          setErrors({ form: "Error fetching interior data." });
+          console.log(error);
+        });
+    }
+  }, [interiorId]); // Fetch data when `interiorId` changes
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setInteriorData((prevState) => ({
       ...prevState,
       image: files[0],
+    }));
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setInteriorData((prevState) => ({
+      ...prevState,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -183,89 +159,110 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
     }));
   };
 
+  // Validate form fields before submitting
   const validateForm = () => {
     const newErrors = {};
-    if (!interiorData.name) newErrors.name = "Name is required";
-    if (!interiorData.type) newErrors.type = "Type is required";
-    if (!interiorData.details) newErrors.details = "Details are required";
-    if (!interiorData.price) newErrors.price = "Price is required";
-    if (!interiorData.priceRange)
-      newErrors.priceRange = "Price Range is required";
-    if (!interiorData.address) newErrors.address = "Address is required";
-    if (!interiorData.rating) newErrors.rating = "Rating is required";
-    if (!interiorData.reviews) newErrors.reviews = "Reviews count is required";
-    if (!interiorData.contactNumber)
-      newErrors.contactNumber = "Contact Number is required";
-    if (!interiorData.website) newErrors.website = "Website is required";
-    if (!interiorData.projectTimeline)
-      newErrors.projectTimeline = "Project Timeline is required";
-    if (!interiorData.consultation)
-      newErrors.consultation = "Consultation details are required";
+    const requiredFields = [
+      "name",
+      "type",
+      "details",
+      "price",
+      "priceRange",
+      "address",
+      "rating",
+      "reviews",
+      "contactNumber",
+      "website",
+      "projectTimeline",
+      "consultation",
+    ];
+    requiredFields.forEach((field) => {
+      if (!interiorData[field]) newErrors[field] = `${field} is required`;
+    });
     return newErrors;
   };
 
+  // Handle form submission (PUT request to update data)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validate the form fields before submitting
     const validationErrors = validateForm();
     setErrors(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
-      setLoading(true);
+    // If there are validation errors, return early and don't submit the form
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
 
-      // Initialize FormData
-      const formData = new FormData();
+    setLoading(true);
 
-      // Append all form fields to formData
-      Object.keys(interiorData).forEach((key) => {
-        if (Array.isArray(interiorData[key])) {
-          formData.append(key, JSON.stringify(interiorData[key]));
-        } else {
-          formData.append(key, interiorData[key]);
-        }
-      });
+    // Prepare the form data to send
+    const formData = new FormData();
+    Object.keys(interiorData).forEach((key) => {
+      formData.append(
+        key,
+        Array.isArray(interiorData[key])
+          ? JSON.stringify(interiorData[key])
+          : interiorData[key]
+      );
+    });
 
-      // Append the image if it exists
-      if (interiorData.image) {
-        formData.append("image", interiorData.image);
+    // Attach the image if present
+    if (interiorData.image) formData.append("images", interiorData.image);
+
+    try {
+      // Make the API request to update the interior data
+      const response = await axios.put(
+        `http://localhost:7002/api/vendor/interior/${interiorData.id}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      // Check if the update was successful
+      if (response.data.success) {
+        setSuccessMessage("Interior updated successfully!");
+        onButtonClick(); // Notify the parent component of the success
+      } else {
+        // If the response indicates failure, set an appropriate error message
+        setErrors({ form: "Interior update failed. Please try again later." });
       }
+    } catch (error) {
+      // Handle different types of errors:
 
-      try {
-        const response = await axios.put(
-          `http://localhost:7002/api/vendor/interior/${interiorId}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-
-        console.log("Server Response:", response);
-        if (response.data.success) {
-          setSuccessMessage("Interior updated successfully!");
-          onButtonClick();
-        } else {
-          setErrors({ form: "Error: Interior update failed." });
-        }
-      } catch (error) {
-        console.error("Error occurred while submitting form:", error);
-        setErrors({ form: "Error occurred during the update process." });
-      } finally {
-        setLoading(false);
+      if (error.response) {
+        // The request was made and the server responded with an error status code
+        console.error("Error response from server:", error.response);
+        setErrors({
+          form: `Server error: ${
+            error.response.data.message || "Please try again later."
+          }`,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("Error with the request:", error.request);
+        setErrors({
+          form: "Network error: No response from server. Please check your connection.",
+        });
+      } else {
+        // Something else went wrong
+        console.error("Error occurred during the update:", error.message);
+        setErrors({
+          form: `An error occurred: ${
+            error.message || "Please try again later."
+          }`,
+        });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col my-2 h-full overflow-hidden"
-    >
+    <form onSubmit={handleSubmit} className="flex flex-col my-2">
       {successMessage && <p className="text-green-500">{successMessage}</p>}
       {errors.form && <p className="text-red-500">{errors.form}</p>}
 
-      {/* Interior Name, Type */}
       <div className="flex justify-between items-center">
         <InputField
           label="Interior Name"
@@ -279,12 +276,11 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
           name="type"
           value={interiorData.type}
           onChange={handleChange}
-          options={["Residential", "Commercial", "Retail", "Other"]}
+          options={["Living Room","Residential", "Commercial", "Retail", "Other"]}
           error={errors.type}
         />
       </div>
 
-      {/* Price and Price Range */}
       <div className="flex justify-between items-center">
         <InputField
           label="Price"
@@ -303,7 +299,6 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         />
       </div>
 
-      {/* Details */}
       <TextAreaField
         label="Details"
         name="details"
@@ -311,8 +306,6 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         onChange={handleChange}
         error={errors.details}
       />
-
-      {/* Address */}
       <InputField
         label="Address"
         name="address"
@@ -321,54 +314,31 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         error={errors.address}
       />
 
-      {/* Image */}
-      <div className="md:w-full px-3 mb-6">
-        <label
-          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-          htmlFor="image"
-        >
-          Image
-        </label>
-        <input
-          type="file"
-          name="image"
-          onChange={handleImageChange}
-          className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-        />
-        {errors.image && (
-          <p className="text-red text-xs italic">{errors.image}</p>
-        )}
+      <div className="md:flex mb-6">
+        <div className="md:w-full px-3">
+          <label
+            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+            htmlFor="grid-image"
+          >
+            Interior Image
+          </label>
+          <input
+            type="file"
+            name="image"
+            onChange={handleImageChange}
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
+          />
+          {interiorData.image && (
+            <div className="mt-2">
+              <img
+                src={interiorData.image}
+                alt="Interior preview"
+                className="h-20 w-20 object-cover"
+              />
+            </div>
+          )}
+        </div>
       </div>
-
-      {/* Verified */}
-      <CheckboxField
-        label="Verified"
-        name="verified"
-        checked={interiorData.verified}
-        onChange={handleChange}
-      />
-
-      {/* Rating */}
-      <InputField
-        label="Rating"
-        name="rating"
-        value={interiorData.rating}
-        onChange={handleChange}
-        type="number"
-        error={errors.rating}
-      />
-
-      {/* Reviews */}
-      <InputField
-        label="Reviews"
-        name="reviews"
-        value={interiorData.reviews}
-        onChange={handleChange}
-        type="number"
-        error={errors.reviews}
-      />
-
-      {/* Contact Number */}
       <InputField
         label="Contact Number"
         name="contactNumber"
@@ -376,8 +346,6 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         onChange={handleChange}
         error={errors.contactNumber}
       />
-
-      {/* Website */}
       <InputField
         label="Website"
         name="website"
@@ -385,8 +353,6 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         onChange={handleChange}
         error={errors.website}
       />
-
-      {/* Project Timeline */}
       <InputField
         label="Project Timeline"
         name="projectTimeline"
@@ -394,8 +360,6 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         onChange={handleChange}
         error={errors.projectTimeline}
       />
-
-      {/* Consultation */}
       <TextAreaField
         label="Consultation"
         name="consultation"
@@ -404,22 +368,160 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         error={errors.consultation}
       />
 
-      {/* Design Style */}
-      <div className="flex justify-between items-center">
-        <SelectField
-          label="Design Style"
-          name="designStyle"
-          value={interiorData.designStyle}
+      <CheckboxField
+        label="Verified"
+        name="verified"
+        checked={interiorData.verified}
+        onChange={handleChange}
+      />
+
+      {/* Special Offers */}
+      <InputField
+        label="Special Offers"
+        name="specialOffers"
+        value={interiorData.specialOffers}
+        onChange={handleChange}
+        error={errors.specialOffers}
+      />
+
+      {/* Portfolio Link */}
+      <InputField
+        label="Portfolio Link"
+        name="portfolioLink"
+        value={interiorData.portfolioLink}
+        onChange={handleChange}
+        error={errors.portfolioLink}
+      />
+
+      {/* Consultation */}
+      <InputField
+        label="Consultation Details"
+        name="consultation"
+        value={interiorData.consultation}
+        onChange={handleChange}
+        error={errors.consultation}
+      />
+
+      {/* Review and rating */}
+      <div className="flex justify-between">
+        <InputField
+          label="Rating"
+          name="rating"
+          value={interiorData.rating}
           onChange={handleChange}
-          options={[
-            "Modern",
-            "Traditional",
-            "Minimalist",
-            "Industrial",
-            "Other",
-          ]}
-          error={errors.designStyle}
+          type="number"
+          error={errors.rating}
         />
+        <InputField
+          label="Reviews"
+          name="reviews"
+          value={interiorData.reviews}
+          onChange={handleChange}
+          type="number"
+          error={errors.reviews}
+        />
+      </div>
+
+      {/* Services */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-services"
+        >
+          Services
+        </label>
+        {interiorData.services.map((service, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={service}
+              onChange={(e) => handleFieldChange(e, index, "services")}
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeField(index, "services")}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => addField("services")}
+          className="text-green-500 flex items-center"
+        >
+          <RiAddFill /> Add Service
+        </button>
+      </div>
+
+      {/* Design Styles */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-designStyle"
+        >
+          Design Style
+        </label>
+        {interiorData.designStyle.map((style, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={style}
+              onChange={(e) => handleFieldChange(e, index, "designStyle")}
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeField(index, "designStyle")}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => addField("designStyle")}
+          className="text-green-500 flex items-center"
+        >
+          <RiAddFill /> Add Design Style
+        </button>
+      </div>
+
+      {/* Past Clients */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-pastClients"
+        >
+          Past Clients
+        </label>
+        {interiorData.pastClients.map((client, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={client}
+              onChange={(e) => handleFieldChange(e, index, "pastClients")}
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeField(index, "pastClients")}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={() => addField("pastClients")}
+          className="text-green-500 flex items-center"
+        >
+          <RiAddFill /> Add Past Client
+        </button>
       </div>
 
       {/* Status */}
@@ -428,11 +530,10 @@ const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
         name="status"
         value={interiorData.status}
         onChange={handleChange}
-        options={["1", "2", "3", "4"]}
+        options={["0","1", "2", "3", "4"]}
         error={errors.status}
       />
 
-      {/* Submit Button */}
       <div className="flex justify-end mt-4">
         <button
           type="submit"

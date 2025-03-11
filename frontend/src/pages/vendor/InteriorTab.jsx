@@ -162,7 +162,7 @@ const InteriorTab = () => {
       {isAddingInterior ? (
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between">
-          <h3 className="text-2xl font-semibold mb-4">{editingInterior ? 'Update Property' : 'Add New Property'}</h3>
+          <h3 className="text-2xl font-semibold mb-4">{editingInterior ? 'Update interior' : 'Add New interior'}</h3>
           {/* Cancel Button */}
             <div className="px-3">
               <button

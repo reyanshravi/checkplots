@@ -12,6 +12,7 @@ import TabButton from "../../components/TabButton";
 import DropdownMenu from "../../components/DropdownMenu";
 import NavButton from "../../components/NavButton";
 import ResetPassword from "./ResetPassword";
+import { IoMdHome } from "react-icons/io";
 
 const tabConfig = [
   { id: "profile", label: "Profile", icon: FiUser, component: <ProfileTab /> },
@@ -116,16 +117,20 @@ const VendorDashboard = () => {
     <div className="flex flex-col h-screen bg-pink-500">
       {/* Navbar */}
       <div className="w-full bg-gray-800 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-3xl font-semibold tracking-tight text-white">
-          Vendor Dashboard
-        </h1>
-        <DropdownMenu
+        <div className=" flex items-center gap-10">
+          <h1 className="text-2xl font-semibold tracking-tight text-white">
+            Vendor Dashboard
+          </h1>
+          <DropdownMenu
           ref={dropdownRef}
           isOpen={isDropdownOpen}
           onToggle={handleDropdownToggle}
           onLogout={handleLogout}
           handleChangePassword={handleChangePassword}
         />
+        </div>
+        <IoMdHome onClick={()=>navigate("/")} size={30} className="cursor-pointer" />
+
       </div>
 
       {/* Content Section */}
