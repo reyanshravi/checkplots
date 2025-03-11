@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { FiUser, FiSettings, FiMail } from "react-icons/fi";
 import { FaBuilding, FaHotel, FaCouch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import ProfileTab from "./ProfileTab";
 import PropertiesTab from "./PropertiesTab";
 import HotelsTab from "./HotelsTab";
@@ -10,7 +11,6 @@ import SettingsTab from "./SettingsTab";
 import TabButton from "../../components/TabButton";
 import DropdownMenu from "../../components/DropdownMenu";
 import NavButton from "../../components/NavButton";
-import { useNavigate } from "react-router-dom";
 import ResetPassword from "./ResetPassword";
 
 const tabConfig = [
@@ -45,7 +45,7 @@ const tabConfig = [
 const VendorDashboard = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // Ref for dropdown menu
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   const handleTabChange = useCallback((tab) => {
@@ -113,7 +113,7 @@ const VendorDashboard = () => {
   }, []); // Empty dependency array to run effect only on mount/unmount
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-pink-500">
       {/* Navbar */}
       <div className="w-full bg-gray-800 text-white py-4 px-6 flex justify-between items-center shadow-md">
         <h1 className="text-3xl font-semibold tracking-tight text-white">
@@ -136,7 +136,7 @@ const VendorDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 bg-white p-6 rounded-lg shadow-lg overflow-y-auto m-4">
+        <div className="flex-1 bg-white p-6  overflow-y-auto">
           {renderTabContent()}
         </div>
       </div>

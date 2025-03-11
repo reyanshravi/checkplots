@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   RiDeleteBinLine,
@@ -96,8 +96,8 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
   </div>
 );
 
-// Main Form Component
-const InteriorForm = ({onButtonClick}) => {
+// Main Form Component for Updating
+const InteriorUpdateForm = ({ interiorId, onButtonClick }) => {
   const [interiorData, setInteriorData] = useState({
     name: "",
     type: "Residential",
@@ -124,6 +124,23 @@ const InteriorForm = ({onButtonClick}) => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    // Fetch existing data for the update form
+    const fetchInteriorData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:7002/api/vendor/interior/${interiorId}`
+        );
+        setInteriorData(response.data); // Set the data to the form
+      } catch (error) {
+        console.error("Error fetching interior data:", error);
+        setErrors({ form: "Error fetching interior data for update." });
+      }
+    };
+
+    fetchInteriorData();
+  }, [interiorId]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -200,37 +217,22 @@ const InteriorForm = ({onButtonClick}) => {
       const formData = new FormData();
 
       // Append all form fields to formData
-      formData.append("name", interiorData.name);
-      formData.append("type", interiorData.type);
-      formData.append("details", interiorData.details);
-      formData.append("price", interiorData.price);
-      formData.append("priceRange", interiorData.priceRange);
-      formData.append("address", interiorData.address);
-      formData.append("verified", interiorData.verified);
-      formData.append("rating", interiorData.rating);
-      formData.append("reviews", interiorData.reviews);
-      formData.append("specialOffers", interiorData.specialOffers);
-      formData.append("portfolioLink", interiorData.portfolioLink);
-      formData.append("contactNumber", interiorData.contactNumber);
-      formData.append("website", interiorData.website);
-      formData.append("projectTimeline", interiorData.projectTimeline);
-      formData.append("consultation", interiorData.consultation);
-      formData.append("status", interiorData.status);
-      formData.append("services", JSON.stringify(interiorData.services));
-      formData.append("designStyle", JSON.stringify(interiorData.designStyle));
-      formData.append("pastClients", JSON.stringify(interiorData.pastClients));
+      Object.keys(interiorData).forEach((key) => {
+        if (Array.isArray(interiorData[key])) {
+          formData.append(key, JSON.stringify(interiorData[key]));
+        } else {
+          formData.append(key, interiorData[key]);
+        }
+      });
 
       // Append the image if it exists
       if (interiorData.image) {
-        formData.append("images", interiorData.image);
+        formData.append("image", interiorData.image);
       }
 
       try {
-        if (formData) {
-          console.log("Sending request to the server...");
-        }
-        const response = await axios.post(
-          "http://localhost:7002/api/vendor/interior",
+        const response = await axios.put(
+          `http://localhost:7002/api/vendor/interior/${interiorId}`,
           formData,
           {
             headers: {
@@ -240,58 +242,15 @@ const InteriorForm = ({onButtonClick}) => {
         );
 
         console.log("Server Response:", response);
-        alert("Property added successfully");
-        onButtonClick();
-        // Check response from server
         if (response.data.success) {
-          setSuccessMessage("Interior added successfully!");
-          setInteriorData({
-            name: "",
-            type: "Residential",
-            details: "",
-            price: "",
-            priceRange: "",
-            image: null,
-            address: "",
-            verified: false,
-            rating: 0,
-            reviews: 0,
-            services: [],
-            specialOffers: "",
-            portfolioLink: "",
-            contactNumber: "",
-            website: "",
-            projectTimeline: "",
-            consultation: "",
-            status: 1,
-            designStyle: [],
-            pastClients: [],
-          });
+          setSuccessMessage("Interior updated successfully!");
+          onButtonClick();
         } else {
-          setErrors({ form: "Error: Interior submission failed." });
+          setErrors({ form: "Error: Interior update failed." });
         }
       } catch (error) {
         console.error("Error occurred while submitting form:", error);
-        // Handle different types of errors
-        if (error.response) {
-          // The server responded with a status other than 2xx
-          console.error("Error Response:", error.response);
-          setErrors({
-            form: `Error: ${
-              error.response.data.message || "Submission failed"
-            }`,
-          });
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.error("Error Request:", error.request);
-          setErrors({
-            form: "Error: No response from server. Please try again later.",
-          });
-        } else {
-          // Something else happened while setting up the request
-          console.error("Error Message:", error.message);
-          setErrors({ form: "Error: Unable to send the request." });
-        }
+        setErrors({ form: "Error occurred during the update process." });
       } finally {
         setLoading(false);
       }
@@ -306,6 +265,7 @@ const InteriorForm = ({onButtonClick}) => {
       {successMessage && <p className="text-green-500">{successMessage}</p>}
       {errors.form && <p className="text-red-500">{errors.form}</p>}
 
+      {/* Interior Name, Type */}
       <div className="flex justify-between items-center">
         <InputField
           label="Interior Name"
@@ -324,22 +284,15 @@ const InteriorForm = ({onButtonClick}) => {
         />
       </div>
 
-      <TextAreaField
-        label="Details"
-        name="details"
-        value={interiorData.details}
-        onChange={handleChange}
-        error={errors.details}
-      />
-
+      {/* Price and Price Range */}
       <div className="flex justify-between items-center">
         <InputField
           label="Price"
           name="price"
           value={interiorData.price}
           onChange={handleChange}
-          error={errors.price}
           type="number"
+          error={errors.price}
         />
         <InputField
           label="Price Range"
@@ -350,6 +303,16 @@ const InteriorForm = ({onButtonClick}) => {
         />
       </div>
 
+      {/* Details */}
+      <TextAreaField
+        label="Details"
+        name="details"
+        value={interiorData.details}
+        onChange={handleChange}
+        error={errors.details}
+      />
+
+      {/* Address */}
       <InputField
         label="Address"
         name="address"
@@ -358,32 +321,26 @@ const InteriorForm = ({onButtonClick}) => {
         error={errors.address}
       />
 
-      <div className="md:flex mb-6">
-        <div className="md:w-full px-3">
-          <label
-            className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-            htmlFor="grid-image"
-          >
-            Interior Image
-          </label>
-          <input
-            type="file"
-            name="image"
-            onChange={handleImageChange}
-            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
-          />
-          {interiorData.image && (
-            <div className="mt-2">
-              <img
-                src={URL.createObjectURL(interiorData.image)}
-                alt="Interior preview"
-                className="h-20 w-20 object-cover"
-              />
-            </div>
-          )}
-        </div>
+      {/* Image */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="image"
+        >
+          Image
+        </label>
+        <input
+          type="file"
+          name="image"
+          onChange={handleImageChange}
+          className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+        />
+        {errors.image && (
+          <p className="text-red text-xs italic">{errors.image}</p>
+        )}
       </div>
 
+      {/* Verified */}
       <CheckboxField
         label="Verified"
         name="verified"
@@ -391,61 +348,27 @@ const InteriorForm = ({onButtonClick}) => {
         onChange={handleChange}
       />
 
-      {/* Rating & Review */}
-      <div className="flex items-center justify-between">
-        <InputField
-          label="Rating"
-          name="rating"
-          value={interiorData.rating}
-          onChange={handleChange}
-          error={errors.rating}
-          type="number"
-        />
-        <InputField
-          label="Reviews"
-          name="reviews"
-          value={interiorData.reviews}
-          onChange={handleChange}
-          error={errors.reviews}
-          type="number"
-        />
-      </div>
-      {/* Special Offers */}
+      {/* Rating */}
       <InputField
-        label="Special Offers"
-        name="specialOffers"
-        value={interiorData.specialOffers}
+        label="Rating"
+        name="rating"
+        value={interiorData.rating}
         onChange={handleChange}
-        error={errors.specialOffers}
-      />
-      {/* Portfolio Link */}
-      <InputField
-        label="Portfolio Link"
-        name="portfolioLink"
-        value={interiorData.portfolioLink}
-        onChange={handleChange}
-        error={errors.portfolioLink}
+        type="number"
+        error={errors.rating}
       />
 
-      {/* Consultation */}
+      {/* Reviews */}
       <InputField
-        label="Consultation Details"
-        name="consultation"
-        value={interiorData.consultation}
+        label="Reviews"
+        name="reviews"
+        value={interiorData.reviews}
         onChange={handleChange}
-        error={errors.consultation}
-      />
-      {/* Status */}
-      <SelectField
-        label="Status"
-        name="status"
-        value={interiorData.status}
-        onChange={handleChange}
-        options={["1", "2"]} // Update these options accordingly based on your status values
-        error={errors.status}
+        type="number"
+        error={errors.reviews}
       />
 
-      {/* contact number */}
+      {/* Contact Number */}
       <InputField
         label="Contact Number"
         name="contactNumber"
@@ -462,6 +385,7 @@ const InteriorForm = ({onButtonClick}) => {
         onChange={handleChange}
         error={errors.website}
       />
+
       {/* Project Timeline */}
       <InputField
         label="Project Timeline"
@@ -471,118 +395,54 @@ const InteriorForm = ({onButtonClick}) => {
         error={errors.projectTimeline}
       />
 
-      {/* Services */}
-      <div className="md:w-full px-3 mb-6">
-        <label
-          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-          htmlFor="grid-services"
-        >
-          Services
-        </label>
-        {interiorData.services.map((service, index) => (
-          <div className="flex items-center mb-3" key={index}>
-            <input
-              type="text"
-              value={service}
-              onChange={(e) => handleFieldChange(e, index, "services")}
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-            />
-            <button
-              type="button"
-              onClick={() => removeField(index, "services")}
-              className="ml-2 text-red-500"
-            >
-              <RiDeleteBinLine />
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => addField("services")}
-          className="text-green-500 flex items-center"
-        >
-          <RiAddFill /> Add Service
-        </button>
+      {/* Consultation */}
+      <TextAreaField
+        label="Consultation"
+        name="consultation"
+        value={interiorData.consultation}
+        onChange={handleChange}
+        error={errors.consultation}
+      />
+
+      {/* Design Style */}
+      <div className="flex justify-between items-center">
+        <SelectField
+          label="Design Style"
+          name="designStyle"
+          value={interiorData.designStyle}
+          onChange={handleChange}
+          options={[
+            "Modern",
+            "Traditional",
+            "Minimalist",
+            "Industrial",
+            "Other",
+          ]}
+          error={errors.designStyle}
+        />
       </div>
 
-      {/* Design Styles */}
-      <div className="md:w-full px-3 mb-6">
-        <label
-          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-          htmlFor="grid-designStyle"
-        >
-          Design Style
-        </label>
-        {interiorData.designStyle.map((style, index) => (
-          <div className="flex items-center mb-3" key={index}>
-            <input
-              type="text"
-              value={style}
-              onChange={(e) => handleFieldChange(e, index, "designStyle")}
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-            />
-            <button
-              type="button"
-              onClick={() => removeField(index, "designStyle")}
-              className="ml-2 text-red-500"
-            >
-              <RiDeleteBinLine />
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => addField("designStyle")}
-          className="text-green-500 flex items-center"
-        >
-          <RiAddFill /> Add Design Style
-        </button>
-      </div>
+      {/* Status */}
+      <SelectField
+        label="Status"
+        name="status"
+        value={interiorData.status}
+        onChange={handleChange}
+        options={["1", "2", "3", "4"]}
+        error={errors.status}
+      />
 
-      {/* Past Clients */}
-      <div className="md:w-full px-3 mb-6">
-        <label
-          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-          htmlFor="grid-pastClients"
-        >
-          Past Clients
-        </label>
-        {interiorData.pastClients.map((client, index) => (
-          <div className="flex items-center mb-3" key={index}>
-            <input
-              type="text"
-              value={client}
-              onChange={(e) => handleFieldChange(e, index, "pastClients")}
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-            />
-            <button
-              type="button"
-              onClick={() => removeField(index, "pastClients")}
-              className="ml-2 text-red-500"
-            >
-              <RiDeleteBinLine />
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => addField("pastClients")}
-          className="text-green-500 flex items-center"
-        >
-          <RiAddFill /> Add Past Client
-        </button>
-      </div>
-
+      {/* Submit Button */}
       <div className="flex justify-end mt-4">
         <button
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded"
         >
-          {loading ? "Submitting..." : "Submit"}
+          {loading ? "Updating..." : "Update"}
         </button>
       </div>
     </form>
   );
 };
 
-export default InteriorForm;
+export default InteriorUpdateForm;

@@ -108,7 +108,7 @@ vendorRouter.post("/interior", upload.array("images", 10), addInterior);
 vendorRouter.get("/interiors", getAllInterior);
 
 // Get a single interior by ID
-vendorRouter.get("/:id", getInteriorById);
+vendorRouter.get("interior/:id", getInteriorById);
 
 // Update an interior by ID, including images
 vendorRouter.put("/:id", upload.array("images", 10), updateInterior);
@@ -127,7 +127,7 @@ vendorRouter.get("/hotels", getAllHotels);
 vendorRouter.get("/:id", getHotelById);
 
 // Update a hotel by ID, including images
-vendorRouter.put("/:id", upload.array("images", 10), updateHotel);
+vendorRouter.put("hotel/:id", upload.array("images", 10), updateHotel);
 
 // Delete a hotel by ID
 vendorRouter.delete("/:id", deleteHotel);

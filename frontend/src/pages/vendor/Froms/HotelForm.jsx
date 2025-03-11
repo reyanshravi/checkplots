@@ -49,13 +49,19 @@ const TextAreaField = ({ label, name, value, onChange, error }) => (
 const CheckboxField = ({ label, name, checked, onChange }) => (
   <div className="md:w-full px-3 mb-6">
     <label className="flex items-center space-x-3">
-      <input
-        type="checkbox"
-        name={name}
-        checked={checked}
-        onChange={onChange}
-        className="form-checkbox h-5 w-5 text-indigo-600"
-      />
+      <div className="relative flex items-center">
+        <input
+          type="checkbox"
+          name={name}
+          checked={checked}
+          onChange={onChange}
+          className="hidden peer"
+        />
+        <div className="w-6 h-6 bg-gray-200 rounded-full border-2 border-gray-400 peer-checked:bg-gray-500 peer-checked:border-gray-500 peer-checked:ring-2 peer-checked:ring-gray-500 transition-colors duration-300"></div>
+        <div
+          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full peer-checked:left-1/2 peer-checked:transform-none transition-all duration-300`}
+        ></div>
+      </div>
       <span className="text-gray-700 text-sm font-medium">{label}</span>
     </label>
   </div>
@@ -91,7 +97,7 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
 );
 
 // Main Form Component
-const HotelForm = () => {
+const HotelForm = ({onButtonClick}) => {
   const [hotelData, setHotelData] = useState({
     name: "",
     type: "Luxury",
@@ -104,16 +110,16 @@ const HotelForm = () => {
     underRenovation: false,
     rating: 0,
     reviews: 0,
-    facilities: [],
     checkInTime: "",
     checkOutTime: "",
     availableRooms: 0,
+    facilities: [],
     nearbyAttractions: [],
+    amenities: [],
     cancellationPolicy: "",
     specialOffers: "",
     contactNumber: "",
     website: "",
-    amenities: [],
   });
 
   const [errors, setErrors] = useState({});
@@ -188,8 +194,6 @@ const HotelForm = () => {
     const validationErrors = validateForm();
     setErrors(validationErrors);
 
-    console.log(validationErrors);
-
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true);
       try {
@@ -258,6 +262,8 @@ const HotelForm = () => {
             rating: 0,
             reviews: 0,
           });
+          onButtonClick();
+          setErrors({});
         } else {
           setErrors({ form: "Error: Hotel submission failed" });
         }
@@ -310,12 +316,14 @@ const HotelForm = () => {
           value={hotelData.price}
           onChange={handleChange}
           error={errors.price}
+          type="number"
         />
         <InputField
           label="Price per Night"
           name="pricePerNight"
           value={hotelData.pricePerNight}
           onChange={handleChange}
+          type="number"
         />
       </div>
 
@@ -327,7 +335,7 @@ const HotelForm = () => {
         error={errors.address}
       />
 
-      <div className="-mx-3 md:flex mb-6">
+      <div className="md:flex mb-6">
         <div className="md:w-full px-3">
           <label
             className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
@@ -471,21 +479,25 @@ const HotelForm = () => {
         error={errors.availableRooms}
       />
 
-      <InputField
-        label="Check-in Time"
-        name="checkInTime"
-        value={hotelData.checkInTime}
-        onChange={handleChange}
-        error={errors.checkInTime}
-      />
+      <div className="flex items-center">
+        <InputField
+          label="Check-in Time"
+          name="checkInTime"
+          value={hotelData.checkInTime}
+          onChange={handleChange}
+          error={errors.checkInTime}
+          type="time"
+        />
 
-      <InputField
-        label="Check-out Time"
-        name="checkOutTime"
-        value={hotelData.checkOutTime}
-        onChange={handleChange}
-        error={errors.checkOutTime}
-      />
+        <InputField
+          label="Check-out Time"
+          name="checkOutTime"
+          value={hotelData.checkOutTime}
+          onChange={handleChange}
+          error={errors.checkOutTime}
+          type="time"
+        />
+      </div>
 
       <div className="flex justify-between items-center">
         <InputField

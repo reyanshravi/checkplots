@@ -1,6 +1,6 @@
 const interiors = [
   {
-    id: 1,
+    id: "67ca83b43a4fa150bfe71720",
     name: "Elegant Interiors",
     type: "Interior Design & Furnishing",
     details: "Sophisticated Designs for a Timeless Elegance",
@@ -29,7 +29,7 @@ const interiors = [
     pastClients: ["Heritage Corp. Office", "Royal Palace - Luxe Residences"],
   },
   {
-    id: 2,
+    id:"67caa793ab3d2e80e81ac586",
     name: "Zen Interiors",
     type: "Interior Design & Furnishing",
     details: "Creating Tranquil Spaces for Peaceful Living",
