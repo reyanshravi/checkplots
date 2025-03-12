@@ -124,32 +124,6 @@ export const getInteriorById = async (req, res) => {
 };
 
 // Update an interior by ID
-// export const updateInterior = async (req, res) => {
-//   try {
-//     const updatedInterior = await Interior.findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       { new: true }
-//     );
-//     if (!updatedInterior) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Interior not found" });
-//     }
-//     res.status(200).json({
-//       success: true,
-//       message: "Interior updated successfully",
-//       interior: updatedInterior,
-//     });
-//   } catch (error) {
-//     console.error("Error updating interior:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Server error. Unable to update interior",
-//     });
-//   }
-// };
-
 export const updateInterior = async (req, res) => {
   try {
     const { id } = req.params; // Get interior ID from URL params
