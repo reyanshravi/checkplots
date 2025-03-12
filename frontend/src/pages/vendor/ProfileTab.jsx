@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import userImage from "../../assets/user.png"; // Default image
 
 // Reusable input component
-const EditableField = ({ label, value, name, isEditing, handleInputChange, type = "text" }) => {
+const EditableField = ({
+  label,
+  value,
+  name,
+  isEditing,
+  handleInputChange,
+  type = "text",
+}) => {
   return (
     <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
       <dt className="font-medium text-gray-900">{label}</dt>
@@ -26,11 +33,24 @@ const EditableField = ({ label, value, name, isEditing, handleInputChange, type 
 // Reusable Profile Header Component
 const ProfileHeader = ({ imageUrl, fullName, businessName }) => {
   return (
-    <div className="flex items-center mb-6 bg-white p-4 rounded-xl shadow-md">
-      <img src={imageUrl} alt="Profile" className="w-16 h-16 rounded-full mr-4" />
-      <div>
-        <h2 className="text-xl font-semibold">{fullName}</h2>
-        <p className="text-gray-500">{businessName}</p>
+    <div className="flex items-center justify-between bg-gradient-to-r from-teal-600 to-indigo-600 h-70 p-8 rounded-3xl shadow-3xl w-full transform transition-all hover:scale-102 mb-4">
+      {/* Left Section with Profile Image */}
+      <div className="w-36 h-36 bg-white rounded-full overflow-hidden border-8 border-gradient-to-r from-teal-500 to-indigo-500 flex items-center justify-center shadow-2xl transition-all transform hover:scale-105">
+        <img
+          src={imageUrl}
+          alt="Profile"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Right Section with Name and Business */}
+      <div className="ml-8 text-white">
+        <h2 className="text-5xl font-extrabold tracking-tight mb-2 leading-tight hover:text-teal-200 transition-all">
+          {fullName}
+        </h2>
+        <p className="text-2xl font-medium opacity-90 hover:text-teal-300 transition-all">
+          {businessName}
+        </p>
       </div>
     </div>
   );
@@ -65,11 +85,14 @@ const ProfileTab = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch("http://localhost:7002/api/vendor/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Add token to request headers
-          },
-        });
+        const response = await fetch(
+          "http://localhost:7002/api/vendor/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add token to request headers
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch vendor profile");
@@ -97,14 +120,17 @@ const ProfileTab = () => {
 
     // Update the vendor profile
     try {
-      const response = await fetch("http://localhost:7002/api/vendor/profile/update", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Add token to request headers
-        },
-        body: JSON.stringify(vendorData),
-      });
+      const response = await fetch(
+        "http://localhost:7002/api/vendor/profile/update",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Add token to request headers
+          },
+          body: JSON.stringify(vendorData),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update vendor profile");
@@ -149,9 +175,9 @@ const ProfileTab = () => {
       />
 
       {/* Profile Content Section (Scrollable) */}
-      <div className="overflow-y-auto flex-1">
+      <div className="overflow-y-auto flex-1 ml-4">
         <div className="flow-root">
-          <dl className="-my-3 divide-y divide-gray-100 text-sm">
+          <dl className="space-y-6 text-sm">
             {/* Editable fields */}
             <EditableField
               label="Business Name"
@@ -191,50 +217,58 @@ const ProfileTab = () => {
               handleInputChange={handleInputChange}
             />
 
-            {/* Documents */}
-            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-              <dt className="font-medium text-gray-900">Business License</dt>
-              <dd className="text-gray-700 sm:col-span-2">
-                <a
-                  href={vendorData.documents.businessLicense}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:underline"
-                >
-                  View Document
-                </a>
-              </dd>
-            </div>
-            <div className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-              <dt className="font-medium text-gray-900">Tax ID</dt>
-              <dd className="text-gray-700 sm:col-span-2">
-                <a
-                  href={vendorData.documents.taxId}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-600 hover:underline"
-                >
-                  View Document
-                </a>
-              </dd>
-            </div>
-
-            {/* Additional Documents */}
-            {vendorData.documents.otherDocs.map((doc, index) => (
-              <div key={index} className="grid grid-cols-1 gap-1 py-3 sm:grid-cols-3 sm:gap-4">
-                <dt className="font-medium text-gray-900">Other Document {index + 1}</dt>
+            {/* Documents Section */}
+            <div className="space-y-4 py-4">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Business License</dt>
                 <dd className="text-gray-700 sm:col-span-2">
                   <a
-                    href={doc}
+                    href={vendorData.documents.businessLicense}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-600 hover:underline"
+                    className="text-teal-600 hover:text-teal-700 hover:underline"
                   >
                     View Document
                   </a>
                 </dd>
               </div>
-            ))}
+
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4">
+                <dt className="font-medium text-gray-900">Tax ID</dt>
+                <dd className="text-gray-700 sm:col-span-2">
+                  <a
+                    href={vendorData.documents.taxId}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-teal-600 hover:text-teal-700 hover:underline"
+                  >
+                    View Document
+                  </a>
+                </dd>
+              </div>
+
+              {/* Additional Documents */}
+              {vendorData.documents.otherDocs.map((doc, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-4"
+                >
+                  <dt className="font-medium text-gray-900">
+                    Other Document {index + 1}
+                  </dt>
+                  <dd className="text-gray-700 sm:col-span-2">
+                    <a
+                      href={doc}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-teal-600 hover:text-teal-700 hover:underline"
+                    >
+                      View Document
+                    </a>
+                  </dd>
+                </div>
+              ))}
+            </div>
           </dl>
         </div>
       </div>

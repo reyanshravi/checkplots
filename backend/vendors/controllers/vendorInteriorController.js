@@ -11,7 +11,7 @@ export const addInterior = async (req, res) => {
       price,
       priceRange,
       address,
-      verified,
+      verified,  // we will convert this field to Boolean
       rating,
       reviews,
       services,
@@ -25,6 +25,25 @@ export const addInterior = async (req, res) => {
       pastClients,
     } = req.body;
 
+    // Convert the 'verified' field to a Boolean (true/false)
+    const verifiedBoolean = verified === 'true' ? true : false;
+
+    // Validate required fields
+    if (!name || !type || !details || !price || !address) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields: name, type, details, price, and address are required.",
+      });
+    }
+
+    // Validate uploaded files
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "At least one image file is required.",
+      });
+    }
+
     // Extract uploaded file paths
     const images = req.files.map((file) => file.path);
 
@@ -35,9 +54,9 @@ export const addInterior = async (req, res) => {
       details,
       price,
       priceRange,
-      image: images.length > 0 ? images[0] : "", // Store first image as main image
+      image: images[0], // Store the first image as the main image
       address,
-      verified, // Optional - defaults to false if not provided
+      verified: verifiedBoolean, // Use the converted Boolean value
       rating,
       reviews,
       services,
@@ -55,20 +74,21 @@ export const addInterior = async (req, res) => {
     const savedInterior = await newInterior.save();
 
     // Respond with the created interior record
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Interior added successfully",
       interior: savedInterior,
     });
   } catch (error) {
     console.error("Error adding interior:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: "Server error. Unable to add interior",
-      error: error.message,
+      message: "Server error. Unable to add interior.",
+      error: error.message || "Unknown error",
     });
   }
 };
+
 
 // Get all interiors with optional filtering
 export const getAllInterior = async (req, res) => {

@@ -4,8 +4,11 @@ import { BsCardList } from "react-icons/bs";
 import { FaFilter, FaSearch } from "react-icons/fa";
 import interiors from "../../Data/interiors";
 import InteriorForm from "./Froms/InteriorForm";
+import InteriorUpdateForm from "./Froms/update/InteriorUpdateForm";
 
 const InteriorTab = () => {
+  const [editingInterior, setEditingInterior] = useState(null);
+
   const [view, setView] = useState("card");
   const [interiorList, setInteriorList] = useState(interiors);
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,8 +40,10 @@ const InteriorTab = () => {
   };
 
   // Handle edit action
-  const handleEdit = (index) => {
-    alert(`Edit interior at index ${index}`);
+  const handleEdit = (id) => {
+    const interiorToEdit = interiorList.find((item) => item.id === id);
+    setEditingInterior(interiorToEdit);
+    setisAddingInterior(true);
   };
 
   // Handle add action
@@ -157,8 +162,8 @@ const InteriorTab = () => {
       {isAddingInterior ? (
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between">
-            <h3 className="text-2xl font-semibold mb-4">Add New Property</h3>
-            {/* Cancel Button */}
+          <h3 className="text-2xl font-semibold mb-4">{editingInterior ? 'Update interior' : 'Add New interior'}</h3>
+          {/* Cancel Button */}
             <div className="px-3">
               <button
                 onClick={handleCancel}
@@ -168,7 +173,17 @@ const InteriorTab = () => {
               </button>
             </div>
           </div>
-          <InteriorForm onSubmit={handleAddInteriorSubmit} />
+          {editingInterior ? (
+            <InteriorUpdateForm
+              interiorId={editingInterior.id}
+              onButtonClick={handleCancel}
+            />
+          ) : (
+            <InteriorForm
+              onSubmit={handleAddInteriorSubmit}
+              onButtonClick={handleCancel}
+            />
+          )}
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto bg-slate-500 bg-opacity-10 rounded-lg">
@@ -201,7 +216,7 @@ const InteriorTab = () => {
                     </p>
                     <div className="flex justify-between mt-3">
                       <button
-                        onClick={() => handleEdit(index)}
+                        onClick={() => handleEdit(interior.id)}
                         className="text-gray-500 text-xs hover:underline"
                       >
                         Edit

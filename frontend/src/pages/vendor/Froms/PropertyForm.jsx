@@ -96,33 +96,31 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
   </div>
 );
 
-const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
-
-  const isEditMode = Object.keys(existingData).length > 0;
+const PropertyForm = ({ onButtonClick }) => {
   const [propertyData, setPropertyData] = useState({
-    name: isEditMode ? existingData.name : "",
-    type: isEditMode ? existingData.type : "",
-    details: isEditMode ? existingData.details : "",
-    price: isEditMode ? existingData.price : "",
-    pricePerSqft: isEditMode ? existingData.pricePerSqft : "",
-    image: isEditMode ? existingData.image : "",
-    address: isEditMode ? existingData.address : "",
-    verified: isEditMode ? existingData.verified : false,
-    underDevelopment: isEditMode ? existingData.underDevelopment : false,
-    rating: isEditMode ? existingData.rating : "",
-    reviews: isEditMode ? existingData.reviews : "",
-    plotDimensions: isEditMode ? existingData.plotDimensions : "",
-    facing: isEditMode ? existingData.facing : "",
-    landmark: isEditMode ? existingData.landmark : "",
-    availableFor: isEditMode ? existingData.availableFor : "",
-    ownershipType: isEditMode ? existingData.ownershipType : "",
-    numberOfBedroom: isEditMode ? existingData.numberOfBedroom : "",
-    numberOfBathroom: isEditMode ? existingData.numberOfBathroom : "",
-    amenities: isEditMode ? existingData.amenities : [],
-    contactNumber: isEditMode ? existingData.contactNumber : "",
-    website: isEditMode ? existingData.website : "",
-    investmentPotential: isEditMode ? existingData.investmentPotential : "",
-    status: isEditMode ? existingData.status : "",
+    name: "",
+    type: "",
+    details: "",
+    price: "",
+    pricePerSqft: "",
+    image: "",
+    address: "",
+    verified: false,
+    underDevelopment: false,
+    rating: "",
+    reviews: "",
+    plotDimensions: "",
+    facing: "",
+    landmark: "",
+    availableFor: "",
+    ownershipType: "",
+    numberOfBedroom: "",
+    numberOfBathroom: "",
+    amenities: [],
+    contactNumber: "",
+    website: "",
+    investmentPotential: "",
+    status: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -220,11 +218,9 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
           formData.append("images", propertyData.image[0]);
         }
 
-        const url = isEditMode
-          ? `http://localhost:7002/api/vendor/property/${property.id}` // Edit URL with ID
-          : "http://localhost:7002/api/vendor/property";
+        const url = "http://localhost:7002/api/vendor/property";
 
-        const method = isEditMode ? "PUT" : "POST"; // PUT for editing, POST for adding
+        const method = "POST";
 
         const response = await axios({
           method,
@@ -237,10 +233,7 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
 
         setIsSubmitting(false);
 
-        console.log(
-          isEditMode ? "Property updated" : "Property added",
-          response.data
-        );
+        console.log("Property submitted successfully:", response.data);
         alert("Property added successfully");
         onButtonClick();
       } catch (error) {
@@ -486,10 +479,9 @@ const PropertyForm = ({ property, onButtonClick, existingData = {} }) => {
               <span>Loading...</span>
             </>
           ) : (
-            <span>{isEditMode ? "Update Property" : "Add Property"}</span>
+            <span>{ "Add Property"}</span>
           )}
         </button>
-       
       </div>
     </form>
   );
