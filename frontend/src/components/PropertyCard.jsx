@@ -4,7 +4,7 @@ const PropertyCard = ({ property, onEdit, onDelete, showActions = false }) => {
   const image =
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   return (
-    <div className="block h-[470px] max-w-72 w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform overflow-hidden">
+    <div className="block h-[470px] max-w-72 w-full  rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform overflow-hidden">
       {/* Image Section */}
       <div className="relative">
         <img

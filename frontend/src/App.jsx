@@ -95,7 +95,7 @@ function App() {
           }
         />
         <Route
-          path="/product/:id"
+          path="/product"
           element={
             <MainLayout>
               <ProductPage />
@@ -110,7 +110,7 @@ function App() {
             </MainLayout>
           }
         />
-        
+
         <Route
           path="/property/post"
           element={
@@ -177,7 +177,6 @@ function App() {
       </Routes>
     </Router>
 
-    // Test Components
     // <DataProvider>
     //   <ExampleComponent />
     // </DataProvider>

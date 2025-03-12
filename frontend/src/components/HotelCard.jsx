@@ -1,12 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const HotelCard = ({ hotel }) => {
   const image =
     "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
   return (
-    <a
-      href={hotel.website}
+    <Link to="/product"
       className="block h-[452px] max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full bg-white rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden p-2 border"
       aria-label={`Go to ${hotel.name}'s website`}
     >
@@ -33,7 +33,9 @@ const HotelCard = ({ hotel }) => {
         </div>
 
         {/* Room Details */}
-        <div className="text-xs text-gray-500 mb-2 line-clamp-2">{hotel.details}</div>
+        <div className="text-xs text-gray-500 mb-2 line-clamp-2">
+          {hotel.details}
+        </div>
 
         {/* Rating Section */}
         <div className="flex items-center text-xs text-gray-600 mb-2">
@@ -87,7 +89,7 @@ const HotelCard = ({ hotel }) => {
           </ul>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
