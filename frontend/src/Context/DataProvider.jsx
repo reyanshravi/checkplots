@@ -14,7 +14,7 @@ const DataContext = createContext({
 export default function DataProvider({ children }) {
   const [interiorData, setInteriorData] = useState(null);
   const [propertyData, setPropertyData] = useState(null);
-  // const [hotelData, setHotelData] = useState(null);
+  const [hotelData, setHotelData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -27,13 +27,13 @@ export default function DataProvider({ children }) {
         const [response1, response2, response3] = await Promise.all([
           axios.get("http://localhost:7002/api/vendor/interiors"),
           axios.get("http://localhost:7002/api/vendor/properties"),
-          // axios.get("http://localhost:7002/api/vendor/hotels"),
+          axios.get("http://localhost:7002/api/vendor/hotels"),
         ]);
 
         // Handle successful API responses
         setInteriorData(response1.data); // Save data for interiors
         setPropertyData(response2.data); // Save data for properties
-        // setHotelData(response3.data); // Save data for hotels
+        setHotelData(response3.data); // Save data for hotels
 
         // Set loading to false after data is fetched
         setLoading(false);
@@ -50,7 +50,7 @@ export default function DataProvider({ children }) {
 
   return (
     <DataContext.Provider
-      value={{ interiorData, propertyData, loading, error }}
+      value={{ interiorData, propertyData, hotelData, loading, error }}
     >
       {children}
     </DataContext.Provider>
