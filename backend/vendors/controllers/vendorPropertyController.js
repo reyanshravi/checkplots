@@ -40,7 +40,7 @@ export const addProperty = async (req, res) => {
       details,
       price,
       pricePerSqft,
-      image: images.length > 0 ? images[0] : "", // Store first image as main image
+      image: images.length > 0 ? images[0] : "", 
       address,
       verified: verified || false,
       underDevelopment: underDevelopment || false,
