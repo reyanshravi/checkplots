@@ -31,7 +31,7 @@ export const addProperty = async (req, res) => {
 
     // Extract uploaded file paths
     const images = req.files.map((file) => file.path);
-
+    console.log("Images:", images);
     // Create a new property
     const property = new Property({
       vendorId,
@@ -40,7 +40,7 @@ export const addProperty = async (req, res) => {
       details,
       price,
       pricePerSqft,
-      image: images.length > 0 ? images[0] : "", // Store first image as main image
+      image: images,
       address,
       verified: verified || false,
       underDevelopment: underDevelopment || false,

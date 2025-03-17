@@ -22,10 +22,7 @@ const hotelSchema = new mongoose.Schema(
     pricePerNight: {
       type: String,
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    image: [{ type: String }],
     address: {
       type: String,
       required: true,

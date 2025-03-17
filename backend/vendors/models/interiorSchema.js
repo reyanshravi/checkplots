@@ -22,10 +22,7 @@ const interiorSchema = new mongoose.Schema(
     priceRange: {
       type: String,
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    image: [{ type: String }],
     address: {
       type: String,
       required: true,

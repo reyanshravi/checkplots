@@ -30,6 +30,8 @@ export const addHotel = async (req, res) => {
     // Extract uploaded file paths
     const images = req.files.map((file) => file.path);
 
+    console.log("Images:", images);
+
     // Create a new Hotel document
     const newHotel = new Hotel({
       name,

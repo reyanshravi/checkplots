@@ -28,10 +28,7 @@ const propertySchema = new mongoose.Schema(
     pricePerSqft: {
       type: String,
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    image: [{ type: String }],
     address: {
       type: String,
       required: true,
