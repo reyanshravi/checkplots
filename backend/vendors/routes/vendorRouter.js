@@ -45,6 +45,7 @@ import {
   updateHotel,
   deleteHotel,
 } from "../controllers/vendorHotelController.js";
+import { submitEnquiry } from "../controllers/enquiryController.js";
 
 const vendorRouter = express.Router();
 
@@ -131,5 +132,9 @@ vendorRouter.put("/hotel/:id", upload.array("images", 10), updateHotel);
 
 // Delete a hotel by ID
 vendorRouter.delete("/hotel/:id", deleteHotel);
+
+
+// Enquiry routes
+vendorRouter.post("/enquire", submitEnquiry)
 
 export default vendorRouter;

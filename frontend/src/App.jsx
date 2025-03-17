@@ -1,20 +1,26 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ContactUs from "./pages/ContactUs";
 import LandingPage from "./pages/LandingPage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SearchList from "./pages/SeacrhList";
 import AboutUs from "./pages/AboutUs";
-import Hotels from "./pages/category/Hotels";
-import Property from "./pages/category/Property";
-import InteriorPage from "./pages/category/InteriorPage";
 import UserSignin from "./Authentication/User/UserSignIn";
 import VendorSignup from "./Authentication/Vendor/VendorSignup";
 import UserSignup from "./Authentication/User/UserSignup";
 import VendorSignin from "./Authentication/Vendor/VendorSignIn";
-import ProductPage from "./pages/ProductPage";
 import VendorDashboard from "./pages/vendor/VendorDashboard";
 import UserDashboard from "./pages/user/UserDashboard";
 import ExploreSection from "./components/ExploreSection";
 import PropertyPost from "./components/PropertyPost";
+
+// Product pages
+import InteriorPage from "./pages/category/InteriorCategory";
+import HotelPage from "./pages/ProductPages/HotelPage";
+import PropertyPage from "./pages/ProductPages/PropertyPage";
+
+// Category pages
+import HotelCategory from "./pages/category/HotelCategory";
+import PropertyCategory from "./pages/category/PropertyCategory";
+import InteriorCategory from "./pages/category/InteriorCategory";
 
 import ProtectedRoute from "./Router/ProtectedRoute";
 // Import Layouts
@@ -61,11 +67,13 @@ function App() {
             </MainLayout>
           }
         />
+
+        {/* category routes */}
         <Route
           path="/property"
           element={
             <MainLayout>
-              <Property />
+              <PropertyCategory />
             </MainLayout>
           }
         />
@@ -73,7 +81,7 @@ function App() {
           path="/interior"
           element={
             <MainLayout>
-              <InteriorPage />
+              <InteriorCategory />
             </MainLayout>
           }
         />
@@ -81,11 +89,12 @@ function App() {
           path="/hotel"
           element={
             <MainLayout>
-              <Hotels />
+              <HotelCategory />
             </MainLayout>
           }
         />
 
+        {/* auth routes */}
         <Route
           path="/user/signup"
           element={
@@ -95,10 +104,10 @@ function App() {
           }
         />
         <Route
-          path="/product/:id"
+          path="/Interiorpage"
           element={
             <MainLayout>
-              <ProductPage />
+              <InteriorPage />
             </MainLayout>
           }
         />
@@ -110,7 +119,7 @@ function App() {
             </MainLayout>
           }
         />
-        
+
         <Route
           path="/property/post"
           element={
@@ -177,7 +186,6 @@ function App() {
       </Routes>
     </Router>
 
-    // Test Components
     // <DataProvider>
     //   <ExampleComponent />
     // </DataProvider>

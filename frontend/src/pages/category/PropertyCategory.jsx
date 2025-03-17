@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropertyCard from "../../components/PropertyCard"; // A card component for property listings
 
-const Property = () => {
+const PropertyCategory = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -85,4 +85,4 @@ const Property = () => {
   );
 };
 
-export default Property;
+export default PropertyCategory;
