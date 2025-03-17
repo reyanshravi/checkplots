@@ -97,7 +97,7 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
 );
 
 // Main Form Component
-const HotelForm = ({onButtonClick}) => {
+const HotelForm = ({ onButtonClick }) => {
   const [hotelData, setHotelData] = useState({
     name: "",
     type: "Luxury",
@@ -344,6 +344,7 @@ const HotelForm = ({onButtonClick}) => {
             Hotel Image
           </label>
           <input
+            multiple
             type="file"
             name="image"
             onChange={handleImageChange}

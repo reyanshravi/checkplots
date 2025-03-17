@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import InteriorCard from "../../components/InteriorCard"; // Similar to your HotelCard, for interior designs
 
-const InteriorPage = () => {
+const InteriorCategory= () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -71,4 +71,4 @@ const InteriorPage = () => {
   );
 };
 
-export default InteriorPage;
+export default InteriorCategory;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HotelCard from "../../components/HotelCard";
-const Hotels = () => {
+const HotelCategory = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
@@ -173,4 +173,4 @@ const Hotels = () => {
   );
 };
 
-export default Hotels;
+export default HotelCategory;
