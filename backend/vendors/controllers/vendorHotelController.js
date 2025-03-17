@@ -39,7 +39,7 @@ export const addHotel = async (req, res) => {
       details,
       price,
       pricePerNight,
-      image: images.length > 0 ? images[0] : "", // Store first image as main image
+      image: images,
       address,
       verified, // If not provided, it will default to false
       underRenovation, // If not provided, it will default to false

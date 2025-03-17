@@ -11,7 +11,7 @@ export const addInterior = async (req, res) => {
       price,
       priceRange,
       address,
-      verified,  // we will convert this field to Boolean
+      verified, // we will convert this field to Boolean
       rating,
       reviews,
       services,
@@ -26,13 +26,14 @@ export const addInterior = async (req, res) => {
     } = req.body;
 
     // Convert the 'verified' field to a Boolean (true/false)
-    const verifiedBoolean = verified === 'true' ? true : false;
+    const verifiedBoolean = verified === "true" ? true : false;
 
     // Validate required fields
     if (!name || !type || !details || !price || !address) {
       return res.status(400).json({
         success: false,
-        message: "Missing required fields: name, type, details, price, and address are required.",
+        message:
+          "Missing required fields: name, type, details, price, and address are required.",
       });
     }
 
@@ -54,7 +55,7 @@ export const addInterior = async (req, res) => {
       details,
       price,
       priceRange,
-      image: images[0], // Store the first image as the main image
+      image: images,
       address,
       verified: verifiedBoolean, // Use the converted Boolean value
       rating,
@@ -88,7 +89,6 @@ export const addInterior = async (req, res) => {
     });
   }
 };
-
 
 // Get all interiors with optional filtering
 export const getAllInterior = async (req, res) => {
