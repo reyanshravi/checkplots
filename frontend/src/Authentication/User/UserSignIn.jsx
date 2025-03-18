@@ -50,7 +50,7 @@ const UserSignin = () => {
         localStorage.setItem("user", JSON.stringify(response.data.user));
 
         alert("Sign-in successful!");
-        navigate("/"); // Redirect to home
+        navigate("/");
       } else {
         setError("Sign-in failed. Please try again.");
       }
