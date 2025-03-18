@@ -5,6 +5,7 @@ import {
   getAllUsers,
   updateStatus,
   updateUser,
+  getUserById,
 } from "../controllers/authController.js";
 import {
   forgotPassword,
@@ -37,6 +38,9 @@ userRouter.put("/:id/updateStatus", updateStatus);
 
 // Get all users
 userRouter.get("/allUsers", getAllUsers);
+
+// Get user by ID
+userRouter.get("/user/:id", getUserById);
 
 // Update user
 userRouter.put("/profile/update", authenticateUser, updateUser);
