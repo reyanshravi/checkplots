@@ -4,25 +4,60 @@ const HotelCategory = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 ">
       {/* Hero Section with Search Bar */}
       <section
-        className="relative bg-cover bg-center h-96"
+        className="relative bg-cover bg-center h-[500px] bg-fixed"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1506748686218-bb2c63e1794a')",
+            "url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')",
         }}
       >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-          <h1 className="text-4xl font-bold">Find Your Perfect Stay</h1>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="mt-4 p-4 rounded-full w-96 text-black"
-            placeholder="Where do you want to go?"
-          />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white px-6 sm:px-12 md:px-24">
+          <h1 className="text-5xl sm:text-6xl font-extrabold text-shadow-xl leading-tight mb-6">
+            Find Your Perfect Stay
+          </h1>
+          <p className="text-lg sm:text-2xl mt-2 max-w-2xl mx-auto font-light opacity-90">
+            Explore a wide variety of stays tailored to your preferences and
+            budget. Begin your journey today.
+          </p>
+
+          {/* Search Input and Button */}
+          <div className="mt-8 flex justify-center items-center">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="p-4 w-80 sm:w-96 md:w-[450px] rounded-full text-black font-semibold shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out"
+              placeholder="Where do you want to go?"
+            />
+            <button className="ml-4 px-6 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full hover:bg-indigo-700 transition-all duration-300 ease-in-out">
+              Search
+            </button>
+          </div>
+        </div>
+
+        {/* Subtle scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1z"
+              clipRule="evenodd"
+            />
+            <path
+              fillRule="evenodd"
+              d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
         </div>
       </section>
 
