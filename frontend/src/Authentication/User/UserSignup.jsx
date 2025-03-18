@@ -1,6 +1,7 @@
 import { useState } from "react";
 import InputField from "../../components/InputField"; // Assuming you have this in your components
 import signin_bg from "../../assets/Signup/bg-signin.jpg";
+import { useNavigate } from "react-router-dom";
 
 const UserSignup = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const UserSignup = () => {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -87,6 +89,7 @@ const UserSignup = () => {
       }
 
       alert("Signup successful! Please check your email for verification.");
+      navigate("/user/signin", 2);
     } catch (error) {
       setError(error.message);
     } finally {
