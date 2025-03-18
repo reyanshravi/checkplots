@@ -115,6 +115,33 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
+// Get User by ID Controller
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params; // Get user ID from request params
+    const user = await User.findById(
+      id,
+      "_id fullName email phone dob country state city status createdAt"
+    );
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.error("Error fetching user by ID:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Server error. Please try again later.",
+      });
+  }
+};
+
 // Update User Status Controller
 export const updateStatus = async (req, res) => {
   try {
