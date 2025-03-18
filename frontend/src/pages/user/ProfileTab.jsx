@@ -1,45 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiUser } from "react-icons/fi";
 import { IoSaveOutline, IoPencilSharp } from "react-icons/io5";
 
 const ProfileTab = () => {
-  const dummyUser = {
-    fullName: "John Doe",
-    email: "john.doe@example.com",
-    phone: "1234567890",
-    dob: "1990-05-14",
-    country: "United States",
-    state: "California",
-    city: "Los Angeles",
-    profilePicture: null, // New property to handle profile picture
-    lastUpdated: "2025-02-09", // Timestamp for last update
-  };
-
-  const [user, setUser] = useState(dummyUser);
+  const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState({ ...dummyUser });
+  const [editedUser, setEditedUser] = useState({});
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [imageError, setImageError] = useState(null);
 
+  // Handle toggling between editing mode
   const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-    setError(""); // Clear error when toggling edit mode
+    setIsEditing((prev) => !prev);
+    setError(""); // Clear any error when toggling edit mode
   };
 
-  const handleSave = () => {
-    if (validateForm()) {
-      setIsSaving(true);
-      setTimeout(() => {
-        setUser({ ...editedUser, lastUpdated: new Date().toLocaleDateString() });
-        setIsSaving(false);
-        setIsEditing(false);
-        console.log("Saved data:", editedUser);
-      }, 1000); // Simulate a save delay
+  // Handle profile saving without validation
+  const handleSave = async () => {
+    setIsSaving(true);
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        "http://localhost:7002/api/auth/profile/update",
+        {
+          method: "PUT", // Use PUT method to update the profile
+          headers: {
+            Authorization: `Bearer ${token}`, // Add token to request headers for authentication
+            "Content-Type": "application/json", // Ensure proper content type for sending JSON
+          },
+          body: JSON.stringify(editedUser), // Send the edited user data in the request body
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      const data = await response.json();
+
+      setUser({
+        ...editedUser,
+        lastUpdated: new Date().toLocaleDateString(), // Update last updated date
+      });
+
+      setIsSaving(false);
+      setIsEditing(false);
+      alert("Profile updated successfully");
+      console.log("Profile updated:", data);
+    } catch (error) {
+      setIsSaving(false);
+      setError("Error updating profile. Please try again.");
+      console.error("Error updating profile:", error);
     }
   };
 
+  // Handle input changes in the form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedUser((prevUser) => ({
@@ -48,6 +66,7 @@ const ProfileTab = () => {
     }));
   };
 
+  // Handle image change (file selection)
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -58,16 +77,17 @@ const ProfileTab = () => {
       setImageError(null);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result); // Preview image
+        setImagePreview(reader.result);
         setEditedUser((prevUser) => ({
           ...prevUser,
-          profilePicture: reader.result, // Update profile picture data
+          profilePicture: reader.result,
         }));
       };
       reader.readAsDataURL(file);
     }
   };
 
+  // Handle image removal
   const handleImageRemove = () => {
     setImagePreview(null);
     setEditedUser((prevUser) => ({
@@ -76,19 +96,36 @@ const ProfileTab = () => {
     }));
   };
 
-  const validateForm = () => {
-    // Simple validation: Ensure that all fields are filled
-    for (const field in editedUser) {
-      if (field !== "profilePicture" && field !== "lastUpdated" && !editedUser[field]) {
-        setError("Please fill in all fields.");
-        return false;
-      }
-    }
-    return true;
+  // Format date for display purposes
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US"); // Format as MM/DD/YYYY
   };
+  
+
+  // Fetch the profile data on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("http://localhost:7002/api/auth/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) throw new Error("Failed to fetch user profile");
+        const data = await response.json();
+        setUser(data.user);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   return (
-    <div className="bg-gray-50 h-full p-6 rounded-lg shadow-lg w-full mx-auto flex flex-col ">
+    <div className="bg-gray-50 h-full p-6 rounded-lg shadow-lg w-full mx-auto flex flex-col">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6">Profile</h2>
 
       {/* Profile Picture */}
@@ -97,12 +134,6 @@ const ProfileTab = () => {
           {imagePreview ? (
             <img
               src={imagePreview}
-              alt="Profile"
-              className="object-cover w-full h-full"
-            />
-          ) : user.profilePicture ? (
-            <img
-              src={user.profilePicture}
               alt="Profile"
               className="object-cover w-full h-full"
             />
@@ -130,17 +161,15 @@ const ProfileTab = () => {
           )}
         </div>
       </div>
-      
-      {/* Image error message */}
-      {imageError && <p className="text-red-500 text-sm mb-4">{imageError}</p>}
 
       {/* Error message */}
+      {imageError && <p className="text-red-500 text-sm mb-4">{imageError}</p>}
       {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-      {/* Scrollable Form Container */}
+      {/* Form */}
       <div className="flex-grow overflow-y-auto h-[300px]">
         <div className="space-y-4">
-          {[ 
+          {[
             { label: "Full Name", name: "fullName", type: "text" },
             { label: "Email", name: "email", type: "email" },
             { label: "Phone", name: "phone", type: "tel" },
@@ -152,7 +181,7 @@ const ProfileTab = () => {
             <div key={name} className="flex items-center justify-between">
               <label
                 htmlFor={name}
-                className="text-sm font-medium text-gray-600 w-1/3"
+                className="text-base font-medium text-gray-600 w-1/3"
               >
                 {label}:
               </label>
@@ -161,12 +190,15 @@ const ProfileTab = () => {
                   id={name}
                   name={name}
                   type={type}
-                  value={editedUser[name]}
+                  value={editedUser[name] || user[name] || ""}
                   onChange={handleInputChange}
-                  className="w-2/3 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-sm"
+                  className="w-2/3 p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none text-base"
                 />
               ) : (
-                <p className="text-gray-700 w-2/3 text-sm">{user[name]}</p>
+                <p className="text-gray-700 w-2/3 text-sm">
+                  {name === "dob" ? formatDate(user[name]) : user[name]}{" "}
+                  {/* Format dob */}
+                </p>
               )}
             </div>
           ))}
@@ -180,7 +212,7 @@ const ProfileTab = () => {
 
       {/* Edit/Save Button */}
       <div className="flex justify-between items-center mt-6 w-full">
-        {!isEditing && (
+        {!isEditing ? (
           <button
             onClick={handleEditToggle}
             className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition duration-200 text-sm flex items-center space-x-2"
@@ -188,12 +220,10 @@ const ProfileTab = () => {
             <IoPencilSharp className="text-lg" />
             <span>Edit</span>
           </button>
-        )}
-
-        {isEditing && (
+        ) : (
           <>
             <button
-              onClick={() => setIsEditing(false)}
+              onClick={handleEditToggle}
               className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-200 text-sm"
             >
               Cancel
@@ -201,8 +231,10 @@ const ProfileTab = () => {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className={`bg-gray-600 text-white px-4 py-2 rounded-md flex items-center space-x-2 ${
-                isSaving ? "cursor-not-allowed opacity-50" : "hover:bg-green-700"
+              className={`bg-green-600 text-white px-4 py-2 rounded-md flex items-center space-x-2 ${
+                isSaving
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:bg-green-700"
               } transition duration-200 text-sm`}
             >
               {isSaving ? (
