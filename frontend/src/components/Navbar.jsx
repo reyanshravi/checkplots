@@ -66,9 +66,8 @@ const Navbar = () => {
     } else if (vendor) {
       localStorage.removeItem("vendor");
     }
-
     navigate("/");
-    setPopupVisible(false); // Close the popup after confirmation
+    setPopupVisible(false); 
   };
 
   const cancelLogout = () => setPopupVisible(false);
@@ -86,7 +85,7 @@ const Navbar = () => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target) &&
-        !dropdownButtonRef.current.contains(event.target) // This ref is now defined
+        !dropdownButtonRef.current.contains(event.target) 
       ) {
         setIsDropdownOpen(false);
       }

@@ -13,7 +13,7 @@ const ProductPage = () => {
 
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
-  const propertyId = "67c58682f0cf4b49ab8a484ab";
+  const propertyId = "67d7f897f0230108e0f5e5e2";
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -81,7 +81,7 @@ const ProductPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:7002/api/vendor/property/67bc578394ff75210257df5a`
+        `http://localhost:7002/api/vendor/property/${propertyId}`
       );
 
       if (response?.data?.property) {

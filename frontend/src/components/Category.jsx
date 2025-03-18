@@ -47,7 +47,7 @@ const Category = () => {
       image: interior,
       badge: "POPULAR",
       badgeColor: "bg-cyan-600",
-      navigateTo: () => navigate("/interior"),
+      navigateTo: () => navigate("/category/interior"),
     },
     {
       title: "Property",
@@ -56,7 +56,7 @@ const Category = () => {
       image: property,
       badge: "NEW",
       badgeColor: "bg-blue-500",
-      navigateTo: () => navigate("/property"),
+      navigateTo: () => navigate("/category/property"),
     },
     {
       title: "Hotel",
@@ -65,7 +65,7 @@ const Category = () => {
       image: hotel,
       badge: "LUXURY",
       badgeColor: "bg-red-500",
-      navigateTo: () => navigate("/hotel"),
+      navigateTo: () => navigate("/category/hotel"),
     },
   ];
 
