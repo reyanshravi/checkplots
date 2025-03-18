@@ -13,7 +13,7 @@ import ExploreSection from "./components/ExploreSection";
 import PropertyPost from "./components/PropertyPost";
 
 // Product pages
-import InteriorPage from "./pages/category/InteriorCategory";
+import InteriorPage from "./pages/ProductPages/InteriorPage";
 import HotelPage from "./pages/ProductPages/HotelPage";
 import PropertyPage from "./pages/ProductPages/PropertyPage";
 
@@ -70,7 +70,7 @@ function App() {
 
         {/* category routes */}
         <Route
-          path="/property"
+          path="/category/property"
           element={
             <MainLayout>
               <PropertyCategory />
@@ -78,7 +78,7 @@ function App() {
           }
         />
         <Route
-          path="/interior"
+          path="/category/interior"
           element={
             <MainLayout>
               <InteriorCategory />
@@ -86,7 +86,7 @@ function App() {
           }
         />
         <Route
-          path="/hotel"
+          path="/category/hotel"
           element={
             <MainLayout>
               <HotelCategory />
@@ -103,11 +103,29 @@ function App() {
             </NoLayout>
           }
         />
+
+        {/* Product page */}
         <Route
-          path="/Interiorpage"
+          path="/Interior/page"
           element={
             <MainLayout>
               <InteriorPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/hotel/page"
+          element={
+            <MainLayout>
+              <HotelPage />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/property/page"
+          element={
+            <MainLayout>
+              <PropertyPage />
             </MainLayout>
           }
         />
