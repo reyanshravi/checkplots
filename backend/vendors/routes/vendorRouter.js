@@ -133,8 +133,7 @@ vendorRouter.put("/hotel/:id", upload.array("images", 10), updateHotel);
 // Delete a hotel by ID
 vendorRouter.delete("/hotel/:id", deleteHotel);
 
-
 // Enquiry routes
-vendorRouter.post("/enquire", submitEnquiry)
+vendorRouter.post("/enquire", submitEnquiry);
 
 export default vendorRouter;

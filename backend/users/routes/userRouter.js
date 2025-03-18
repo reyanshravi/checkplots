@@ -45,6 +45,10 @@ userRouter.get("/profile", authenticateUser, (req, res) => {
   res.status(200).json({ message: "User authenticated", user: req.user });
 });
 
+userRouter.get("/authenticate", authenticateUser, (req, res) => {
+  res.status(200).json({ message: "User authenticated", user: req.user });
+});
+
 //test route
 userRouter.get("/test", (req, res) => {
   res.json({ message: "Test route works" });
