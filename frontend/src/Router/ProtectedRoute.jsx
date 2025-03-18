@@ -14,11 +14,11 @@ const ProtectedRoute = ({ component: Component, role = 'user', redirectTo = '/si
     }
 
     // Determine the endpoint based on the role
-    const endpoint = role === 'vendor' ? 'vendor/authenticate' : 'user/authenticate';
+    const endpoint = role === 'vendor' ? 'vendor/authenticate' : 'auth/authenticate';
 
     // Check if the user is authenticated and the role matches
     axios.get(`http://localhost:7002/api/${endpoint}`, {
-      headers: { Authorization: `Bearer ${token}` }, // Use `Bearer` before the token for convention
+      headers: { Authorization: `Bearer ${token}` }, 
     })
       .then(response => {
         setIsAuthorized(true);
