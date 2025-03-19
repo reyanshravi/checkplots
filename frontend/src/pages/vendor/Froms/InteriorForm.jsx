@@ -97,7 +97,7 @@ const SelectField = ({ label, name, value, onChange, options, error }) => (
 );
 
 // Main Form Component
-const InteriorForm = ({onButtonClick}) => {
+const InteriorForm = ({ onButtonClick }) => {
   const [interiorData, setInteriorData] = useState({
     name: "",
     type: "Residential",
@@ -216,9 +216,17 @@ const InteriorForm = ({onButtonClick}) => {
       formData.append("projectTimeline", interiorData.projectTimeline);
       formData.append("consultation", interiorData.consultation);
       formData.append("status", interiorData.status);
-      formData.append("services", JSON.stringify(interiorData.services));
-      formData.append("designStyle", JSON.stringify(interiorData.designStyle));
-      formData.append("pastClients", JSON.stringify(interiorData.pastClients));
+
+      interiorData.pastClients.forEach((pastClient, index) => {
+        formData.append(`pastClients[${index}]`, pastClient);
+      });
+      interiorData.designStyle.forEach((designStyle, index) => {
+        formData.append(`designStyle[${index}]`, designStyle);
+      });
+
+      interiorData.services.forEach((service, index) => {
+        formData.append(`services[${index}]`, service);
+      });
 
       // Append the image if it exists
       if (interiorData.image) {
@@ -240,7 +248,7 @@ const InteriorForm = ({onButtonClick}) => {
         );
 
         console.log("Server Response:", response);
-        alert("Property added successfully");
+        alert("Interior added successfully");
         onButtonClick();
         // Check response from server
         if (response.data.success) {
