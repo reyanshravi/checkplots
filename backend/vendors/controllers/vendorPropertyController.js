@@ -221,3 +221,51 @@ export const deleteProperty = async (req, res) => {
     res.status(500).json({ message: "Server error, please try again later." });
   }
 };
+
+// Update Property Status Controller (Only Accepts 0 or 1)
+export const updatePropertyStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    // Map status strings to numeric values
+    const statusMap = {
+      "active": 1,
+      "pending": 0,
+      "inactive": 2 // Assuming inactive is represented by 2
+    };
+    
+    // Validate input: Ensure status is valid
+    if (!Object.keys(statusMap).includes(status)) {
+      return res.status(400).json({ 
+        message: "Invalid status. Only 'active', 'pending', or 'inactive' are allowed." 
+      });
+    }
+    
+    // Convert string status to numeric value
+    const numericStatus = statusMap[status];
+    
+    // Find and update the property status
+    const updatedProperty = await Property.findByIdAndUpdate(
+      id,
+      { status: numericStatus },
+      { new: true, runValidators: true }
+    );
+    
+    if (!updatedProperty) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+    
+    return res.status(200).json({
+      message: "Property status updated successfully",
+      property: updatedProperty,
+    });
+    
+  } catch (error) {
+    console.error("Error updating property status:", error);
+    return res.status(500).json({ 
+      message: "Internal server error", 
+      error: error.message 
+    });
+  }
+};

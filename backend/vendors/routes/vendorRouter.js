@@ -8,6 +8,7 @@ import {
   updateVendorProfile,
   getAllVendors,
   updateVendorStatus,
+  changeVendorPassword
 } from "../controllers/authVendorController.js";
 
 import {
@@ -17,6 +18,7 @@ import {
 import {
   validateVendorSignup,
   validateVendorProfileUpdate,
+  passwordValidationMiddleware
 } from "../middlewares/validateVendor.js";
 
 import { validateVendorLogin } from "../middlewares/validateVendorLogin.js";
@@ -28,6 +30,7 @@ import {
   getPropertyById,
   updateProperty,
   deleteProperty,
+  updatePropertyStatus,
 } from "../controllers/vendorPropertyController.js";
 
 import {
@@ -61,6 +64,9 @@ vendorRouter.post("/signin", validateVendorLogin, loginVendor);
 vendorRouter.post("/signup", validateVendorSignup, registerVendor);
 
 // Vendor forgot password route
+vendorRouter.post("/change-password", authenticateVendor, passwordValidationMiddleware, changeVendorPassword);
+
+// Vendor forgot password route
 vendorRouter.post("/forgot-password", forgotPassword);
 
 // Reset Password Route
@@ -91,6 +97,9 @@ vendorRouter.post("/property", upload.array("images", 10), addProperty);
 
 // Route to update an existing property by ID
 vendorRouter.put("/property/:id", upload.array("images", 10), updateProperty);
+
+// Route to update property status by ID
+vendorRouter.put("/property/:id/updateStatus", updatePropertyStatus);
 
 // Route to delete a property by ID
 vendorRouter.delete("/property/:id", deleteProperty);

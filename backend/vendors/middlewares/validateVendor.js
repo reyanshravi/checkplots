@@ -44,6 +44,39 @@ const vendorProfileUpdateSchema = Joi.object({
   }).optional(),
 });
 
+
+
+  const schema = Joi.object({
+    oldPassword: Joi.string().required().messages({
+      "any.required": "Old password is required",
+    }),
+    newPassword: Joi.string()
+      .min(6)
+      .pattern(/[A-Z]/, "uppercase")
+      .pattern(/[a-z]/, "lowercase")
+      .pattern(/[0-9]/, "number")
+      .pattern(/[!@#$%^&*(),.?":{}|<>]/, "special character")
+      .disallow(Joi.ref("oldPassword"))
+      .required()
+      .messages({
+        "string.min": "New password must be at least 6 characters long",
+        "string.pattern.name": "New password must meet complexity requirements (uppercase, lowercase, number, special character)",
+        "any.invalid": "New password must be different from old password",
+        "any.required": "New password is required",
+      }),
+  });
+
+  export const passwordValidationMiddleware = (req, res, next) => {
+
+  const { error } = schema.validate(req.body, { abortEarly: false });
+
+  if (error) {
+    return res.status(400).json({ message: error.details.map((err) => err.message).join(", ") });
+  }
+
+  next();
+};
+
 // Middleware for Vendor Signup Validation
 export const validateVendorSignup = (req, res, next) => {
   const { error } = vendorSignupSchema.validate(req.body, {

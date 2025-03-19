@@ -3,6 +3,8 @@ import Vendor from "../models/vendorModel.js";
 
 export const authenticateVendor = async (req, res, next) => {
   const token = req.header("Authorization");
+  // console.log(token);
+  
 
   if (!token) {
     return res
@@ -20,7 +22,7 @@ export const authenticateVendor = async (req, res, next) => {
     // Fetch vendor details
     const vendor = await Vendor.findById(decoded.id).select("-password"); // Exclude password
     if (!vendor) {
-      return res.status(404).json({ message: "Vendor not found" });
+      return res.status(404).json({ message: "Vendor not found in middleware" });
     }
 
     req.vendor = vendor; // Attach vendor details to request
