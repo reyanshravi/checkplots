@@ -8,6 +8,7 @@ import {
   updateVendorProfile,
   getAllVendors,
   updateVendorStatus,
+  changeVendorPassword
 } from "../controllers/authVendorController.js";
 
 import {
@@ -17,6 +18,7 @@ import {
 import {
   validateVendorSignup,
   validateVendorProfileUpdate,
+  passwordValidationMiddleware
 } from "../middlewares/validateVendor.js";
 
 import { validateVendorLogin } from "../middlewares/validateVendorLogin.js";
@@ -60,6 +62,9 @@ vendorRouter.post("/signin", validateVendorLogin, loginVendor);
 
 // Vendor Sign-Up Route
 vendorRouter.post("/signup", validateVendorSignup, registerVendor);
+
+// Vendor forgot password route
+vendorRouter.post("/change-password", authenticateVendor, passwordValidationMiddleware, changeVendorPassword);
 
 // Vendor forgot password route
 vendorRouter.post("/forgot-password", forgotPassword);

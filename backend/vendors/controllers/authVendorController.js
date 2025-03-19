@@ -198,3 +198,44 @@ export const updateVendorStatus = async (req, res) => {
       .json({ message: "Server error while updating vendor status" });
   }
 };
+
+export const changeVendorPassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const vendorId = req.vendor._id; // Extracted from the token
+  console.log(req.vendor);
+  console.log(vendorId);
+  
+  
+  try {
+    // Input validation
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: "Both old and new passwords are required" });
+    }
+    
+    // Find the vendor
+    const vendor = await Vendor.findById(vendorId);
+    if (!vendor) {
+      return res.status(404).json({ message: "Vendor not found in controller" });
+    }
+    
+    // Check if old password is correct
+    // Using bcrypt.compare assuming the matchPassword method is not available on vendor model
+    const isMatch = await bcrypt.compare(oldPassword, vendor.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Old password is incorrect" });
+    }
+    
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    
+    // Update password
+    vendor.password = hashedPassword;
+    await vendor.save();
+    
+    return res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating vendor password:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { MdDeleteForever } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import PaginationBar from "../components/PaginationBar";
@@ -125,23 +124,23 @@ const Properties = () => {
                 }).format(new Date(property.createdAt))}
               </td>
               <td className="py-2 px-4">
-  <button
-    onClick={() => openStatusPopup(property)}
-    className={`px-2 py-1 rounded-md ${
-      property.status === 1
-        ? "bg-green-200 text-green-800"
-        : property.status === 0
-        ? "bg-yellow-200 text-yellow-800"
-        : "bg-red-200 text-red-800"
-    }`}
-  >
-    {property.status === 1 
-      ? "Approved" 
-      : property.status === 0 
-      ? "Pending" 
-      : "Inactive"}
-  </button>
-</td>
+              <button
+                onClick={() => openStatusPopup(property)}
+                className={`px-2 py-1 rounded-md ${
+                  property.status === 1
+                    ? "bg-green-200 text-green-800"
+                    : property.status === 0
+                    ? "bg-yellow-200 text-yellow-800"
+                    : "bg-red-200 text-red-800"
+                }`}
+              >
+                {property.status === 1 
+                  ? "Approved" 
+                  : property.status === 0 
+                  ? "Pending" 
+                  : "Inactive"}
+              </button>
+            </td>
               <td className="py-2 px-4">{property.availableFor}</td>
               <td className="py-2 px-4">{property.address}</td>
               <td className="py-2 px-4">
