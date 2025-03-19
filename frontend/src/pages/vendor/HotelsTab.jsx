@@ -3,7 +3,7 @@ import { VscTable, VscFilter } from "react-icons/vsc";
 import { BsCardList } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
 import hotels from "../../Data/hotel";
-import HotelForm from "./Froms/HotelForm"
+import HotelForm from "./Froms/HotelForm";
 
 const HotelTab = () => {
   const [view, setView] = useState("card"); // Toggle between card and table views
@@ -146,21 +146,21 @@ const HotelTab = () => {
       )}
 
       {isAddingHotel ? (
-       <div className="bg-white p-6 rounded-lg shadow-md">
-                 <div className="flex justify-between">
-                   <h3 className="text-2xl font-semibold mb-4">Add New Property</h3>
-                   {/* Cancel Button */}
-                   <div className="px-3">
-                     <button
-                       onClick={handleCancel}
-                       className="bg-red-500 text-white font-bold py-2 px-4 rounded"
-                     >
-                       Cancel
-                     </button>
-                   </div>
-                 </div>
-                 <HotelForm />
-               </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="flex justify-between">
+            <h3 className="text-2xl font-semibold mb-4">Add New Property</h3>
+            {/* Cancel Button */}
+            <div className="px-3">
+              <button
+                onClick={handleCancel}
+                className="bg-red-500 text-white font-bold py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+          <HotelForm onButtonClick={handleCancel} />
+        </div>
       ) : (
         <div className="flex-1 overflow-y-auto bg-slate-500 bg-opacity-10 rounded-lg">
           {/* Card View */}
