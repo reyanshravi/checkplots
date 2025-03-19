@@ -178,7 +178,6 @@ const HotelForm = ({ onButtonClick }) => {
     }));
   };
 
-  
   const addAmenity = () => {
     setHotelData((prevState) => ({
       ...prevState,
@@ -242,14 +241,17 @@ const HotelForm = ({ onButtonClick }) => {
         formData.append("specialOffers", hotelData.specialOffers);
         formData.append("contactNumber", hotelData.contactNumber);
         formData.append("website", hotelData.website);
-        formData.append("facilities", JSON.stringify(hotelData.facilities));
+
+        hotelData.facilities.forEach((facility, index) => {
+          formData.append(`facilities[${index}]`, facility);
+        });
         hotelData.amenities.forEach((amenity, index) => {
           formData.append(`amenities[${index}]`, amenity);
         });
-        formData.append(
-          "nearbyAttractions",
-          JSON.stringify(hotelData.nearbyAttractions)
-        );
+
+        hotelData.nearbyAttractions.forEach((nearbyAttraction, index) => {
+          formData.append(`nearbyAttractions[${index}]`, nearbyAttraction);
+        });
 
         // Append image file (if any)
         if (hotelData.image) {
@@ -291,6 +293,8 @@ const HotelForm = ({ onButtonClick }) => {
             rating: 0,
             reviews: 0,
           });
+
+          alert("hotel added successfully");
           onButtonClick();
           setErrors({});
         } else {
@@ -299,7 +303,6 @@ const HotelForm = ({ onButtonClick }) => {
       } catch (error) {
         setErrors({ form: "Server error. Unable to add hotel." });
         console.log(error);
-        
       } finally {
         setLoading(false);
       }
