@@ -94,7 +94,7 @@ vendorRouter.post("/property", upload.array("images", 10), addProperty);
 vendorRouter.put("/property/:id", upload.array("images", 10), updateProperty);
 
 // Route to update property status by ID
-vendorRouter.put("/property/:id/status", updatePropertyStatus);
+vendorRouter.put("/property/:id/updateStatus", updatePropertyStatus);
 
 // Route to delete a property by ID
 vendorRouter.delete("/property/:id", deleteProperty);

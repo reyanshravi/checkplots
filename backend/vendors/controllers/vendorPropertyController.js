@@ -227,29 +227,45 @@ export const updatePropertyStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-
-    // Validate input: Ensure status is either 0 or 1
-    if (status !== 0 && status !== 1) {
-      return res.status(400).json({ message: "Invalid status. Only 0 (Pending) or 1 (Approved) are allowed." });
+    
+    // Map status strings to numeric values
+    const statusMap = {
+      "active": 1,
+      "pending": 0,
+      "inactive": 2 // Assuming inactive is represented by 2
+    };
+    
+    // Validate input: Ensure status is valid
+    if (!Object.keys(statusMap).includes(status)) {
+      return res.status(400).json({ 
+        message: "Invalid status. Only 'active', 'pending', or 'inactive' are allowed." 
+      });
     }
-
+    
+    // Convert string status to numeric value
+    const numericStatus = statusMap[status];
+    
     // Find and update the property status
     const updatedProperty = await Property.findByIdAndUpdate(
       id,
-      { status },
-      { new: true }
+      { status: numericStatus },
+      { new: true, runValidators: true }
     );
-
+    
     if (!updatedProperty) {
       return res.status(404).json({ message: "Property not found" });
     }
-
-    res.status(200).json({
+    
+    return res.status(200).json({
       message: "Property status updated successfully",
       property: updatedProperty,
     });
+    
   } catch (error) {
     console.error("Error updating property status:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ 
+      message: "Internal server error", 
+      error: error.message 
+    });
   }
 };
