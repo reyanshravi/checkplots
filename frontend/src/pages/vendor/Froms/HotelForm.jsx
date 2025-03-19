@@ -167,6 +167,32 @@ const HotelForm = ({ onButtonClick }) => {
     }));
   };
 
+  // Function to handle adding/removing amenities
+  const handleAmenitiesChange = (e, index) => {
+    const { value } = e.target;
+    const newAmenities = [...hotelData.amenities];
+    newAmenities[index] = value;
+    setHotelData((prevState) => ({
+      ...prevState,
+      amenities: newAmenities,
+    }));
+  };
+
+  const addAmenity = () => {
+    setHotelData((prevState) => ({
+      ...prevState,
+      amenities: [...prevState.amenities, ""],
+    }));
+  };
+
+  const removeAmenity = (index) => {
+    const newAmenities = hotelData.amenities.filter((_, i) => i !== index);
+    setHotelData((prevState) => ({
+      ...prevState,
+      amenities: newAmenities,
+    }));
+  };
+
   const validateForm = () => {
     const newErrors = {};
     if (!hotelData.name) newErrors.name = "Hotel Name is required";
@@ -215,12 +241,17 @@ const HotelForm = ({ onButtonClick }) => {
         formData.append("specialOffers", hotelData.specialOffers);
         formData.append("contactNumber", hotelData.contactNumber);
         formData.append("website", hotelData.website);
-        formData.append("facilities", JSON.stringify(hotelData.facilities));
-        formData.append("amenities", JSON.stringify(hotelData.amenities));
-        formData.append(
-          "nearbyAttractions",
-          JSON.stringify(hotelData.nearbyAttractions)
-        );
+
+        hotelData.facilities.forEach((facility, index) => {
+          formData.append(`facilities[${index}]`, facility);
+        });
+        hotelData.amenities.forEach((amenity, index) => {
+          formData.append(`amenities[${index}]`, amenity);
+        });
+
+        hotelData.nearbyAttractions.forEach((nearbyAttraction, index) => {
+          formData.append(`nearbyAttractions[${index}]`, nearbyAttraction);
+        });
 
         // Append image file (if any)
         if (hotelData.image) {
@@ -262,6 +293,8 @@ const HotelForm = ({ onButtonClick }) => {
             rating: 0,
             reviews: 0,
           });
+
+          alert("hotel added successfully");
           onButtonClick();
           setErrors({});
         } else {
@@ -269,6 +302,7 @@ const HotelForm = ({ onButtonClick }) => {
         }
       } catch (error) {
         setErrors({ form: "Server error. Unable to add hotel." });
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -441,6 +475,40 @@ const HotelForm = ({ onButtonClick }) => {
           className="text-green-500 flex items-center"
         >
           <RiAddFill /> Add Attraction
+        </button>
+      </div>
+
+      {/* Amenities */}
+      <div className="md:w-full px-3 mb-6">
+        <label
+          className="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+          htmlFor="grid-amenities"
+        >
+          Amenities
+        </label>
+        {hotelData.amenities.map((amenity, index) => (
+          <div className="flex items-center mb-3" key={index}>
+            <input
+              type="text"
+              value={amenity}
+              onChange={(e) => handleAmenitiesChange(e, index)}
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            />
+            <button
+              type="button"
+              onClick={() => removeAmenity(index)}
+              className="ml-2 text-red-500"
+            >
+              <RiDeleteBinLine size={20} />
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={addAmenity}
+          className="bg-gray-500 text-white px-4 py-2 rounded flex items-center gap-2"
+        >
+          <RiAddFill size={20} /> Add Amenity
         </button>
       </div>
 
