@@ -227,7 +227,7 @@ const PropertyTab = () => {
                 <div
                   onClick={(e) => handleClick(property._id, e)}
                   key={property.id}
-                  className="bg-white shadow-md rounded-lg overflow-hidden w-64 mx-auto p-3 flex flex-col justify-between cursor-pointer "
+                  className="bg-white shadow-md rounded-lg overflow-hidden w-[90%] mx-auto p-3 flex flex-col justify-between cursor-pointer "
                 >
                   <div>
                     <img
