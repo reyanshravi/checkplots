@@ -32,181 +32,179 @@ import DataProvider from "./Context/DataProvider";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Routes with Main Layout */}
-        <Route
-          path="/"
-          element={
-            <MainLayout>
-              <LandingPage />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/Contact"
-          element={
-            <MainLayout>
-              <ContactUs />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/aboutus"
-          element={
-            <MainLayout>
-              <AboutUs />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/search"
-          element={
-            <MainLayout>
-              <SearchList />
-            </MainLayout>
-          }
-        />
+    <DataProvider>
+      <Router>
+        <Routes>
+          {/* Routes with Main Layout */}
+          <Route
+            path="/"
+            element={
+              <MainLayout>
+                <LandingPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/Contact"
+            element={
+              <MainLayout>
+                <ContactUs />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/aboutus"
+            element={
+              <MainLayout>
+                <AboutUs />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <MainLayout>
+                <SearchList />
+              </MainLayout>
+            }
+          />
 
-        {/* category routes */}
-        <Route
-          path="/category/property"
-          element={
-            <MainLayout>
-              <PropertyCategory />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/category/interior"
-          element={
-            <MainLayout>
-              <InteriorCategory />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/category/hotel"
-          element={
-            <MainLayout>
-              <HotelCategory />
-            </MainLayout>
-          }
-        />
+          {/* category routes */}
+          <Route
+            path="/category/property"
+            element={
+              <MainLayout>
+                <PropertyCategory />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/category/interior"
+            element={
+              <MainLayout>
+                <InteriorCategory />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/category/hotel"
+            element={
+              <MainLayout>
+                <HotelCategory />
+              </MainLayout>
+            }
+          />
 
-        {/* auth routes */}
-        <Route
-          path="/user/signup"
-          element={
-            <NoLayout>
-              <UserSignup />
-            </NoLayout>
-          }
-        />
+          {/* auth routes */}
+          <Route
+            path="/user/signup"
+            element={
+              <NoLayout>
+                <UserSignup />
+              </NoLayout>
+            }
+          />
 
-        {/* Product page */}
-        <Route
-          path="/Interior/page"
-          element={
-            <MainLayout>
-              <InteriorPage />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/hotel/page"
-          element={
-            <MainLayout>
-              <HotelPage />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/property/page"
-          element={
-            <MainLayout>
-              <PropertyPage />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/explore"
-          element={
-            <MainLayout>
-              <ExploreSection />
-            </MainLayout>
-          }
-        />
+          {/* Product page */}
+          <Route
+            path="/Interior/page"
+            element={
+              <MainLayout>
+                <InteriorPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/hotel/page"
+            element={
+              <MainLayout>
+                <HotelPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/property/page"
+            element={
+              <MainLayout>
+                <PropertyPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/explore"
+            element={
+              <MainLayout>
+                <ExploreSection />
+              </MainLayout>
+            }
+          />
 
-        <Route
-          path="/property/post"
-          element={
-            <MainLayout>
-              <PropertyPost />
-            </MainLayout>
-          }
-        />
+          <Route
+            path="/property/post"
+            element={
+              <MainLayout>
+                <PropertyPost />
+              </MainLayout>
+            }
+          />
 
-        {/* Routes without Layout (no Navbar or Footer) */}
-        <Route
-          path="/user/dashboard"
-          element={
-            <ProtectedRoute
-              component={UserDashboard}
-              role="user"
-              redirectTo="/user/signin"
-            />
-          }
-        />
-        <Route
-          path="/user/signin"
-          element={
-            <NoLayout>
-              <UserSignin />
-            </NoLayout>
-          }
-        />
-        <Route
-          path="/vendor/signin"
-          element={
-            <NoLayout>
-              <VendorSignin />
-            </NoLayout>
-          }
-        />
-        <Route
-          path="/vendor/signup"
-          element={
-            <NoLayout>
-              <VendorSignup />
-            </NoLayout>
-          }
-        />
-        <Route
-          path="/vendor/forgotpassword"
-          element={
-            <NoLayout>
-              <ForgotPassword />
-            </NoLayout>
-          }
-        />
-        <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route
-          path="/vendor/dashboard"
-          element={
-            <ProtectedRoute
-              component={VendorDashboard}
-              role="vendor"
-              redirectTo="/vendor/signin"
-            />
-          }
-        />
-      </Routes>
-    </Router>
-
-    // <DataProvider>
-    //   <ExampleComponent />
-    // </DataProvider>
+          {/* Routes without Layout (no Navbar or Footer) */}
+          <Route
+            path="/user/dashboard"
+            element={
+              <ProtectedRoute
+                component={UserDashboard}
+                role="user"
+                redirectTo="/user/signin"
+              />
+            }
+          />
+          <Route
+            path="/user/signin"
+            element={
+              <NoLayout>
+                <UserSignin />
+              </NoLayout>
+            }
+          />
+          <Route
+            path="/vendor/signin"
+            element={
+              <NoLayout>
+                <VendorSignin />
+              </NoLayout>
+            }
+          />
+          <Route
+            path="/vendor/signup"
+            element={
+              <NoLayout>
+                <VendorSignup />
+              </NoLayout>
+            }
+          />
+          <Route
+            path="/vendor/forgotpassword"
+            element={
+              <NoLayout>
+                <ForgotPassword />
+              </NoLayout>
+            }
+          />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+          <Route
+            path="/vendor/dashboard"
+            element={
+              <ProtectedRoute
+                component={VendorDashboard}
+                role="vendor"
+                redirectTo="/vendor/signin"
+              />
+            }
+          />
+        </Routes>
+      </Router>
+    </DataProvider>
   );
 }
 

@@ -1,9 +1,13 @@
 import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { FaLocationDot, FaEye, FaCalendarDays } from "react-icons/fa6";
-import ReviewItem from "../../components/ReviewItem";
+import { useLocation } from "react-router-dom";
+import ReviewItem from "../../components/reviewItem";
 
 const ProductPage = () => {
+  const location = useLocation();
+  const { propertyId } = location.state || {};
+
   const images = [
     { id: 1, src: "/images/images1.jpg", alt: "Backyard" },
     { id: 2, src: "/images/pool.jpg", alt: "Balcony View" },
@@ -13,7 +17,7 @@ const ProductPage = () => {
 
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
-  const propertyId = "67d7f897f0230108e0f5e5e2";
+  // const propertyId = "67d7f897f0230108e0f5e5e2";
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
