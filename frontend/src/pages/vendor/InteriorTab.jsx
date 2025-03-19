@@ -1,20 +1,23 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { VscTable, VscFilter } from "react-icons/vsc";
 import { BsCardList } from "react-icons/bs";
 import { FaFilter, FaSearch } from "react-icons/fa";
-import interiors from "../../Data/interiors";
 import InteriorForm from "./Froms/InteriorForm";
 import InteriorUpdateForm from "./Froms/update/InteriorUpdateForm";
+import { DataContext } from "../../Context/DataProvider";
+import { useNavigate } from "react-router-dom";
 
 const InteriorTab = () => {
   const [editingInterior, setEditingInterior] = useState(null);
 
   const [view, setView] = useState("card");
-  const [interiorList, setInteriorList] = useState(interiors);
+  const [interiorList, setInteriorList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterBy, setFilterBy] = useState(""); // "name" or "price"
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAddingInterior, setisAddingInterior] = useState(false);
+  const { interiorData } = useContext(DataContext);
+  const navigate = useNavigate();
 
   // submit
   const handleAddInteriorSubmit = useCallback((newInterior) => {
@@ -73,6 +76,21 @@ const InteriorTab = () => {
       );
     }
   });
+
+  useEffect(() => {
+    if (interiorData) {
+      setInteriorList(interiorData.interiors);
+    }
+  }, [interiorData]);
+
+  const handleNavigate = (id, e) => {
+    console.log("click" + id, e);
+
+    e.stopPropagation();
+
+    const data = { interiorId: id };
+    navigate("/interior/page", { state: data });
+  };
 
   return (
     <div className="h-full flex flex-col p-6 bg-gray-50 overflow-y-auto">
@@ -162,8 +180,10 @@ const InteriorTab = () => {
       {isAddingInterior ? (
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between">
-          <h3 className="text-2xl font-semibold mb-4">{editingInterior ? 'Update interior' : 'Add New interior'}</h3>
-          {/* Cancel Button */}
+            <h3 className="text-2xl font-semibold mb-4">
+              {editingInterior ? "Update interior" : "Add New interior"}
+            </h3>
+            {/* Cancel Button */}
             <div className="px-3">
               <button
                 onClick={handleCancel}
@@ -192,38 +212,42 @@ const InteriorTab = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-2">
               {filteredInteriors.map((interior, index) => (
                 <div
+                  onClick={(e) => handleNavigate(interior._id, e)}
                   key={index}
-                  className="bg-white shadow-lg rounded-lg overflow-hidden max-w-xs mx-auto p-4"
+                  className="bg-white shadow-sm rounded-lg overflow-hidden max-w-xs mx-auto p-3 w-[90%] hover:shadow-md transition-shadow duration-200"
                 >
                   <img
                     src={interior.image}
                     alt={interior.name}
-                    className="w-full h-32 object-cover"
+                    className="w-full h-32 object-cover rounded-sm transition-transform transform hover:scale-105 duration-300"
                   />
                   <div className="p-2">
-                    <h3 className="text-sm font-semibold text-gray-800">
+                    <h3 className="text-sm font-semibold text-gray-800 truncate">
                       {interior.name}
                     </h3>
-                    <p className="text-xs text-gray-500">{interior.type}</p>
-                    <p className="text-xs text-gray-700 mt-2">
+                    <p className="text-xs text-gray-500 truncate">
+                      {interior.type}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1 line-clamp-2">
                       {interior.details}
                     </p>
-                    <p className="text-xs text-gray-700 mt-2">
+                    <p className="text-xs text-gray-600 mt-1">
                       {interior.address}
                     </p>
-                    <p className="text-xs text-gray-700 mt-2">
-                      {interior.price}
+                    <p className="text-sm font-semibold text-gray-800 mt-2">
+                      ₹{interior.price}
                     </p>
+
                     <div className="flex justify-between mt-3">
                       <button
                         onClick={() => handleEdit(interior.id)}
-                        className="text-gray-500 text-xs hover:underline"
+                        className="text-gray-500 text-xs hover:text-gray-700 transition-colors duration-200"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(index)}
-                        className="text-red-500 text-xs hover:underline"
+                        className="text-red-500 text-xs hover:text-red-700 transition-colors duration-200"
                       >
                         Delete
                       </button>
@@ -234,43 +258,45 @@ const InteriorTab = () => {
             </div>
           ) : (
             // Table View
-            <table className="min-w-full bg-white table-auto shadow-md rounded-lg">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 text-left">Name</th>
-                  <th className="px-4 py-2 text-left">Type</th>
-                  <th className="px-4 py-2 text-left">Price</th>
-                  <th className="px-4 py-2 text-left">Details</th>
-                  <th className="px-4 py-2 text-left">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredInteriors.map((interior, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="px-4 py-2">{interior.name}</td>
-                    <td className="px-4 py-2">{interior.type}</td>
-                    <td className="px-4 py-2">{interior.price}</td>
-                    <td className="px-4 py-2 text-xs max-w-xs truncate">
-                      {interior.details}
-                    </td>
-                    <td className="px-4 py-2">
-                      <button
-                        onClick={() => handleEdit(index)}
-                        className="text-gray-500 text-xs hover:underline"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(index)}
-                        className="text-red-500 text-xs hover:underline ml-2"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <table className="min-w-full bg-white table-auto shadow-lg rounded-lg overflow-hidden">
+  <thead className="bg-gray-50 border-b-2 border-gray-200">
+    <tr>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Name</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Type</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Price</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Details</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody className="text-sm">
+    {filteredInteriors.map((interior, index) => (
+      <tr
+        key={index}
+        className="border-t border-gray-100 hover:bg-gray-50 transition duration-300"
+      >
+        <td className="px-6 py-4 text-gray-800">{interior.name}</td>
+        <td className="px-6 py-4 text-gray-600">{interior.type}</td>
+        <td className="px-6 py-4 text-gray-600 font-medium">{interior.price}</td>
+        <td className="px-6 py-4 text-gray-500 text-xs max-w-xs truncate">{interior.details}</td>
+        <td className="px-6 py-4 space-x-2 flex justify-start">
+          <button
+            onClick={() => handleEdit(index)}
+            className="text-indigo-600 hover:text-indigo-800 font-medium text-xs transform hover:scale-105 transition duration-200"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(index)}
+            className="text-red-600 hover:text-red-800 font-medium text-xs transform hover:scale-105 transition duration-200"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
           )}
         </div>
       )}

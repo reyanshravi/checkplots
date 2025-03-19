@@ -2,8 +2,11 @@ import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { FaLocationDot, FaEye, FaCalendarDays } from "react-icons/fa6";
 import ReviewItem from "../../components/reviewItem";
+import { useLocation } from "react-router-dom";
 
 const InteriorPage = () => {
+  const location = useLocation();
+  const { interiorId } = location.state || {};
   const images = [
     { id: 1, src: "/images/images1.jpg", alt: "Backyard" },
     { id: 2, src: "/images/pool.jpg", alt: "Balcony View" },
@@ -13,7 +16,6 @@ const InteriorPage = () => {
 
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
-  const interiorId = "67cbe2b03da0f50f5c59c754";
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -98,6 +100,12 @@ const InteriorPage = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (data && data.image) {
+      setSelectedImage({ id: 0, src: data.image, alt: "Hotel Image" });
+    }
+  }, [data]);
 
   // Destructure data early for better readability
   if (loading) return <div>Loading...</div>;

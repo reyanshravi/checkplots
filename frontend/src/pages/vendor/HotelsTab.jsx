@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { VscTable, VscFilter } from "react-icons/vsc";
 import { BsCardList } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
-import hotels from "../../Data/hotel";
 import HotelForm from "./Froms/HotelForm";
+import { DataContext } from "../../Context/DataProvider";
+import { useNavigate } from "react-router-dom";
 
 const HotelTab = () => {
-  const [view, setView] = useState("card"); // Toggle between card and table views
-  const [hotelList, setHotelList] = useState(hotels); // Hotel list state
+  const [view, setView] = useState("card");
+  const [hotelList, setHotelList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filterBy, setFilterBy] = useState(""); // "name" or "price"
+  const [filterBy, setFilterBy] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAddingHotel, setIsAddingHotel] = useState(false);
+  const { hotelData } = useContext(DataContext);
+  const navigate = useNavigate();
 
   // Function to toggle view
   const toggleDropdown = () => {
@@ -62,6 +65,20 @@ const HotelTab = () => {
       );
     }
   });
+  useEffect(() => {
+    if (hotelData) {
+      setHotelList(hotelData.hotels);
+    }
+  }, [hotelData]);
+
+  const handleNavigate = (id, e) => {
+    console.log("click " + id);
+
+    e.stopPropagation();
+
+    const data = { hotelId: id };
+    navigate(`/hotel/page`, { state: data });
+  };
 
   return (
     <div className="h-full flex flex-col p-6 bg-gray-50">
@@ -168,83 +185,91 @@ const HotelTab = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-2">
               {filteredHotels.map((hotel, index) => (
                 <div
+                  onClick={(e) => handleNavigate(hotel._id, e)}
                   key={index}
-                  className="bg-white shadow-lg rounded-lg overflow-hidden w-72 mx-auto p-4 relative"
+                  className="bg-white cursor-pointer flex flex-col shadow-sm rounded-lg overflow-hidden mx-auto p-3 relative transform transition-all hover:scale-102 duration-200  w-[90%]"
                 >
-                  <img
-                    src={hotel.image}
-                    alt={hotel.name}
-                    className="w-full h-32 object-cover"
-                  />
-                  <div className="p-2">
-                    <h3 className="text-sm font-semibold text-gray-800">
-                      {hotel.name}
-                    </h3>
-                    <p className="text-xs text-gray-500">{hotel.type}</p>
-                    <p className="text-xs text-gray-700 mt-2">
-                      {hotel.details}
-                    </p>
-                    <p className="text-xs text-gray-700 mt-2">
-                      {hotel.address}
-                    </p>
-                    <p className="text-xs text-gray-700 mt-2">{hotel.price}</p>
-                    <div className="flex justify-between mt-3">
-                      <button
-                        onClick={() => handleEdit(index)}
-                        className="text-gray-500 text-xs hover:underline"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(index)}
-                        className="text-red-500 text-xs hover:underline"
-                      >
-                        Delete
-                      </button>
+                  <div>
+                    <img
+                      src={hotel.image}
+                      alt={hotel.name}
+                      className="w-full h-40 object-cover rounded-lg"
+                    />
+                    <div className="p-2">
+                      <h3 className="text-sm font-medium text-gray-800">
+                        {hotel.name}
+                      </h3>
+                      <p className="text-xs text-gray-500">{hotel.type}</p>
+                      <p className="text-xs text-gray-700 mt-2">
+                        {hotel.details}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {hotel.address}
+                      </p>
+                      <p className="text-sm font-semibold text-gray-900 mt-2">
+                        ₹{hotel.price}
+                      </p>
                     </div>
+                  </div>
+
+                  <div className="flex justify-between mt-3">
+                    <button
+                      onClick={() => handleEdit(index)}
+                      className="text-gray-500 text-xs hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(index)}
+                      className="text-red-500 text-xs hover:underline"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             // Table View
-            <table className="min-w-full bg-white table-auto shadow-md rounded-lg">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 text-left">Name</th>
-                  <th className="px-4 py-2 text-left">Type</th>
-                  <th className="px-4 py-2 text-left">Price</th>
-                  <th className="px-4 py-2 text-left">Details</th>
-                  <th className="px-4 py-2 text-left">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredHotels.map((hotel, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="px-4 py-2">{hotel.name}</td>
-                    <td className="px-4 py-2">{hotel.type}</td>
-                    <td className="px-4 py-2">{hotel.price}</td>
-                    <td className="px-4 py-2 text-xs max-w-xs truncate">
-                      {hotel.details}
-                    </td>
-                    <td className="px-4 py-2">
-                      <button
-                        onClick={() => handleEdit(index)}
-                        className="text-gray-500 text-xs hover:underline"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(index)}
-                        className="text-red-500 text-xs hover:underline ml-2"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <table className="min-w-full bg-white table-auto shadow-lg rounded-lg overflow-hidden">
+  <thead className="bg-gray-50 border-b-2 border-gray-200">
+    <tr>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Name</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Type</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Price</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Details</th>
+      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody className="text-sm">
+    {filteredHotels.map((hotel, index) => (
+      <tr
+        key={index}
+        className="border-t border-gray-100 hover:bg-gray-50 transition duration-300"
+      >
+        <td className="px-6 py-4 text-gray-800">{hotel.name}</td>
+        <td className="px-6 py-4 text-gray-600">{hotel.type}</td>
+        <td className="px-6 py-4 text-gray-600 font-medium">{hotel.price}</td>
+        <td className="px-6 py-4 text-gray-500 text-xs max-w-xs truncate">{hotel.details}</td>
+        <td className="px-6 py-4 space-x-2 flex justify-start">
+          <button
+            onClick={() => handleEdit(index)}
+            className="text-indigo-600 hover:text-indigo-800 font-medium text-xs transform hover:scale-105 transition duration-200"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => handleDelete(index)}
+            className="text-red-600 hover:text-red-800 font-medium text-xs transform hover:scale-105 transition duration-200"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
           )}
         </div>
       )}

@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
 import image from "../../assets/hero_image.jpeg";
-import Herosearch from "./HeroSearch";
 import DomainSearch from "./DomainSearch";
 
 const HeroSection = () => {
@@ -23,7 +22,6 @@ const HeroSection = () => {
         <p className="text-lg sm:text-xl text-gray-200 mb-8">
           Search properties across the country.
         </p>
-        {/* <Herosearch /> */}
       </div>
       <DomainSearch />
     </section>

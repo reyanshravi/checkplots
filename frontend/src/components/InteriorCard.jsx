@@ -1,11 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const InteriorCard = ({ interior }) => {
-  // Fallback image in case the image is not available
-  const image =
-    "https://images.unsplash.com/photo-1600210491369-e753d80a41f3?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
+  const navigate = useNavigate();
   // Check if 'interior' is provided, otherwise use default empty values
   const {
     name = "Default Interior Name",
@@ -19,18 +16,24 @@ const InteriorCard = ({ interior }) => {
     services = [],
     designStyle = [],
     pastClients = [],
-  } = interior || {}; // Use default empty object if 'interior' is undefined
+  } = interior || {};
+
+  const handleNavigate = (id, e) => {
+    e.stopPropagation();
+    const data = { interiorId: id };
+    navigate(`/interior/page/`, { state: data });
+  };
 
   return (
-    <Link
-      to="/interior/page"
-      className="block h-[470px] max-w-72 w-full bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
+    <div
+      onClick={(e) => handleNavigate(interior._id, e)}
+      className="cursor-pointer block h-[470px] max-w-72 w-full bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden"
     >
       {/* Image Section */}
       <div className="relative">
         <img
           alt={name}
-          src={image}
+          src={interior.image}
           className="w-full h-32 object-cover rounded-t-lg"
         />
         <div className="absolute bottom-2 left-4 text-white text-lg font-semibold shadow-lg">
@@ -79,7 +82,9 @@ const InteriorCard = ({ interior }) => {
       <div className="px-4 pb-4 border-t border-gray-200 grid grid-cols-2 gap-1">
         {/* Services */}
         <div>
-          <div className="font-semibold text-gray-700 text-xs mb-1">Services:</div>
+          <div className="font-semibold text-gray-700 text-xs mb-1">
+            Services:
+          </div>
           <ul className="list-inside list-disc text-xs text-gray-600 space-y-1">
             {services.slice(0, 2).map((service, index) => (
               <li key={index}>{service}</li>
@@ -89,7 +94,9 @@ const InteriorCard = ({ interior }) => {
 
         {/* Design Styles */}
         <div>
-          <div className="font-semibold text-gray-700 text-xs mb-1">Design Styles:</div>
+          <div className="font-semibold text-gray-700 text-xs mb-1">
+            Design Styles:
+          </div>
           <ul className="list-inside list-disc text-xs text-gray-600 space-y-1">
             {designStyle.slice(0, 2).map((style, index) => (
               <li key={index}>{style}</li>
@@ -100,14 +107,16 @@ const InteriorCard = ({ interior }) => {
 
       {/* Past Clients */}
       <div className="px-4 pb-4 border-t border-gray-200">
-        <div className="font-semibold text-gray-700 text-xs mb-1">Past Clients:</div>
+        <div className="font-semibold text-gray-700 text-xs mb-1">
+          Past Clients:
+        </div>
         <ul className="list-inside list-disc text-xs text-gray-600 space-y-1">
           {pastClients.slice(0, 2).map((client, index) => (
             <li key={index}>{client}</li>
           ))}
         </ul>
       </div>
-    </Link>
+    </div>
   );
 };
 

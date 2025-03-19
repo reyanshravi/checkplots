@@ -2,8 +2,11 @@ import React, { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import { FaLocationDot, FaEye, FaCalendarDays } from "react-icons/fa6";
 import ReviewItem from "../../components/ReviewItem";
+import { useLocation } from "react-router-dom";
 
 const ProductPage = () => {
+  const location = useLocation();
+  const { hotelId } = location.state || {};
   const images = [
     { id: 1, src: "/images/images1.jpg", alt: "Backyard" },
     { id: 2, src: "/images/pool.jpg", alt: "Balcony View" },
@@ -12,8 +15,6 @@ const ProductPage = () => {
   ];
 
   const [selectedImage, setSelectedImage] = useState(images[0]);
-
-  const hotelId = "67c58682f0cf4b49ab8a484ab";
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -81,7 +82,7 @@ const ProductPage = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:7002/api/vendor/hotel/67c58682f0cf4b49ab8a484a`
+        `http://localhost:7002/api/vendor/hotel/${hotelId}`
       );
 
       if (response?.data?.hotel) {
@@ -99,6 +100,12 @@ const ProductPage = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (data && data.image) {
+      setSelectedImage({ id: 0, src: data.image, alt: "Hotel Image" });
+    }
+  }, [data]);
 
   // Destructure data early for better readability
   if (loading) return <div>Loading...</div>;
@@ -242,7 +249,7 @@ const ProductPage = () => {
               <p className="flex items-center">
                 <span className="font-semibold text-gray-800 mr-2">Price:</span>
                 <span className="text-green-600 font-bold text-lg">
-                  {price}
+                  ₹{price}
                 </span>
               </p>
               <p className="flex items-center">

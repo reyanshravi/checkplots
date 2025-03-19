@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import HotelCard from "./HotelCard";
-import hotels from "../Data/hotel";
+import { DataContext } from "../Context/DataProvider";
+
 export default function HotelSection({ limit }) {
+  const { hotelData } = useContext(DataContext); // Fetch hotels from context
+
+  // Early return to avoid unnecessary renders while data is being loaded
+  if (!hotelData) return <div>Loading...</div>;
+
+  // Memoize the hotels slice based on limit, to avoid unnecessary re-calculation
+  const Hotels = useMemo(
+    () => hotelData.hotels.slice(0, limit),
+    [hotelData, limit] // Recalculate only if hotels or limit changes
+  );
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mx-auto place-items-center ">
-      {hotels.slice(0, limit).map((hotel) => (
-        <HotelCard key={hotel.id} hotel={hotel} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mx-auto place-items-center">
+      {Hotels.map((hotel,index) => (
+        <HotelCard key={index} hotel={hotel} />
       ))}
     </div>
   );
