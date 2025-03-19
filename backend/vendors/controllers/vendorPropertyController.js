@@ -221,3 +221,35 @@ export const deleteProperty = async (req, res) => {
     res.status(500).json({ message: "Server error, please try again later." });
   }
 };
+
+// Update Property Status Controller (Only Accepts 0 or 1)
+export const updatePropertyStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Validate input: Ensure status is either 0 or 1
+    if (status !== 0 && status !== 1) {
+      return res.status(400).json({ message: "Invalid status. Only 0 (Pending) or 1 (Approved) are allowed." });
+    }
+
+    // Find and update the property status
+    const updatedProperty = await Property.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedProperty) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    res.status(200).json({
+      message: "Property status updated successfully",
+      property: updatedProperty,
+    });
+  } catch (error) {
+    console.error("Error updating property status:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

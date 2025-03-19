@@ -23,6 +23,8 @@ const Properties = () => {
         setError("Failed to fetch properties.");
       } finally {
         setLoading(false);
+        console.log(properties);
+        
       }
     };
 
@@ -44,12 +46,12 @@ const Properties = () => {
           className="px-4 py-2 border rounded-md"
         />
         <div>
-          <button
+          {/* <button
             className="px-4 py-2 bg-blue-500 text-white rounded-md mr-2"
             onClick={handleCreateClick}
           >
             Create
-          </button>
+          </button> */}
           <button
             className="px-4 py-2 bg-gray-200 rounded-md"
             onClick={() => window.location.reload()}
@@ -67,21 +69,23 @@ const Properties = () => {
         <table className="w-full bg-white rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-100">
-              <th className="py-2 px-4 text-left">ID</th>
+              <th className="py-2 px-4 text-left">S. No.</th>
               <th className="py-2 px-4 text-left">Image</th>
               <th className="py-2 px-4 text-left">Name</th>
-              <th className="py-2 px-4 text-left">Views</th>
-              <th className="py-2 px-4 text-left">Unique ID</th>
+              <th className="py-2 px-4 text-left">Property Type</th>
               <th className="py-2 px-4 text-left">Created At</th>
               <th className="py-2 px-4 text-left">Status</th>
-              <th className="py-2 px-4 text-left">Moderation Status</th>
+              <th className="py-2 px-4 text-left">Available For</th>
+              <th className="py-2 px-4 text-left">Address</th>
               <th className="py-2 px-4 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {properties.map((property) => (
+            {properties.map((property, index) => (
+              
+              
               <tr key={property.id}>
-                <td className="py-2 px-4">{property.id}</td>
+                <td className="py-2 px-4">{index + 1}</td>
                 <td className="py-2 px-4">
                   <img
                     src={property.image || "https://via.placeholder.com/50"}
@@ -90,30 +94,31 @@ const Properties = () => {
                   />
                 </td>
                 <td className="py-2 px-4">{property.name}</td>
-                <td className="py-2 px-4">{property.amount}</td>
-                <td className="py-2 px-4">{property.code}</td>
+                <td className="py-2 px-4 ">{property.type}</td>
                 <td className="py-2 px-4">
-                  {new Date(property.date).toLocaleDateString()}
+                {new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" }).format(new Date(property.createdAt))}
+
+
                 </td>
                 <td className="py-2 px-4">
                   <span
                     className={`px-2 py-1 rounded-md ${
-                      property.status === "Renting"
-                        ? "bg-green-200 text-green-800"
-                        : "bg-yellow-200 text-yellow-800"
+                      property.status === 1
+                        ? "bg-green-200 text-green-800" // Approved
+                        : "bg-yellow-200 text-yellow-800" // Pending
                     }`}
                   >
-                    {property.status}
+                    {property.status === 1 ? "Approved" : "Pending"}
                   </span>
                 </td>
-                <td className="py-2 px-4">{property.approval}</td>
+
+                <td className="py-2 px-4">{property.availableFor}</td>
+                <td className="py-2 px-4">{property.address}</td>
                 <td className="py-2 px-4">
                   <button className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2">
                     <FaEdit />
                   </button>
-                  <button className="px-3 py-1 bg-red-500 text-white rounded-md">
-                    <MdDeleteForever />
-                  </button>
+                  
                 </td>
               </tr>
             ))}
