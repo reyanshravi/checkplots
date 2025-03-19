@@ -1,18 +1,27 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useContext,
+  useEffect,
+} from "react";
 import { VscTable, VscFilter } from "react-icons/vsc";
 import { BsCardList } from "react-icons/bs";
 import { FaSearch } from "react-icons/fa";
 import PropertyForm from "./Froms/PropertyForm";
-import properties from "../../Data/properties";
+import { DataContext } from "../../Context/DataProvider";
+import { useNavigate } from "react-router-dom";
 
 const PropertyTab = () => {
   const [view, setView] = useState("card");
-  const [propertyList, setPropertyList] = useState(properties);
+  const [propertyList, setPropertyList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterBy, setFilterBy] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAddingProperty, setIsAddingProperty] = useState(false);
   const [editingProperty, setEditingProperty] = useState(null);
+  const { propertyData } = useContext(DataContext);
+  const navigate = useNavigate();
 
   const toggleView = useCallback((newView) => setView(newView), []);
   const toggleDropdown = useCallback(
@@ -30,18 +39,20 @@ const PropertyTab = () => {
   }, []);
 
   const handleDelete = useCallback((id) => {
-    setPropertyList((prevList) => prevList.filter((property) => property.id !== id));
+    setPropertyList((prevList) =>
+      prevList.filter((property) => property.id !== id)
+    );
   }, []);
 
   const handleEdit = useCallback(
     (id) => {
       // Find the property with the matching id
-      const propertyToEdit = propertyList.find(property => property.id === id);
-      setEditingProperty(propertyToEdit); // Set the property to be edited
-      setIsAddingProperty(true); // Open the form to edit the property
-
+      const propertyToEdit = propertyList.find(
+        (property) => property.id === id
+      );
+      setEditingProperty(propertyToEdit);
+      setIsAddingProperty(true);
       console.log(propertyToEdit);
-      
     },
     [propertyList]
   );
@@ -67,15 +78,19 @@ const PropertyTab = () => {
         setPropertyList((prevList) => [...prevList, newProperty]);
       }
       setIsAddingProperty(false);
-      setEditingProperty(null); // Reset after saving changes
+      setEditingProperty(null);
     },
     [editingProperty]
   );
+  useEffect(() => {
+    if (propertyData) {
+      setPropertyList(propertyData.properties);
+    }
+  }, [propertyData]);
 
-  
   const handleCancel = useCallback(() => {
     setIsAddingProperty(false);
-    setEditingProperty(null); // Reset when cancelling
+    setEditingProperty(null);
   }, []);
 
   const filteredProperties = useMemo(() => {
@@ -93,6 +108,17 @@ const PropertyTab = () => {
       }
     });
   }, [searchQuery, filterBy, propertyList]);
+
+  const handleClick = (id,e) => {
+    console.log("clicked",id);
+    
+    e.stopPropagation();
+
+    // Encode the filter data as URL parameters, including the div's id
+    const data = { propertyId: id };
+    // Navigate to the search results page with the filters as URL parameters
+    navigate("/property/page", { state: data });
+  };
 
   return (
     <div className="h-full flex flex-col p-6 bg-gray-50 overflow-y-auto">
@@ -188,7 +214,7 @@ const PropertyTab = () => {
             </div>
           </div>
           <PropertyForm
-            property={editingProperty} // Pass the property details if editing
+            property={editingProperty}
             onSubmit={handleAddPropertySubmit}
             onButtonClick={handleCancel}
           />
@@ -199,76 +225,96 @@ const PropertyTab = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-full py-4">
               {filteredProperties.map((property, index) => (
                 <div
+                  onClick={(e) => handleClick(property._id, e)}
                   key={property.id}
-                  className="bg-white shadow-lg rounded-lg overflow-hidden max-w-xs mx-auto p-4"
+                  className="bg-white shadow-md rounded-lg overflow-hidden w-64 mx-auto p-3 flex flex-col justify-between cursor-pointer "
                 >
-                  <img
-                    src={property.image}
-                    alt={property.name}
-                    className="w-full h-32 object-cover"
-                  />
-                  <div className="p-2">
-                    <h3 className="text-sm font-semibold text-gray-800">
-                      {property.name}
-                    </h3>
-                    <p className="text-xs text-gray-500">{property.type}</p>
-                    <p className="text-xs text-gray-700 mt-2">
-                      {property.details}
-                    </p>
-                    <p className="text-xs text-gray-700 mt-2">
-                      {property.address}
-                    </p>
-                    <p className="text-xs text-gray-700 mt-2">
-                      {property.price}
-                    </p>
-                    <div className="flex justify-between mt-3">
-                      <button
-                        onClick={() => handleEdit(property.id)}
-                        className="text-gray-500 text-xs hover:underline"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(property.id)}
-                        className="text-red-500 text-xs hover:underline"
-                      >
-                        Delete
-                      </button>
+                  <div>
+                    <img
+                      src={property.image}
+                      alt={property.name}
+                      className="w-full h-40 object-cover rounded-t-lg"
+                    />
+                    <div className="flex flex-col flex-grow mt-2">
+                      <h3 className="text-sm font-semibold text-gray-800 truncate">
+                        {property.name}
+                      </h3>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {property.type}
+                      </p>
+                      <p className="text-xs text-gray-700 mt-2">
+                        {property.details}
+                      </p>
+                      <p className="text-xs text-gray-700 mt-2">
+                        {property.address}
+                      </p>
+                      <p className="text-sm font-semibold text-gray-900 mt-2">
+                        {property.price}
+                      </p>
                     </div>
+                  </div>
+                  <div className="mt-3 flex justify-between  ">
+                    <button
+                      onClick={() => handleEdit(property.id)}
+                      className="text-blue-600 text-xs font-medium hover:underline"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(property.id)}
+                      className="text-red-600 text-xs font-medium hover:underline"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <table className="min-w-full bg-white table-auto shadow-md rounded-lg">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 text-left">Name</th>
-                  <th className="px-4 py-2 text-left">Type</th>
-                  <th className="px-4 py-2 text-left">Price</th>
-                  <th className="px-4 py-2 text-left">Details</th>
-                  <th className="px-4 py-2 text-left">Actions</th>
+            <table className="min-w-full bg-white table-auto shadow-lg rounded-lg overflow-hidden">
+              <thead className="bg-gray-50 border-b-2 border-gray-200">
+                <tr>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Name
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Type
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Price
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Details
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Actions
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-sm">
                 {filteredProperties.map((property, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="px-4 py-2">{property.name}</td>
-                    <td className="px-4 py-2">{property.type}</td>
-                    <td className="px-4 py-2">{property.price}</td>
-                    <td className="px-4 py-2 text-xs max-w-xs truncate">
+                  <tr
+                    key={index}
+                    className="border-t border-gray-100 hover:bg-gray-50 transition duration-300"
+                  >
+                    <td className="px-6 py-4 text-gray-800">{property.name}</td>
+                    <td className="px-6 py-4 text-gray-600">{property.type}</td>
+                    <td className="px-6 py-4 text-gray-600 font-medium">
+                      {property.price}
+                    </td>
+                    <td className="px-6 py-4 text-gray-500 text-xs max-w-xs truncate">
                       {property.details}
                     </td>
-                    <td className="px-4 py-2">
+                    <td className="px-6 py-4 space-x-2 flex justify-start">
                       <button
                         onClick={() => handleEdit(property.id)}
-                        className="text-gray-500 text-xs hover:underline"
+                        className="text-indigo-600 hover:text-indigo-800 font-medium text-xs transform hover:scale-105 transition duration-200"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(property.id)}
-                        className="text-red-500 text-xs hover:underline ml-2"
+                        className="text-red-600 hover:text-red-800 font-medium text-xs transform hover:scale-105 transition duration-200"
                       >
                         Delete
                       </button>
