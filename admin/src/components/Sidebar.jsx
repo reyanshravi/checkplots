@@ -10,6 +10,7 @@ import {
   IoDesktopOutline,
   IoLogOutOutline,
 } from "react-icons/io5";
+import { MdOutlineDiscount, MdOutlineDashboard } from "react-icons/md";
 import { SiAffinitydesigner } from "react-icons/si";
 
 const Sidebar = () => {
@@ -31,6 +32,8 @@ const Sidebar = () => {
     { name: "Hotels", path: "/hotels", icon: <IoBusinessOutline /> },
     { name: "Users", path: "/users", icon: <IoPeopleOutline /> },
     { name: "Vendors", path: "/vendors", icon: <IoPeopleOutline /> },
+    { name: "Package", path: "/package", icon: <MdOutlineDashboard /> },
+    { name: "Offers", path: "/offers", icon: <MdOutlineDiscount /> },
     { name: "Settings", path: "/settings", icon: <IoSettingsOutline /> },
   ];
 

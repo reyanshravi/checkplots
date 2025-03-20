@@ -39,6 +39,7 @@ import {
   getInteriorById,
   updateInterior,
   deleteInterior,
+  updateInteriorStatus
 } from "../controllers/vendorInteriorController.js";
 
 import {
@@ -47,6 +48,7 @@ import {
   getHotelById,
   updateHotel,
   deleteHotel,
+  updateHotelStatus
 } from "../controllers/vendorHotelController.js";
 import { submitEnquiry } from "../controllers/enquiryController.js";
 
@@ -120,6 +122,8 @@ vendorRouter.get("/interiors", getAllInterior);
 // Get a single interior by ID
 vendorRouter.get("/interior/:id", getInteriorById);
 
+vendorRouter.put("/interior/:id/updateStatus", updateInteriorStatus);
+
 // Update an interior by ID, including images
 vendorRouter.put("/interior/:id", upload.array("images", 10), updateInterior);
 
@@ -138,6 +142,9 @@ vendorRouter.get("/hotel/:id", getHotelById);
 
 // Update a hotel by ID, including images
 vendorRouter.put("/hotel/:id", upload.array("images", 10), updateHotel);
+
+// Update hotel status by ID
+vendorRouter.put('/hotel/:id/updateStatus', updateHotelStatus);
 
 // Delete a hotel by ID
 vendorRouter.delete("/hotel/:id", deleteHotel);

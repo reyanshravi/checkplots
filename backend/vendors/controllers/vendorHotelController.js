@@ -211,3 +211,49 @@ export const deleteHotel = async (req, res) => {
     });
   }
 };
+
+// Update Hotel Status Controller
+export const updateHotelStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const  statusMap = {
+      Vacant: 0,
+      Reserved: 1,
+    };
+    
+    // Validate input: Ensure status is valid
+    const validStatuses = ["Vacant", "Reserved"];
+    if (!Object.keys(statusMap).includes(status)) {
+      return res.status(400).json({ 
+        message: "Invalid status. Only 'Vacant' or 'Reserved' are allowed." 
+      });
+    }
+
+    const numericStatus = statusMap[status];
+    
+    // Find and update the hotel status
+    const updatedHotel = await Hotel.findByIdAndUpdate(
+      id,
+      { status: numericStatus },
+      { new: true, runValidators: true }
+    );
+    
+    if (!updatedHotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+    
+    return res.status(200).json({
+      message: "Hotel status updated successfully",
+      hotel: updatedHotel,
+    });
+    
+  } catch (error) {
+    console.error("Error updating hotel status:", error);
+    return res.status(500).json({ 
+      message: "Internal server error on hotel controller", 
+      error: error.message 
+    });
+  }
+};

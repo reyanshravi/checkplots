@@ -264,7 +264,7 @@ export const updatePropertyStatus = async (req, res) => {
   } catch (error) {
     console.error("Error updating property status:", error);
     return res.status(500).json({ 
-      message: "Internal server error", 
+      message: "Internal server error on property controller", 
       error: error.message 
     });
   }

@@ -216,3 +216,52 @@ export const deleteInterior = async (req, res) => {
     });
   }
 };
+
+// Update Interior Status Controller
+export const updateInteriorStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status:interiorStatus } = req.body;
+
+    console.log("Updating interior status:", id, interiorStatus);
+    
+
+    const statusMap = {
+      Inactive: 0,
+      Active: 1,
+      Pending: 2,
+    };
+
+    // Validate input: Ensure interior status is valid
+    if (!Object.keys(statusMap).includes(interiorStatus)) {
+      return res.status(400).json({ 
+        message: "Invalid interior status. Only 'Inactive', 'Active', or 'Pending' are allowed." 
+      });
+    }
+
+    const numericStatus = statusMap[interiorStatus];
+
+    // Find and update the interior status
+    const updatedHotel = await Interior.findByIdAndUpdate(
+      id,
+      { status: numericStatus },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedHotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    return res.status(200).json({
+      message: "Interior status updated successfully",
+      hotel: updatedHotel,
+    });
+
+  } catch (error) {
+    console.error("Error updating interior status:", error);
+    return res.status(500).json({ 
+      message: "Internal server error on interior status controller", 
+      error: error.message 
+    });
+  }
+};
