@@ -7,6 +7,14 @@ import {
 } from "../controllers/authAdminController.js";
 
 import { verifyToken } from "../middlewares/verifyToken.js";
+import { validatePackage } from "../middlewares/validatePackage.js";
+
+import { addPackage, 
+  getAllPackages, 
+  getPackageById, 
+  updatePackage, 
+  deletePackage
+ } from "../controllers/packageController.js";
 
 import {
   forgotPassword,
@@ -32,6 +40,21 @@ adminRouter.put("/update-profile/:id", verifyToken, updateAdminProfile);
 
 // Endpoint for admin change password
 adminRouter.put("/change-password", verifyToken, changeAdminPassword);
+
+// Endpoint for add package
+adminRouter.post("/add-package", verifyToken, validatePackage, addPackage);
+
+// Endpoint for get all packages
+adminRouter.get("/get-all-packages", verifyToken, getAllPackages);
+
+// Endpoint for get package by ID
+adminRouter.get("/get-package/:id", verifyToken, getPackageById);
+
+// Endpoint for update package by ID
+adminRouter.put("/update-package/:id", verifyToken, validatePackage, updatePackage);
+
+// Endpoint for delete package by ID
+adminRouter.delete("/delete-package/:id", verifyToken, deletePackage);
 
 // Test route for admin route
 adminRouter.get("/test", (req, res) => {

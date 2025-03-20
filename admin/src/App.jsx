@@ -22,6 +22,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import EditProfile from "./pages/EditProfile";
 import ChangePassword from "./pages/ChnagePassword";
 import ResetPassword from "./pages/ResetPassword";
+import Package from "./pages/Package";
+import Offers from "./pages/Offers";
 
 // Check if the user is authenticated
 const isAuthenticated = () => {
@@ -112,6 +114,26 @@ const App = () => {
             <ProtectedRoute>
               <AppLayout>
                 <Vendors />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/package"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <Package />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/offers"
+          element={
+            <ProtectedRoute>
+              <AppLayout>
+                <Offers />
               </AppLayout>
             </ProtectedRoute>
           }
