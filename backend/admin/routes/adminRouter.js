@@ -13,7 +13,8 @@ import { addPackage,
   getAllPackages, 
   getPackageById, 
   updatePackage, 
-  deletePackage
+  deletePackage,
+  updatePackageStatus
  } from "../controllers/packageController.js";
 
 import {
@@ -49,6 +50,9 @@ adminRouter.get("/get-all-packages", verifyToken, getAllPackages);
 
 // Endpoint for get package by ID
 adminRouter.get("/get-package/:id", verifyToken, getPackageById);
+
+// Endpoint for update package Status by ID
+adminRouter.put("/update-package-status/:id", verifyToken, updatePackageStatus);
 
 // Endpoint for update package by ID
 adminRouter.put("/update-package/:id", verifyToken, validatePackage, updatePackage);

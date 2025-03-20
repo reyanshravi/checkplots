@@ -2,13 +2,18 @@ import Joi from "joi";
 
 // Define Joi schema for package validation
 const packageSchema = Joi.object({
-  name: Joi.string().min(3).max(100).required(),
-  description: Joi.string().min(10).required(),
-  term: Joi.string().valid("1 month", "3 months", "6 months", "12 months").required(),
-  price: Joi.number().positive().required(),
-  status: Joi.string().valid("Active", "Inactive").required(),
-  leads: Joi.number().integer().min(0).required(),
-  listings: Joi.string().valid("Limited", "Unlimited").required(),
+  packageName: Joi.string().min(3).max(100).required(),
+  packageDescription: Joi.string().min(10).required(),
+  packageTerm: Joi.number().positive().required(),
+  packagePrice: Joi.number().positive().required(),
+  packageStatus: Joi.string().valid("Active", "Inactive"),
+  numberOfLeads: Joi.number().integer().min(0).required(),
+  listingType: Joi.string().valid("Limited", "Unlimited").required(),
+  numberOfListings: Joi.number().integer().min(1).when("listingType", {
+    is: "Limited",
+    then: Joi.required(),
+    otherwise: Joi.forbidden(),
+  }),
 });
 
 // Middleware function to validate package data
