@@ -33,13 +33,13 @@ export const addPackage = async (req, res) => {
 
 // Get all packages
 export const getAllPackages = async (req, res) => {
-  try {
-    const packages = await Package.find();
-    res.status(200).json(packages);
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
+    try {
+      const packages = await Package.find();
+      res.status(200).json({ packages }); // Ensure response has a `packages` key
+    } catch (error) {
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
 
 // Get package by ID
 export const getPackageById = async (req, res) => {
