@@ -189,7 +189,8 @@ const VendorSignin = () => {
 
                   <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                     Don't have an account ?
-                    <Link to="/vendor/signup"
+                    <Link
+                      to="/vendor/signup"
                       className="text-gray-700 underline"
                       onClick={() => navigate("/signup")}
                     >
