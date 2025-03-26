@@ -1,10 +1,8 @@
-
-import Offer from "../models/offerModel.js"; // Import Offer model
-
-const User = require('../models/User'); // Assuming you have a User model
-const OfferUsage = require('../models/OfferUsage'); // Assuming you track offer usage
-const { validationResult } = require('express-validator');
-const mongoose = require('mongoose');
+import Offer from "../models/offerModel.js";
+import User from "../../users/models/User.js";
+import OfferUsage from "../models/offerUsageModel.js";
+import { validationResult } from "express-validator";
+import mongoose from "mongoose";
 
 /**
  * Get all offers with filtering options
@@ -547,7 +545,7 @@ exports.validateOfferCode = async (req, res) => {
  * Apply an offer code (record usage)
  * @route POST /api/offers/apply
  * @access Customer
- */
+ */ 
 exports.applyOfferCode = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
