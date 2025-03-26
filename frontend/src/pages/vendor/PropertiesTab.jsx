@@ -109,9 +109,9 @@ const PropertyTab = () => {
     });
   }, [searchQuery, filterBy, propertyList]);
 
-  const handleClick = (id,e) => {
-    console.log("clicked",id);
-    
+  const handleClick = (id, e) => {
+    console.log("clicked", id);
+
     e.stopPropagation();
 
     // Encode the filter data as URL parameters, including the div's id
@@ -249,19 +249,25 @@ const PropertyTab = () => {
                         {property.address}
                       </p>
                       <p className="text-sm font-semibold text-gray-900 mt-2">
-                        {property.price}
+                        ₹ {property.price}
                       </p>
                     </div>
                   </div>
                   <div className="mt-3 flex justify-between  ">
                     <button
-                      onClick={() => handleEdit(property.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(property._id);
+                      }}
                       className="text-blue-600 text-xs font-medium hover:underline"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(property.id)}
+                      onClick={() => {
+                        e.stopPropagation();
+                        handleDelete(property.id);
+                      }}
                       className="text-red-600 text-xs font-medium hover:underline"
                     >
                       Delete

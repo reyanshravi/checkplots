@@ -214,7 +214,10 @@ const HotelTab = () => {
 
                   <div className="flex justify-between mt-3">
                     <button
-                      onClick={() => handleEdit(index)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(index);
+                      }}
                       className="text-gray-500 text-xs hover:underline"
                     >
                       Edit
@@ -232,44 +235,57 @@ const HotelTab = () => {
           ) : (
             // Table View
             <table className="min-w-full bg-white table-auto shadow-lg rounded-lg overflow-hidden">
-  <thead className="bg-gray-50 border-b-2 border-gray-200">
-    <tr>
-      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Name</th>
-      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Type</th>
-      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Price</th>
-      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Details</th>
-      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">Actions</th>
-    </tr>
-  </thead>
-  <tbody className="text-sm">
-    {filteredHotels.map((hotel, index) => (
-      <tr
-        key={index}
-        className="border-t border-gray-100 hover:bg-gray-50 transition duration-300"
-      >
-        <td className="px-6 py-4 text-gray-800">{hotel.name}</td>
-        <td className="px-6 py-4 text-gray-600">{hotel.type}</td>
-        <td className="px-6 py-4 text-gray-600 font-medium">{hotel.price}</td>
-        <td className="px-6 py-4 text-gray-500 text-xs max-w-xs truncate">{hotel.details}</td>
-        <td className="px-6 py-4 space-x-2 flex justify-start">
-          <button
-            onClick={() => handleEdit(index)}
-            className="text-indigo-600 hover:text-indigo-800 font-medium text-xs transform hover:scale-105 transition duration-200"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => handleDelete(index)}
-            className="text-red-600 hover:text-red-800 font-medium text-xs transform hover:scale-105 transition duration-200"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    ))}
-  </tbody>
-</table>
-
+              <thead className="bg-gray-50 border-b-2 border-gray-200">
+                <tr>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Name
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Type
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Price
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Details
+                  </th>
+                  <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-left">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {filteredHotels.map((hotel, index) => (
+                  <tr
+                    key={index}
+                    className="border-t border-gray-100 hover:bg-gray-50 transition duration-300"
+                  >
+                    <td className="px-6 py-4 text-gray-800">{hotel.name}</td>
+                    <td className="px-6 py-4 text-gray-600">{hotel.type}</td>
+                    <td className="px-6 py-4 text-gray-600 font-medium">
+                      {hotel.price}
+                    </td>
+                    <td className="px-6 py-4 text-gray-500 text-xs max-w-xs truncate">
+                      {hotel.details}
+                    </td>
+                    <td className="px-6 py-4 space-x-2 flex justify-start">
+                      <button
+                        onClick={() => handleEdit(index)}
+                        className="text-indigo-600 hover:text-indigo-800 font-medium text-xs transform hover:scale-105 transition duration-200"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(index)}
+                        className="text-red-600 hover:text-red-800 font-medium text-xs transform hover:scale-105 transition duration-200"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       )}
