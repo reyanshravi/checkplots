@@ -4,17 +4,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import Sidebar from "./Sidebar"; // Import the Sidebar component
 import { CiUser } from "react-icons/ci";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isPopupVisible, setPopupVisible] = useState(false);
+  const navigate = useNavigate();
 
   const sidebarRef = useRef(null);
   const sidebarButtonRef = useRef(null);
   const dropdownRef = useRef(null);
   const dropdownButtonRef = useRef(null);
-  const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("user"));
   const vendor = JSON.parse(localStorage.getItem("vendor"));
@@ -31,46 +32,25 @@ const Navbar = () => {
     [navigate]
   );
 
-  // Logout confirmation popup component
-  const LogoutPopup = ({ confirmLogout, cancelLogout }) => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center ">
-      <div className="rounded-lg bg-white p-8 shadow-2xl z-50">
-        <h2 className="text-lg font-bold">Are you sure you want to log out?</h2>
-        <p className="mt-2 text-sm text-gray-500">
-          Logging out will end your session. Are you 100% sure you want to log
-          out?
-        </p>
-        <div className="mt-4 flex gap-2">
-          <button
-            type="button"
-            onClick={confirmLogout}
-            className="rounded-sm bg-green-50 px-4 py-2 text-sm font-medium text-green-600"
-          >
-            Yes, log me out
-          </button>
-          <button
-            type="button"
-            onClick={cancelLogout}
-            className="rounded-sm bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600"
-          >
-            No, stay logged in
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  // Logout function
+  const handleLogout = () => {
+    // Confirm logout and remove authentication token
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    if (!confirmed) return;
 
-  const confirmLogout = () => {
+    // Clear the localStorage based on user type (user or vendor)
     if (user) {
       localStorage.removeItem("user");
     } else if (vendor) {
       localStorage.removeItem("vendor");
     }
-    navigate("/");
-    setPopupVisible(false); 
-  };
+    localStorage.removeItem("token");
 
-  const cancelLogout = () => setPopupVisible(false);
+    // Show a success toast notification
+    toast.success("You have logged out successfully!");
+
+    navigate("/");
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -85,7 +65,7 @@ const Navbar = () => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target) &&
-        !dropdownButtonRef.current.contains(event.target) 
+        !dropdownButtonRef.current.contains(event.target)
       ) {
         setIsDropdownOpen(false);
       }
@@ -105,13 +85,6 @@ const Navbar = () => {
   return (
     <>
       <div className="fixed w-full top-0 z-50 flex justify-center">
-        {isPopupVisible && (
-          <LogoutPopup
-            confirmLogout={confirmLogout}
-            cancelLogout={cancelLogout}
-          />
-        )}
-
         <nav className="flex items-center w-full px-4 bg-white rounded-b-3xl shadow-md relative">
           <div onClick={() => navigate("/")}>
             <img
@@ -122,7 +95,7 @@ const Navbar = () => {
           </div>
 
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <ul className=" space-x-8 text-gray-800 hidden md:flex">
+            <ul className="space-x-8 text-gray-800 hidden md:flex">
               <li>
                 <Link
                   to="/"
@@ -148,10 +121,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/blog"
-                  className="text-sm font-medium hover:text-indigo-600 transition duration-200"
-                >
+                <Link className="text-sm font-medium hover:text-indigo-600 transition duration-200">
                   Blog
                 </Link>
               </li>
@@ -200,7 +170,7 @@ const Navbar = () => {
                         Profile
                       </Link>
                       <button
-                        onClick={() => setPopupVisible(true)}
+                        onClick={handleLogout}
                         className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
                       >
                         Logout
@@ -215,7 +185,7 @@ const Navbar = () => {
                         Vendor Profile
                       </Link>
                       <button
-                        onClick={() => setPopupVisible(true)}
+                        onClick={handleLogout}
                         className="block px-4 py-2 text-sm text-red-600 hover:text-red-800 rounded-md transition duration-150 w-full text-left"
                       >
                         Logout
@@ -261,7 +231,7 @@ const Navbar = () => {
 
             <label
               onClick={toggleSidebar}
-              className="flex flex-col gap-1 w-6 cursor-pointer md:hidden" // Adjusted width and gap for smaller screen
+              className="flex flex-col gap-1 w-6 cursor-pointer md:hidden"
             >
               <div
                 className={`h-[2px] w-full bg-black rounded-full transition-all duration-200 transform ${
@@ -282,6 +252,8 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
+
+      <ToastContainer />
 
       <Sidebar
         isSidebarOpen={isSidebarOpen}
