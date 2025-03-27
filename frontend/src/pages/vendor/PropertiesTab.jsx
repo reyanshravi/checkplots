@@ -11,6 +11,7 @@ import { FaSearch } from "react-icons/fa";
 import PropertyForm from "./Froms/PropertyForm";
 import { DataContext } from "../../Context/DataProvider";
 import { useNavigate } from "react-router-dom";
+import PropertyUpdateForm from "./Froms/update/PropertyUpdateForm";
 
 const PropertyTab = () => {
   const [view, setView] = useState("card");
@@ -44,19 +45,10 @@ const PropertyTab = () => {
     );
   }, []);
 
-  const handleEdit = useCallback(
-    (id) => {
-      // Find the property with the matching id
-      const propertyToEdit = propertyList.find(
-        (property) => property.id === id
-      );
-      setEditingProperty(propertyToEdit);
-      setIsAddingProperty(true);
-      console.log(propertyToEdit);
-    },
-    [propertyList]
-  );
-
+  const handleEdit = (id) => {
+    setEditingProperty(id);
+    setIsAddingProperty(true);
+  };
   const handleAdd = useCallback(() => {
     setIsAddingProperty(true);
     setEditingProperty(null); // Clear editing state when adding a new property
@@ -204,20 +196,25 @@ const PropertyTab = () => {
             <h3 className="text-2xl font-semibold mb-4">
               {editingProperty ? "Edit Property" : "Add New Property"}
             </h3>
-            <div className="px-3">
-              <button
-                onClick={handleCancel}
-                className="bg-red-500 text-white font-bold py-2 px-4 rounded"
-              >
-                Cancel
-              </button>
-            </div>
+
+            <button
+              onClick={handleCancel}
+              className="bg-red-500 text-white font-bold py-2 px-4 rounded"
+            >
+              Cancel
+            </button>
           </div>
-          <PropertyForm
-            property={editingProperty}
-            onSubmit={handleAddPropertySubmit}
-            onButtonClick={handleCancel}
-          />
+          {editingProperty ? (
+            <PropertyUpdateForm
+              propertyId={editingProperty}
+              onButtonClick={handleCancel}
+            />
+          ) : (
+            <PropertyForm
+              onSubmit={handleAddPropertySubmit}
+              onButtonClick={handleCancel}
+            />
+          )}
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto bg-slate-500 bg-opacity-10 rounded-lg">
@@ -266,7 +263,7 @@ const PropertyTab = () => {
                     <button
                       onClick={() => {
                         e.stopPropagation();
-                        handleDelete(property.id);
+                        handleDelete(property._id);
                       }}
                       className="text-red-600 text-xs font-medium hover:underline"
                     >
