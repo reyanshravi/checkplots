@@ -159,7 +159,7 @@ const PropertyUpdateForm = ({ propertyId, onButtonClick }) => {
   // Validate form before submission
   const validateForm = () => {
     const newErrors = {};
-    if (!propertyData.rating) newErrors.rating = "Rating is required";
+    // if (!propertyData.rating) newErrors.rating = "Rating is required";
     if (!propertyData.reviews) newErrors.reviews = "Reviews is required";
 
     if (!propertyData.name) newErrors.name = "Property Name is required";
@@ -173,8 +173,11 @@ const PropertyUpdateForm = ({ propertyId, onButtonClick }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("clicked");
+
     const validationErrors = validateForm();
     setErrors(validationErrors);
+    console.log(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true); // Set loading to true instead of undefined
@@ -207,7 +210,7 @@ const PropertyUpdateForm = ({ propertyId, onButtonClick }) => {
         // Loop over the image file(s) to append them
         if (propertyData.image && propertyData.image.length > 0) {
           propertyData.image.forEach((file) => {
-            formData.append("image", file); // Make sure the file is appended correctly
+            formData.append("images", file);
           });
         }
 
@@ -261,6 +264,22 @@ const PropertyUpdateForm = ({ propertyId, onButtonClick }) => {
       }
     }
   };
+
+  const imagePreview =
+    propertyData.image &&
+    Array.isArray(propertyData.image) &&
+    propertyData.image.length > 0 ? (
+      <div className="mt-2 flex space-x-2">
+        {propertyData.image.map((imageUrl, index) => (
+          <img
+            key={index}
+            src={imageUrl}
+            alt={`Interior preview ${index + 1}`}
+            className="h-20 w-20 object-cover rounded-lg shadow-md"
+          />
+        ))}
+      </div>
+    ) : null;
 
   return (
     <form
@@ -339,6 +358,7 @@ const PropertyUpdateForm = ({ propertyId, onButtonClick }) => {
             onChange={handleImageChange}
             className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4 mb-3"
           />
+          {imagePreview}
         </div>
       </div>
 
@@ -412,7 +432,7 @@ const PropertyUpdateForm = ({ propertyId, onButtonClick }) => {
       <div>
         <InputField
           label="Rating"
-          name="Rating"
+          name="rating"
           value={propertyData.rating}
           onChange={handleChange}
           type="number"
