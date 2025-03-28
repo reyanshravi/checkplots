@@ -102,8 +102,6 @@ const PropertyTab = () => {
   }, [searchQuery, filterBy, propertyList]);
 
   const handleClick = (id, e) => {
-    console.log("clicked", id);
-
     e.stopPropagation();
 
     // Encode the filter data as URL parameters, including the div's id
@@ -223,7 +221,7 @@ const PropertyTab = () => {
               {filteredProperties.map((property, index) => (
                 <div
                   onClick={(e) => handleClick(property._id, e)}
-                  key={property.id}
+                  key={index}
                   className="bg-white shadow-md rounded-lg overflow-hidden w-[90%] mx-auto p-3 flex flex-col justify-between cursor-pointer "
                 >
                   <div>

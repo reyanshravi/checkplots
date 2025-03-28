@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import HotelForm from "./Froms/HotelForm";
 import { DataContext } from "../../Context/DataProvider";
 import { useNavigate } from "react-router-dom";
+import HotelUpdateForm from "./Froms/update/HotelUpdateForm";
 
 const HotelTab = () => {
   const [view, setView] = useState("card");
@@ -14,6 +15,7 @@ const HotelTab = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAddingHotel, setIsAddingHotel] = useState(false);
   const { hotelData } = useContext(DataContext);
+  const [editingHotel, setEditingHotel] = useState(null);
   const navigate = useNavigate();
 
   // Function to toggle view
@@ -38,8 +40,9 @@ const HotelTab = () => {
   };
 
   // Handle edit action (placeholder)
-  const handleEdit = (index) => {
-    alert(`Edit hotel at index ${index}`);
+  const handleEdit = (id) => {
+    setEditingHotel(id);
+    setIsAddingHotel(true);
   };
 
   // Handle add action (placeholder)
@@ -65,6 +68,7 @@ const HotelTab = () => {
       );
     }
   });
+
   useEffect(() => {
     if (hotelData) {
       setHotelList(hotelData.hotels);
@@ -72,8 +76,6 @@ const HotelTab = () => {
   }, [hotelData]);
 
   const handleNavigate = (id, e) => {
-    console.log("click " + id);
-
     e.stopPropagation();
 
     const data = { hotelId: id };
@@ -165,7 +167,7 @@ const HotelTab = () => {
       {isAddingHotel ? (
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="flex justify-between">
-            <h3 className="text-2xl font-semibold mb-4">Add New Property</h3>
+            <h3 className="text-2xl font-semibold mb-4">Add New hotel</h3>
             {/* Cancel Button */}
             <div className="px-3">
               <button
@@ -176,7 +178,14 @@ const HotelTab = () => {
               </button>
             </div>
           </div>
-          <HotelForm onButtonClick={handleCancel} />
+          {editingHotel ? (
+            <HotelUpdateForm
+              hotelId={editingHotel}
+              onButtonClick={handleCancel}
+            />
+          ) : (
+            <HotelForm onButtonClick={handleCancel} />
+          )}
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto bg-slate-500 bg-opacity-10 rounded-lg">
@@ -216,7 +225,7 @@ const HotelTab = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleEdit(index);
+                        handleEdit(hotel._id);
                       }}
                       className="text-gray-500 text-xs hover:underline"
                     >
