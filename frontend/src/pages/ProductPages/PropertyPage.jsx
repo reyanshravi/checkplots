@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaLocationDot, FaEye, FaCalendarDays } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import ReviewItem from "../../components/reviewItem";
+import EnquiryForm from "../../components/enquiryForm";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -154,6 +155,9 @@ const ProductPage = () => {
   const formattedDate = date.toLocaleDateString("en-GB");
   const month = date.toLocaleString("en-GB", { month: "short" });
   const day = date.getDate();
+
+  const Category = "Property";
+  const CategoryId = data._id;
 
   return (
     <div className=" min-h-screen bg-gradient-to-br from-[#e0e7f0] to-[#f6f6f6] pt-24">
@@ -454,109 +458,7 @@ const ProductPage = () => {
         <div className="w-full lg:w-96 top-0 h-full  space-y-12 ">
           {/* Enquiry Form Section */}
           <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-sm">
-            <h2 className="text-xl font-semibold mb-4">Contact</h2>
-
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              {/* Name Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={enquiry.name}
-                  onChange={handleInputChange}
-                  placeholder="Johny Dane"
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Phone Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">Phone</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={enquiry.phone}
-                  onChange={handleInputChange}
-                  placeholder="Ex 0123456789"
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={enquiry.email}
-                  onChange={handleInputChange}
-                  placeholder="email@example.com"
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Schedule a Tour */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Schedule a Tour (optional)
-                </label>
-                <input
-                  type="date"
-                  name="scheduleDate"
-                  value={enquiry.scheduleDate}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Apartment Selection */}
-              <div>
-                <select
-                  name="apartment"
-                  value={enquiry.apartment}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-md bg-gray-100 cursor-pointer focus:ring-2 focus:ring-blue-500"
-                >
-                  <option>Walnut Park Apartments</option>
-                </select>
-              </div>
-
-              {/* Message Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Message <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  name="message"
-                  value={enquiry.message}
-                  onChange={handleInputChange}
-                  placeholder="Enter your message..."
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                  rows="4"
-                ></textarea>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-teal-700 text-white p-3 rounded-md hover:bg-teal-800"
-              >
-                {isSubmitting ? "Submitting..." : "Send Message"}
-              </button>
-
-              {/* Form Status Message */}
-              {formStatus && (
-                <div className="mt-4 text-center text-green-500">
-                  {formStatus}
-                </div>
-              )}
-            </form>
+            <EnquiryForm category={Category} categoryId={CategoryId} />
           </div>
 
           {/* Special Offers Section */}

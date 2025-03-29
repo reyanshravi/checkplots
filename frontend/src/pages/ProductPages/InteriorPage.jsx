@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaLocationDot, FaEye, FaCalendarDays } from "react-icons/fa6";
 import ReviewItem from "../../components/reviewItem";
 import { useLocation } from "react-router-dom";
+import EnquiryForm from "../../components/enquiryForm";
 
 const InteriorPage = () => {
   const location = useLocation();
@@ -19,63 +20,7 @@ const InteriorPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [enquiry, setEnquiry] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-    scheduleDate: "",
-    apartment: "Walnut Park Apartments", // Default option
-  });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formStatus, setFormStatus] = useState(null);
-
-  // Handle input change for form fields
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEnquiry((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setFormStatus(null);
-
-    try {
-      // POST request to the backend endpoint
-      const response = await fetch("http://localhost:7002/api/vendor/enquire", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(enquiry),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit enquiry");
-      }
-
-      const result = await response.json();
-      setFormStatus("Success! Your enquiry has been submitted.");
-      setEnquiry({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-        scheduleDate: "",
-        apartment: "Walnut Park Apartments",
-      }); // Clear form after submission
-    } catch (error) {
-      setFormStatus("There was an error submitting your enquiry.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null); // Reset error state before each fetch
@@ -147,6 +92,8 @@ const InteriorPage = () => {
     ],
   };
 
+  const Category = "Interior";
+  const CategoryId = data._id;
   return (
     <div className=" min-h-screen bg-gradient-to-br from-[#e0e7f0] to-[#f6f6f6] pt-24">
       {/* Product Gallery */}
@@ -341,109 +288,7 @@ const InteriorPage = () => {
         <div className="w-full lg:w-96 top-0 h-full  space-y-12 ">
           {/* Enquiry Form Section */}
           <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-sm">
-            <h2 className="text-xl font-semibold mb-4">Contact</h2>
-
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              {/* Name Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={enquiry.name}
-                  onChange={handleInputChange}
-                  placeholder="Johny Dane"
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Phone Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">Phone</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={enquiry.phone}
-                  onChange={handleInputChange}
-                  placeholder="Ex 0123456789"
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Email Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={enquiry.email}
-                  onChange={handleInputChange}
-                  placeholder="email@example.com"
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Schedule a Tour */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Schedule a Tour (optional)
-                </label>
-                <input
-                  type="date"
-                  name="scheduleDate"
-                  value={enquiry.scheduleDate}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Apartment Selection */}
-              <div>
-                <select
-                  name="apartment"
-                  value={enquiry.apartment}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-md bg-gray-100 cursor-pointer focus:ring-2 focus:ring-blue-500"
-                >
-                  <option>Walnut Park Apartments</option>
-                </select>
-              </div>
-
-              {/* Message Field */}
-              <div>
-                <label className="block text-gray-700 font-medium">
-                  Message <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  name="message"
-                  value={enquiry.message}
-                  onChange={handleInputChange}
-                  placeholder="Enter your message..."
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
-                  rows="4"
-                ></textarea>
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-teal-700 text-white p-3 rounded-md hover:bg-teal-800"
-              >
-                {isSubmitting ? "Submitting..." : "Send Message"}
-              </button>
-
-              {/* Form Status Message */}
-              {formStatus && (
-                <div className="mt-4 text-center text-green-500">
-                  {formStatus}
-                </div>
-              )}
-            </form>
+            <EnquiryForm category={Category} categoryId={CategoryId} />
           </div>
 
           {/* Special Offers Section */}
