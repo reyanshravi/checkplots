@@ -50,7 +50,7 @@ import {
   deleteHotel,
   updateHotelStatus
 } from "../controllers/vendorHotelController.js";
-import { submitEnquiry } from "../controllers/enquiryController.js";
+import { submitEnquiry, getAllEnquiries, deleteEnquiry } from "../controllers/enquiryController.js";
 
 const vendorRouter = express.Router();
 
@@ -151,5 +151,13 @@ vendorRouter.delete("/hotel/:id", deleteHotel);
 
 // Enquiry routes
 vendorRouter.post("/enquire", submitEnquiry);
+
+// Get all enquiries
+
+vendorRouter.get("/enquiries", getAllEnquiries);
+
+// Delete an enquiry by ID
+
+vendorRouter.delete("/enquiry/:id", deleteEnquiry);
 
 export default vendorRouter;

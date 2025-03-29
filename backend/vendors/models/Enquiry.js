@@ -23,11 +23,16 @@ const enquirySchema = new mongoose.Schema({
         type: Date,
         required: false,
     },
-    apartment: {
+    category: {
         type: String,
         required: true,
-        default: 'Walnut Park Apartments',
+        enum: ['Hotel', 'Interior', 'Property'],
     },
+    categoryId: {
+        type: String,
+        required: true,
+        unique: true,
+    }
 }, { timestamps: true });
 
 const Enquiry = mongoose.model('Enquiry', enquirySchema);
