@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   FaBell,
   FaFilter,
@@ -7,6 +7,7 @@ import {
   FaChevronUp,
   FaRegCalendarAlt,
 } from "react-icons/fa";
+import axios from "axios";
 
 const dummyEnquiries = [
   {
@@ -93,6 +94,23 @@ export default function EnquiryTab() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [expandedEnquiryId, setExpandedEnquiryId] = useState(null);
 
+  // Fetch enquiries from the backend
+  useEffect(() => {
+    const fetchEnquiries = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:7002/api/vendor/enquiries"
+        ); // Replace with your API URL
+        setEnquiries(response.data.enquiries);
+        // Set the fetched data into the state
+      } catch (error) {
+        console.error("Error fetching enquiries:", error);
+      }
+    };
+
+    fetchEnquiries(); // Call the function to fetch data on component mount
+  }, []); // Empty array means this effect runs once when the component mounts
+
   // Memoize filtered enquiries
   const filteredEnquiries = useMemo(() => {
     return enquiries.filter((enquiry) => {
@@ -108,6 +126,18 @@ export default function EnquiryTab() {
   const toggleExpansion = (id) => {
     setExpandedEnquiryId(id === expandedEnquiryId ? null : id);
   };
+
+  // Format date function
+  const formatDate = (date) => {
+    const formattedDate = new Date(date).toLocaleDateString("en-US", {
+      weekday: "long", // e.g., "Tuesday"
+      year: "numeric", // e.g., "2025"
+      month: "long", // e.g., "April"
+      day: "numeric", // e.g., "1"
+    });
+    return formattedDate;
+  };
+  
 
   return (
     <div className="p-6 bg-gray-50">
@@ -165,17 +195,19 @@ export default function EnquiryTab() {
               <div className="flex justify-between items-center mb-2">
                 <div>
                   <span className="text-md font-semibold text-gray-800">
-                    {enquiry.customerName}
+                    {enquiry.name}
                   </span>
                   <div className="flex items-center space-x-1 mt-1">
                     <FaRegCalendarAlt className="text-sm text-gray-500" />
                     <span className="text-sm text-gray-500">
-                      {enquiry.date}
+                      {formatDate(enquiry.updatedAt)}
                     </span>
                   </div>
                 </div>
                 <span
-                  className={`text-xs px-2 py-1 rounded-full ${statusColors[enquiry.status]} capitalize`}
+                  className={`text-xs px-2 py-1 rounded-full ${
+                    statusColors[enquiry.status]
+                  } capitalize`}
                 >
                   {enquiry.status}
                 </span>
