@@ -284,8 +284,9 @@ export default function HotelUpdateForm({ hotelId, onButtonClick }) {
             },
           }
         );
+        console.log(response);
 
-        if (response.data.success) {
+        if (response.data.message === "Hotel updated successfully") {
           setSuccessMessage("Hotel added successfully!");
           setHotelData({
             name: "",
