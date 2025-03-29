@@ -12,6 +12,7 @@ import PropertyForm from "./Froms/PropertyForm";
 import { DataContext } from "../../Context/DataProvider";
 import { useNavigate } from "react-router-dom";
 import PropertyUpdateForm from "./Froms/update/PropertyUpdateForm";
+import { RiRefreshLine } from "react-icons/ri";
 
 const PropertyTab = () => {
   const [view, setView] = useState("card");
@@ -110,78 +111,92 @@ const PropertyTab = () => {
     navigate("/property/page", { state: data });
   };
 
+  const handleRefresh = () => {
+    if (propertyData) {
+      setPropertyList(propertyData.properties); // This will re-set hotelList and trigger a re-render
+    }
+  };
+
   return (
-    <div className="h-full flex flex-col p-6 bg-gray-50 overflow-y-auto">
+    <div className="h-full flex flex-col px-4 py-2 bg-gray-50 overflow-y-auto">
       {!isAddingProperty && (
         <>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-3xl font-semibold mb-6">Property Listings</h2>
+            <h2 className="text-3xl font-semibold mb-6">Property Services</h2>
             <button
               onClick={handleAdd}
-              className="bg-gray-500 text-white px-6 py-2 rounded-md mb-4 hover:bg-gray-600 transition"
+              className="bg-red-600 text-white px-6 py-2 rounded-md mb-4 hover:bg-red-700 transition"
             >
-              Add Property
+              Add Service
             </button>
           </div>
 
           <div className="flex justify-between items-center mb-6 bg-white p-2 rounded-xl px-4 shadow-md">
-            <div className="inline-flex">
-              <button
-                onClick={() => toggleView("card")}
-                className={`p-2 border rounded-l-md ${
-                  view === "card" ? "bg-gray-100" : "hover:bg-gray-50"
-                }`}
-              >
-                <BsCardList className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => toggleView("table")}
-                className={`p-2 border rounded-r-md ${
-                  view === "table" ? "bg-gray-100" : "hover:bg-gray-50"
-                }`}
-              >
-                <VscTable className="h-4 w-4" />
-              </button>
+            <div className="p-2 border rounded-md mr-4 hover:bg-gray-50 cursor-pointer">
+              <RiRefreshLine
+                className="hover:animate-spin"
+                onClick={handleRefresh}
+              />
             </div>
-
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center border-gray-300">
-                <FaSearch className="text-gray-500 mr-3 text-lg" />
-                <input
-                  type="search"
-                  placeholder="Search..."
-                  className="p-3 w-full border-b outline-none text-sm text-gray-700"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
+            <div className="flex justify-between items-center w-full">
+              <div className="inline-flex">
+                <button
+                  onClick={() => toggleView("card")}
+                  className={`p-2 border rounded-l-md ${
+                    view === "card" ? "bg-gray-100" : "hover:bg-gray-50"
+                  }`}
+                >
+                  <BsCardList className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => toggleView("table")}
+                  className={`p-2 border rounded-r-md ${
+                    view === "table" ? "bg-gray-100" : "hover:bg-gray-50"
+                  }`}
+                >
+                  <VscTable className="h-4 w-4" />
+                </button>
               </div>
-              <div>
-                <VscFilter
-                  className="h-6 w-6 cursor-pointer"
-                  onClick={toggleDropdown}
-                />
-                {isDropdownOpen && (
-                  <div className="absolute right-2 mt-4 bg-white border rounded-md shadow-lg w-40">
-                    <ul className="space-y-2 p-2">
-                      <li>
-                        <button
-                          className="w-full text-left p-2 hover:bg-gray-100"
-                          onClick={() => handleFilterChange("name")}
-                        >
-                          Filter by Name
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="w-full text-left p-2 hover:bg-gray-100"
-                          onClick={() => handleFilterChange("price")}
-                        >
-                          Filter by Price
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
+
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center border-gray-300">
+                  <FaSearch className="text-gray-500 mr-3 text-lg" />
+                  <input
+                    type="search"
+                    placeholder="Search..."
+                    className="p-3 w-full border-b outline-none text-sm text-gray-700"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                  />
+                </div>
+                <div>
+                  <VscFilter
+                    className="h-6 w-6 cursor-pointer"
+                    onClick={toggleDropdown}
+                  />
+                  {isDropdownOpen && (
+                    <div className="absolute right-2 mt-4 bg-white border rounded-md shadow-lg w-40">
+                      <ul className="space-y-2 p-2">
+                        <li>
+                          <button
+                            className="w-full text-left p-2 hover:bg-gray-100"
+                            onClick={() => handleFilterChange("name")}
+                          >
+                            Filter by Name
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="w-full text-left p-2 hover:bg-gray-100"
+                            onClick={() => handleFilterChange("price")}
+                          >
+                            Filter by Price
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -215,7 +230,7 @@ const PropertyTab = () => {
           )}
         </div>
       ) : (
-        <div className="flex-1 overflow-y-auto bg-slate-500 bg-opacity-10 rounded-lg">
+        <div className="flex-1 overflow-y-auto rounded-lg">
           {view === "card" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-full py-4">
               {filteredProperties.map((property, index) => (

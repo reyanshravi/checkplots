@@ -114,7 +114,7 @@ const VendorDashboard = () => {
   }, []); // Empty dependency array to run effect only on mount/unmount
 
   return (
-    <div className="flex flex-col h-screen bg-pink-500">
+    <div className="flex flex-col h-screen">
       {/* Navbar */}
       <div className="w-full bg-gray-800 text-white py-4 px-6 flex justify-between items-center shadow-md">
         <div className=" flex items-center gap-10">
@@ -141,7 +141,7 @@ const VendorDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 bg-white p-6  overflow-y-auto">
+        <div className="flex-1 bg-white p-4  overflow-y-auto">
           {renderTabContent()}
         </div>
       </div>
