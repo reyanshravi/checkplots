@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaChevronRight, FaTrashAlt, FaMoon, FaSun } from "react-icons/fa";
 import ResetPassword from "./ResetPassword";
+import PackageList from "../../components/PackageList";
 
 export default function SettingsTab() {
   const [isPasswordReset, setIsPasswordReset] = useState(false);
@@ -158,6 +159,9 @@ export default function SettingsTab() {
           </div>
         </div>
 
+         {/* package section */}
+         <PackageList />
+
         {/* Privacy Settings */}
         <div>
           <h3 className="text-xl font-semibold text-gray-800">Privacy Settings</h3>
@@ -185,6 +189,8 @@ export default function SettingsTab() {
             </button>
           </div>
         </div>
+
+       
 
         {/* Account Deletion */}
         <div>
